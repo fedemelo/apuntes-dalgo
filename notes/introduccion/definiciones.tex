@@ -34,12 +34,12 @@ En los textos formales se definen convenciones estrictas para el seudocódigo qu
 
 E.g., una función que recibe un arreglo de numeros y encuentra el mayor:
 \begin{pseudocode}
-    funcion encontrar_mayor(numeritos: arreglo)
-        mayor = numeritos[0]
-        for i in 1..numeritos.longitud-1
-            if numeritos[i] > mayor
-                mayor = numeritos[i]
-        return mayor
+función encontrar_mayor(números: arreglo)
+    mayor = |$-\infty$|
+    for i=0 to números.longitud-1
+        if números[i] > mayor
+            mayor = números[i]
+    return mayor
 \end{pseudocode}
 Detalles de este seudocódigo que reflejan que su propósito es ser claro:
 \begin{itemize}
@@ -47,12 +47,13 @@ Detalles de este seudocódigo que reflejan que su propósito es ser claro:
   \item Omito detalles de sintaxis como los dos puntos, pero preservo los que otorgan claridad, como la indentación.
   \item Evito sintaxis específica de algún lenguaje.
   \begin{itemize}
-    \item En el for uso una sintaxis clásica para el rango, $1..n$, que lo hace inambiguo.
+    \item En el for uso una sintaxis que hace explícito el valor inicial y el valor final sin necesidad de usar iterables (y sin tener que desambibuar si se toma o no el útlimo valor; acá es claro que sí)
     \item Presumo la existencia de un método \texttt{longitud} para obtener la longitud de un arreglo. Es una presunción razonable porque en cualquier lenguaje orientado a objetos existe algo así.
   \end{itemize}
 \end{itemize}
 
 \subsection{Problema}
+\label{subsec:problema}
 
 Un problema (en este contexto) es un enunciado que especifica qué se quiere obtener, sin decir cómo. Más formalmente:
 \begin{definicion}{Problema (computacional)}{problema}
