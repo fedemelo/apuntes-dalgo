@@ -8,6 +8,7 @@
 
 
 %% Required packages
+\RequirePackage{fmbdalgo}
 
 \RequirePackage{enumitem}  % Customize enumerate, itemize and description environments.
 \RequirePackage{epigraph}  % Inspirational quotes at the beggining of chapters.
