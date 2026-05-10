@@ -7,7 +7,7 @@ La idea es dividir el arreglo a ordenar en dos mitades, ordenar cada mitad de fo
 Haciendo explícitas las etapas:
 \begin{itemize}
     \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
-    \item \textbf{Conquistar}: Ordenar cada mitad usando merge sort.
+    \item \textbf{Conquistar}: Ordenar cada mitad usando merge sort (o sea, aplicando estas etapas a cada mitad)
     \item \textbf{Combinar}: Combinar las soluciones de cada mitad, que son subarreglos ordenados.
 \end{itemize}
 
@@ -16,12 +16,12 @@ Los primeros dos pasos son muy sencillos porque en algún punto al dividir por l
 Ese pseudocódigo usa una sintaxis de \textit{slicing} en la que ambos extremos son inclusivos. Se usa porque, de lo contrario, tanto \inline{merge_sort} como \inline{combinar} tendrían que recibir índices de inicio y fin como argumentos adicionales para determinar cómo partir el arreglo. El uso de slicing elimina ese ruido sintáctico y debe entenderse como una simplificación cosmética. Dicho de otra forma, los slices deben interpretarse como vistas sobre subarreglos, no como copias del arreglo en memoria.%
 }:
 \begin{pseudocode}
-funcion merge_sort(numeros: arreglo)
-    if numeros.longitud <= 1
-        return numeros
-    mitad = numeros.longitud // 2
-    izquierda = merge_sort(numeros[0..mitad-1])
-    derecha = merge_sort(numeros[mitad..numeros.longitud-1])
+función merge_sort(números: arreglo)
+    if números.longitud <= 1
+        return números
+    mitad = números.longitud // 2
+    izquierda = merge_sort(números[0..mitad-1])
+    derecha = merge_sort(números[mitad..números.longitud-1])
     return combinar(izquierda, derecha)
 \end{pseudocode}
 % TODO: Explicar, o poner como referencia, a CLRS
@@ -29,7 +29,7 @@ funcion merge_sort(numeros: arreglo)
 
 Sorprendentemente, la mejor forma de combinar las soluciones es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de ese arreglo con la primera del otro arreglo y tomar la menor (que es la que va después de la primera que tomé), y así sucesivamente. El seudocódigo es el siguiente:
 \begin{pseudocode}
-funcion combinar(izquierda: arreglo, derecha: arreglo)
+función combinar(izquierda: arreglo, derecha: arreglo)
     resultado = arreglo vacío de tamaño izquierda.longitud + derecha.longitud
     i = 0; j = 0
 
