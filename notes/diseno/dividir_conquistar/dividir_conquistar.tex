@@ -1,0 +1,18 @@
+\section{Dividir y conquistar}
+
+Muchos problemas cuentan con una estructura que permite dividirlos en subproblemas más pequeños. Organizar su casa se puede dividir en organizar la cocina, la sala, etc. 
+
+\emph{Dividir y conquistar} es la técnica de diseño de algoritmos que formaliza esa idea. Consiste en dividir el problema en subproblemas, resolver cada uno de ellos y luego combinar las soluciones para obtener la solución del problema original. Formalmente, consiste en:
+\begin{itemize}
+    \item \textbf{Dividir}: Dividir el problema subproblemas más pequeños
+    \item \textbf{Conquistar}: Resolver cada subproblema de forma recursiva (o, si el subproblema es muy pequeño, resolverlo directamente)
+    \item \textbf{Combinar}: Combinar las soluciones de los subproblemas, obteniendo la solución del problema original
+\end{itemize}
+
+Se presentan tres algoritmos para concretar esta idea.
+
+\input{diseno/dividir_conquistar/merge_sort}
+\input{diseno/dividir_conquistar/max_subarreglo}
+\input{diseno/dividir_conquistar/matrices_strassen}
+
+
