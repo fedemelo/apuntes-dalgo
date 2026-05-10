@@ -20,7 +20,8 @@ Una primera solución a este problema se consigue simplemente comparando todas l
 \begin{pseudocode}
 funcion subarreglo_max_fuerza_bruta(numeros: arreglo)
     mayor = |$-\infty$|
-    subarreglo_max = null
+    pos_ini = 0
+    pos_fin = 0
 
     for i=0 to numeros.longitud-1
         suma = 0
@@ -29,9 +30,10 @@ funcion subarreglo_max_fuerza_bruta(numeros: arreglo)
 
             if suma > mayor
                 mayor = suma
-                subarreglo_max = numeros[i..j]
+                pos_ini = i
+                pos_fin = j
 
-    return subarreglo_max
+    return pos_ini, pos_fin, mayor
 \end{pseudocode}
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es $O(n^2)$.
 
@@ -45,42 +47,42 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-función subarr_max_div_conquistar(números: arreglo)
-    if números.longitud == 1
-        return números, números[0]
+funcion subarr_max_div_conquistar(numeros: arreglo, pos_min: entero, pos_max: entero)
+    if pos_min == pos_max
+        return pos_min, pos_max, numeros[pos_min]
 
-    mitad = números.longitud//2
-    arr_izq, suma_izq = subarr_max_div_conquistar(números[0..mitad-1])
-    arr_der, suma_der = subarr_max_div_conquistar(números[mitad..números.longitud-1])
-    arr_mitad, suma_mitad = subarr_max_transversal(números, mitad)
+    pos_mitad = (pos_min + pos_max) // 2
+
+    ini_izq, fin_izq, suma_izq = subarr_max_div_conquistar(numeros, pos_min, pos_mitad)
+    ini_der, fin_der, suma_der = subarr_max_div_conquistar(numeros, pos_mitad+1, pos_max)
+    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros, pos_min, pos_mitad, pos_max)
 
     if suma_izq >= suma_der and suma_izq >= suma_mitad
-        return arr_izq, suma_izq
+        return ini_izq, fin_izq, suma_izq
     if suma_der > suma_mitad
-        return arr_der, suma_der
-    return arr_mitad, suma_mitad
+        return ini_der, fin_der, suma_der
+    return ini_mitad, fin_mitad, suma_mitad
 \end{pseudocode}
 
 Ahora sí, pensemos los subarreglos que pasan por la mitad de donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
 \begin{pseudocode}
-función subarr_max_transversal(números: arreglo, mitad: entero)
+funcion subarr_max_transversal(numeros: arreglo, pos_min, pos_mitad, pos_max: entero)
     suma_der, suma_izq = 0, 0
-    mayor_der, mayor_izq = |$-\infty|, |$-\infty|
+    mayor_der, mayor_izq = |$-\infty$|, |$-\infty$|
 
-    for i=mitad to números.longitud-1
-        suma_der += números[i]
+    for i=pos_mitad to pos_max
+        suma_der += numeros[i]
         if suma_der > mayor_der:
             mayor_der = suma_der
             extremo_der = i
 
-    for j=mitad-1 downto 0
-        suma_izq += números[j]
+    for j=pos_mitad-1 downto pos_min
+        suma_izq += numeros[j]
         if suma_izq > mayor_izq:
             mayor_izq = suma_izq
             extremo_izq = j
 
-    subarr_max = números[extremo_izq..extremo_der]
-    return subarr_max, mayor_izq+mayor_der
+    return extremo_izq, extremo_der, mayor_izq+mayor_der
 \end{pseudocode}
 
 
