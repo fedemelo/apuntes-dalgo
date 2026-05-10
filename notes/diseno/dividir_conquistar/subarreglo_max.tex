@@ -1,0 +1,87 @@
+\subsection{Subarreglo máximo}
+
+Dado un arreglo de números, a un subarreglo contiguo no vacío cuya suma (de sus elementos) es mayor que la de cualquier otro subarreglo contiguo se denomina un \emph{subarreglo máximo}. El problema de encontrar un subarreglo máximo se define como:
+\begin{itemize}
+  \item \textbf{Entrada}: arreglo con $n$ números: $[a_1, a_2,\ldots,a_n]$.
+  \item \textbf{Salida}: subarreglo contiguo $[a_i, a_{i+1},\ldots,a_j]$ no vacío tal que la suma $\sum_{k=i}^j a_k$ es máxima.
+\end{itemize}
+\say{es máxima} se puede formalizar en una expresión matemática que básicamente dice que esa sumatoria es mayor que cualquier otra sumatoria de elementos contiguos que se pueda formular. Nótese que podría haber más de un subarreglo máximo: podrían haber varios cuya suma sea igual. Basta con hallar cualquiera que sea máximo.
+% TODO: Vale la pena escribir la expresión?
+
+Hay dos tipos de instancias de este problema que son muy fáciles:
+\begin{itemize}
+  \item Cuando todos los valores del arreglo son positivos, la respuesta es todo el arreglo, porque todos los valores aportan a una mayor suma.
+  \item Cuando todos los valores son negativos, se quiere que la suma sea lo menos negativa, por lo que se forma el subarreglo con un solo elemento, el menos negativo.
+\end{itemize}
+
+\subsubsection{Solución por fuerza bruta}
+
+Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
+\begin{pseudocode}
+funcion subarreglo_max_fuerza_bruta(numeros: arreglo)
+    mayor = |$-\infty$|
+    subarreglo_max = null
+
+    for i=0 to numeros.longitud-1
+        suma = 0
+        for j=i to numeros.longitud-1
+            suma += numeros[j]
+
+            if suma > mayor
+                mayor = suma
+                subarreglo_max = numeros[i..j]
+
+    return subarreglo_max
+\end{pseudocode}
+Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es $O(n^2)$.
+
+\subsubsection{Solución por dividir y conquistar}
+Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema es hallar un subarreglo máximo en el respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, podríamos tener el infortunio de partirlo justo donde estaba el subarreglo máximo, entonces en el paso de combinar las soluciones, tenemos que asegurarnos de contemplar esa posibilidad. Con eso, las etapas son:
+\begin{itemize}
+    \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
+    \item \textbf{Conquistar}: Para cada mitad, hallar un subarreglo máximo recursivamente.
+    \item \textbf{Combinar}: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por la mitad de donde se dividió el arreglo.
+\end{itemize}
+
+Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
+\begin{pseudocode}
+función subarr_max_div_conquistar(números: arreglo)
+    if números.longitud == 1
+        return números, números[0]
+
+    mitad = números.longitud//2
+    arr_izq, suma_izq = subarr_max_div_conquistar(números[0..mitad-1])
+    arr_der, suma_der = subarr_max_div_conquistar(números[mitad..números.longitud-1])
+    arr_mitad, suma_mitad = subarr_max_transversal(números, mitad)
+
+    if suma_izq >= suma_der and suma_izq >= suma_mitad
+        return arr_izq, suma_izq
+    if suma_der > suma_mitad
+        return arr_der, suma_der
+    return arr_mitad, suma_mitad
+\end{pseudocode}
+
+Ahora sí, pensemos los subarreglos que pasan por la mitad de donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
+\begin{pseudocode}
+función subarr_max_transversal(números: arreglo, mitad: entero)
+    suma_der, suma_izq = 0, 0
+    mayor_der, mayor_izq = |$-\infty|, |$-\infty|
+
+    for i=mitad to números.longitud-1
+        suma_der += números[i]
+        if suma_der > mayor_der:
+            mayor_der = suma_der
+            extremo_der = i
+
+    for j=mitad-1 downto 0
+        suma_izq += números[j]
+        if suma_izq > mayor_izq:
+            mayor_izq = suma_izq
+            extremo_izq = j
+
+    subarr_max = números[extremo_izq..extremo_der]
+    return subarr_max, mayor_izq+mayor_der
+\end{pseudocode}
+
+
+
