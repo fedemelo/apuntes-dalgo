@@ -1,0 +1,61 @@
+\subsection{Merge sort}
+
+Merge sort resuelve el problema de ordenamiento (está definido en la sección \ref{sec:ordenamiento}).
+
+La idea es dividir el arreglo a ordenar en dos mitades, ordenar cada mitad de forma recursiva (es decir, dividiendo cada una otra vez a la mitad, y así sucesivamente) y luego combinar las soluciones.
+
+Haciendo explícitas las etapas:
+\begin{itemize}
+    \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
+    \item \textbf{Conquistar}: Ordenar cada mitad usando merge sort.
+    \item \textbf{Combinar}: Combinar las soluciones de cada mitad, que son subarreglos ordenados.
+\end{itemize}
+
+Los primeros dos pasos son muy sencillos porque en algún punto al dividir por la mitad se obtienen arreglos de un elemento, que ya están ordenados. Entonces, si encapsulamos el paso de combinar, este es el seudocódigo\footnote{%
+%
+Ese pseudocódigo usa una sintaxis de \textit{slicing} en la que ambos extremos son inclusivos. Se usa porque, de lo contrario, tanto \inline{merge_sort} como \inline{combinar} tendrían que recibir índices de inicio y fin como argumentos adicionales para determinar cómo partir el arreglo. El uso de slicing elimina ese ruido sintáctico y debe entenderse como una simplificación cosmética. Dicho de otra forma, los slices deben interpretarse como vistas sobre subarreglos, no como copias del arreglo en memoria.%
+}:
+\begin{pseudocode}
+funcion merge_sort(numeros: arreglo)
+    if numeros.longitud <= 1
+        return numeros
+    mitad = numeros.longitud // 2
+    izquierda = merge_sort(numeros[0..mitad-1])
+    derecha = merge_sort(numeros[mitad..numeros.longitud-1])
+    return combinar(izquierda, derecha)
+\end{pseudocode}
+% TODO: Explicar, o poner como referencia, a CLRS
+
+
+Sorprendentemente, la mejor forma de combinar las soluciones es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de ese arreglo con la primera del otro arreglo y tomar la menor (que es la que va después de la primera que tomé), y así sucesivamente. El seudocódigo es el siguiente:
+\begin{pseudocode}
+funcion combinar(izquierda: arreglo, derecha: arreglo)
+    resultado = arreglo vacío de tamaño izquierda.longitud + derecha.longitud
+    i = 0; j = 0
+
+    # Ambos arreglos tienen elementos
+    while i < izquierda.longitud and j < derecha.longitud
+        if izquierda[i] <= derecha[j] # <= y no < para estabilidad
+            resultado[i+j] = izquierda[i]
+            i++
+        else
+            resultado[i+j] = derecha[j]
+            j++
+
+    # Elementos restantes de la izquierda
+    while i < izquierda.longitud
+        resultado[i+j] = izquierda[i]
+        i++
+
+    # Elementos restantes de la derecha
+    while j < derecha.longitud
+        resultado[i+j] = derecha[j]
+        j++
+
+    return resultado
+\end{pseudocode}
+
+Un algoritmo es \emph{estable} si mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, se elige el elemento de la izquierda en caso de empate para que continúe ubicado antes que el de la derecha en la solución final.
+
+% TODO: Análisis de complejidad? Así sea breve
+% Ojo: para poder decir que es logarítmico formalmente, necesito el teorema maestro
