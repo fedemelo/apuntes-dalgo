@@ -42,7 +42,7 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 \begin{itemize}
     \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
     \item \textbf{Conquistar}: Para cada mitad, hallar un subarreglo máximo recursivamente.
-    \item \textbf{Combinar}: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por la mitad de donde se dividió el arreglo.
+    \item \textbf{Combinar}: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por donde se dividió el arreglo.
 \end{itemize}
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
@@ -64,9 +64,14 @@ funcion subarr_max_div_conquistar(numeros: arreglo, pos_min: entero, pos_max: en
     return ini_mitad, fin_mitad, suma_mitad
 \end{pseudocode}
 
-Ahora sí, pensemos los subarreglos que pasan por la mitad de donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
+Ahora sí, pensemos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
 \begin{pseudocode}
-funcion subarr_max_transversal(numeros: arreglo, pos_min, pos_mitad, pos_max: entero)
+funcion subarr_max_transversal(
+    numeros: arreglo,
+    pos_min: entero,
+    pos_mitad: entero,
+    pos_max: entero
+)
     suma_der, suma_izq = 0, 0
     mayor_der, mayor_izq = |$-\infty$|, |$-\infty$|
 
