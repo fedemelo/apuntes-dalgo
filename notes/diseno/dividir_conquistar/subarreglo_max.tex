@@ -55,7 +55,7 @@ funcion subarr_max_div_conquistar(numeros: arreglo, pos_min: entero, pos_max: en
 
     ini_izq, fin_izq, suma_izq = subarr_max_div_conquistar(numeros, pos_min, pos_mitad)
     ini_der, fin_der, suma_der = subarr_max_div_conquistar(numeros, pos_mitad+1, pos_max)
-    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros, pos_min, pos_mitad, pos_max)
+    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros,pos_min,pos_mitad,pos_max)
 
     if suma_izq >= suma_der and suma_izq >= suma_mitad
         return ini_izq, fin_izq, suma_izq
