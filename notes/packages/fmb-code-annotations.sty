@@ -1,0 +1,34 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fmb-code-annotations}[2026/05/10 Code annotation infrastructure by Federico Melo Barrero.]
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,fit,decorations.pathreplacing}
+
+% Place a zero-size remembered node at the current position.
+\newcommand{\tikzmark}[1]{\tikz[remember picture,overlay] \node (#1) {};}
+
+% Shorthand pair for bracketing a token to be boxed: |\tms{id}|TOKEN|\tme{id}|
+\newcommand{\tms}[1]{\tikzmark{#1s}}
+\newcommand{\tme}[1]{\tikzmark{#1e}}
+
+\tikzset{
+  box/.style={draw=green!55!black, line width=0.7pt,
+              rounded corners=3pt, inner xsep=0pt, inner ysep=2pt, yshift=2pt},
+  note/.style={align=left, font=\scriptsize\fontfamily{cmss}\selectfont,
+               text=green!50!black, inner sep=5pt},
+  arr/.style={-{Stealth[length=2mm,open]}, draw=green!55!black, line width=0.7pt},
+  brk/.style={draw=green!55!black, line width=0.7pt},
+}
+
+% Curly brace spanning a vertical range of code, with an inline label.
+%   #1 x-anchor mark   #2 extra x-offset (e.g. 15pt)
+%   #3 top mark        #4 bottom mark
+%   #5 note xshift     #6 note text-width   #7 note text
+\newcommand{\codebrace}[7]{%
+  \coordinate (brace@x) at ([xshift=#2] #1);%
+  \draw[brk, decorate, decoration={brace, mirror, amplitude=5pt}]%
+    (brace@x |- #3) -- (brace@x |- #4)%
+    node[midway, note, anchor=west, xshift=#5, text width=#6]{#7};%
+}
+
+\endinput
