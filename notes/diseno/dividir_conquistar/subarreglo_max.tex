@@ -25,7 +25,7 @@ Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo 
 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
 \begin{pseudocode}
-función subarreglo_max_fuerza_bruta(numeros: arreglo)
+función subarreglo_max_fuerza_bruta(numeros: arreglo) tripla de enteros
     mayor = |$-\infty$|
     ind_ini = 0
     ind_fin = 0
@@ -54,7 +54,7 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-función subarr_max_div_conquistar(numeros: arreglo, ind_min: entero, ind_max: entero)
+función subarr_max_div_conquistar(numeros: arreglo, ind_min: entero, ind_max: entero) tripla de enteros
     if ind_min == ind_max
         return ind_min, ind_max, numeros[ind_min]
 
@@ -78,7 +78,7 @@ función subarr_max_transversal(
     ind_min: entero,
     ind_mitad: entero,
     ind_max: entero
-)
+) tripla de enteros
     suma_der, suma_izq = 0, 0
     mayor_der, mayor_izq = |$-\infty$|, |$-\infty$|
 
