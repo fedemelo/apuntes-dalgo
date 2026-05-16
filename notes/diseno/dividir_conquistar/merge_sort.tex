@@ -36,7 +36,8 @@ Sorprendentemente, la mejor forma de combinar las soluciones es la forma más in
 función combinar(números: arreglo, ind_min: entero, ind_mitad: entero, ind_max: entero)
     |\br{cpi}|izquierda = |\textrm{copia de números desde}| ind_min |\textrm{hasta}| ind_mitad
     derecha = |\textrm{copia de números desde}| ind_mitad+1 |\textrm{hasta}| ind_max|\br{cpf}|
-    i = 0; j = 0
+    i = 0
+    j = 0
 
     |\br{ai}|while i < izquierda.longitud and j < derecha.longitud
         if izquierda[i] |\bxl{es}|<=|\bxr{es}| derecha[j]
@@ -65,4 +66,4 @@ función combinar(números: arreglo, ind_min: entero, ind_mitad: entero, ind_max
 Un algoritmo es \emph{estable} si mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, se elige el elemento de la izquierda en caso de empate para que continúe ubicado antes que el de la derecha en la solución final.
 
 % TODO: Análisis de complejidad? Así sea breve
-% Ojo: para poder decir que es logarítmico formalmente, necesito el teorema maestro
+% Ojo: para poder decir que es logarítmico formalmente, necesito el teorema maestro... o no?

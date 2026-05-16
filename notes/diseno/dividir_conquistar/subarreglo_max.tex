@@ -54,7 +54,11 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-función subarr_max_div_conquistar(numeros: arreglo, ind_min: entero, ind_max: entero) tripla de enteros
+función subarr_max_div_conquistar(
+    numeros: arreglo,
+    ind_min: entero,
+    ind_max: entero
+) tripla de enteros
     if ind_min == ind_max
         return ind_min, ind_max, numeros[ind_min]
 
