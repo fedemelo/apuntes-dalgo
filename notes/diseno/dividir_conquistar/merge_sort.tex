@@ -11,47 +11,52 @@ Haciendo explícitas las etapas:
     \item \textbf{Combinar}: Combinar las soluciones de cada mitad, que son subarreglos ordenados.
 \end{itemize}
 
-Los primeros dos pasos son muy sencillos porque en algún punto al dividir por la mitad se obtienen arreglos de un elemento, que ya no hay que ordenar. Entonces, si encapsulamos el paso de combinar, este es el seudocódigo:
+Los primeros dos pasos son muy sencillos porque en algún punto al dividir por la mitad se obtienen arreglos de longitud uno, que ya no hay que ordenar. Entonces, si encapsulamos el paso de combinar, este es el seudocódigo:
 \begin{pseudocode}
-función merge_sort(números: arreglo, pos_min: entero, pos_max: entero)
-    if pos_min >= pos_max
-        return números
+función merge_sort(números: arreglo, ind_min: entero, ind_max: entero)
+    |\br{gi}|if ind_min >= ind_max 
+        return|\br{gf}|
 
-    pos_mitad = (pos_min + pos_max) // 2
-    merge_sort(números, pos_min, pos_mitad)
-    merge_sort(números, pos_mitad+1, pos_max)
+    ind_mitad = (ind_min + ind_max) // 2
+    merge_sort(números, ind_min, ind_mitad)
+    merge_sort(números, ind_mitad+1, ind_max)
 
-    combinar(números, pos_min, pos_mitad, pos_max)
+    combinar(números, ind_min, ind_mitad, ind_max)
 \end{pseudocode}
+\begin{annotations}
+    \codebrace[xshift=2.6cm, width=8cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place, pero se necesita el retorno como caso base de la recursión}
+\end{annotations}
+
 Necesitamos tener los índices como parámetros porque indican cómo se va dividiendo el arreglo. La invocación principal, que resuelve el problema, requiere los índices extremos del arreglo: \inline{merge_sort(números, 0, números.longitud-1)}. Nótese que en esta función el arreglo realmente no se divide: las llamadas recursivas trabajan sobre el mismo arreglo con distintos índices, la división es conceptual.
 % TODO: Explicar, o poner como referencia, a CLRS
 % Explicar que acá el arreglo pasa por referencia, no por valor
 
 Sorprendentemente, la mejor forma de combinar las soluciones es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de ese arreglo con la primera del otro arreglo y tomar la menor (que es la que va después de la primera que tomé), y así sucesivamente. El seudocódigo es el siguiente:
 \begin{pseudocode}
-función combinar(números: arreglo, pos_min: entero, pos_mitad: entero, pos_max: entero)
-    izquierda = |\textrm{copia de números desde}| pos_min |\textrm{hasta}| pos_mitad
-    derecha = |\textrm{copia de números desde}| pos_mitad+1 |\textrm{hasta}| pos_max
+función combinar(números: arreglo, ind_min: entero, ind_mitad: entero, ind_max: entero)
+    |\br{cpi}|izquierda = |\textrm{copia de números desde}| ind_min |\textrm{hasta}| ind_mitad
+    derecha = |\textrm{copia de números desde}| ind_mitad+1 |\textrm{hasta}| ind_max|\br{cpf}|
     i = 0; j = 0
 
     |\br{ai}|while i < izquierda.longitud and j < derecha.longitud
         if izquierda[i] |\bxl{es}|<=|\bxr{es}| derecha[j]
-            números[pos_min+i+j] = izquierda[i]
+            números[ind_min+i+j] = izquierda[i]
             i++
         else
-            números[pos_min+i+j] = derecha[j]
+            números[ind_min+i+j] = derecha[j]
             j++|\br{af}|
 
     |\br{ii}|while i < izquierda.longitud
-        números[pos_min+i+j] = izquierda[i]
+        números[ind_min+i+j] = izquierda[i]
         i++|\br{if}|
 
     |\br{di}|while j < derecha.longitud
-        números[pos_min+i+j] = derecha[j]
+        números[ind_min+i+j] = derecha[j]
         j++|\br{df}|
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=7.8cm, width=4.5cm]{ai}{af}{Ambos subarreglos tienen elementos; se toma el menor y se añade a \texttt{números}.}
+    \codebrace[width=5.5cm]{cpi}{cpf}{Se crean arreglos nuevos con cada mitad. La complejidad espacial es entonces $\Theta(n)$.}
+    \codebrace[xshift=7.8cm, width=4.5cm]{ai}{af}{Lógica principal, cuando ambos subarreglos tienen elementos: se toma el menor y se añade a \texttt{números}.}
     \codebrace[xshift=6cm, width=7cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \texttt{números}.}
     \codebrace[xshift=6cm, width=7cm]{di}{df}{Se añade el excedente de la derecha a \texttt{números}. Si este while corre, es porque el anterior no corrió y viceversa.}
     \codebox[notepos={(cbox@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=5cm]{es}{\texttt{<=} en lugar de \texttt{<} para estabilidad.}
