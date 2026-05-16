@@ -27,11 +27,26 @@ función merge_sort(números: arreglo, ind_min: entero, ind_max: entero)
     \codebrace[xshift=2.6cm, width=8cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place, pero se necesita el retorno como caso base de la recursión}
 \end{annotations}
 
-Necesitamos tener los índices como parámetros porque indican cómo se va dividiendo el arreglo. La invocación principal, que resuelve el problema, requiere los índices extremos del arreglo: \inline{merge_sort(números, 0, números.longitud-1)}. Nótese que en esta función el arreglo realmente no se divide: las llamadas recursivas trabajan sobre el mismo arreglo con distintos índices, la división es conceptual.
-% TODO: Explicar, o poner como referencia, a CLRS
-% Explicar que acá el arreglo pasa por referencia, no por valor
+Necesitamos tener los índices como parámetros porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo:
 
-Sorprendentemente, la mejor forma de combinar las soluciones es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de ese arreglo con la primera del otro arreglo y tomar la menor (que es la que va después de la primera que tomé), y así sucesivamente. El seudocódigo es el siguiente:
+\begin{pseudocode}
+merge_sort(números, 0, números.longitud-1)
+\end{pseudocode}
+
+Nótese que el arreglo no se divide físicamente en cada llamado recursivo; únicamente se delimitan distintas regiones mediante índices. En cada llamado recursivo ocurre lo siguiente:
+\begin{enumerate}
+    \item Si el segmento tiene longitud 1 (o 0), se alcanza el caso base y la función termina.
+    
+    \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para la mitad izquierda y luego la derecha. El llamado a la mitad derecha empieza después de que termina el llamado a la mitad izquierda.
+    
+    \item Una vez ambas llamadas retornan, se ejecuta \inline{combinar}, que mezcla ambas mitades ordenadas \emph{in-place} dentro del rango delimitado por \inline{ind_min} e \inline{ind_max}. 
+\end{enumerate}
+
+Para arreglos largos, el caso base solo se alcanza después de muchos llamados recursivos, cuando el arreglo se ha dividido lo suficiente. Es decir: en las primeras invocaciones, siempre ocurre que el segmento se divide conceptualmente. Se acumulan llamados a \inline{merge_sort} uno encima de otro, sin retornar ni combinar. Ese es el \emph{descenso} de la recursión.
+
+Cuando algún llamado alcanza el caso base, ocurre el primer retorno. La ejecución continúa justo después de ese llamado recursivo (o sea, al final de la línea 5 o de la línea 6) y entonces pasa una de dos cosas: o se realiza otro llamado recursivo (que pronto alcanzará el caso base, porque el segmento ya es muy pequeño), o se ejecuta por primera vez el paso de combinar, mezclando esos dos segmentos (que son pequeños, porque hace poco se llegó al caso base). Después de combinar, la función termina y retorna a quien la había invocado. Así, los llamados a \inline{merge_sort} que se habían acumulado empiezan a retornar uno tras otro y la recursión comienza a \emph{desenrollarse}. Ese es el \emph{ascenso} de la recursión.
+
+Ahora, solo falta pensar en cómo combinar las mitades. Sorprendentemente, la mejor forma de combinarlas es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de esa pila con la primera de la otra y tomar la menor (que en la combinación es la que le sigue a la primera que se había tomado), y así sucesivamente. El seudocódigo es el siguiente:
 \begin{pseudocode}
 función combinar(números: arreglo, ind_min: entero, ind_mitad: entero, ind_max: entero)
     |\br{cpi}|izquierda = |\textrm{copia de números desde}| ind_min |\textrm{hasta}| ind_mitad
