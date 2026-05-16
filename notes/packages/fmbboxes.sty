@@ -542,6 +542,23 @@
 % \ejercicio{Nombre}{url}  — un enlace en la lista de ejercicios
 \newcommand{\ejercicio}[2]{\item \href{#2}{#1}}
 
+% \practicar{Nombre}{url}  — un único ejercicio de práctica al final de una subsección,
+% menos prominente que el ambiente ejercicios
+\newcommand{\practicar}[2]{%
+    \begin{tcolorbox}[
+        enhanced,
+        colback=green!4!white,
+        colframe=white,
+        borderline west={1.5pt}{0pt}{green!40!black},
+        fontupper=\small\sffamily,
+        left=8pt, right=6pt, top=3pt, bottom=3pt,
+        before skip=5mm, after skip=3mm,
+        boxrule=0mm,
+    ]
+    \textcolor{green!40!black}{\textbf{Práctica:}} \href{#2}{#1}
+    \end{tcolorbox}%
+}
+
 % Columna interna por dificultad: #1 = color, #2 = encabezado, #3 = ejercicios
 \newcommand{\ejercicios@col}[3]{%
     \begin{minipage}[t]{0.31\linewidth}
