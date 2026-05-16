@@ -10,9 +10,9 @@
 % Shorthand for brace marks: |\br{id}|
 \newcommand{\br}[1]{\tikzmark{#1}}
 
-% Shorthand pair for box marks: |\tms{id}|TOKEN|\tme{id}|
-\newcommand{\tms}[1]{\tikzmark{#1s}}
-\newcommand{\tme}[1]{\tikzmark{#1e}}
+% Shorthand pair for box marks: |\bxl{id}|TOKEN|\bxr{id}|
+\newcommand{\bxl}[1]{\tikzmark{#1s}}
+\newcommand{\bxr}[1]{\tikzmark{#1e}}
 
 \tikzset{
   box/.style={draw=green!55!black, line width=0.7pt,
@@ -134,13 +134,13 @@
 % Marks in the listing
 % -------------------------------------------------
 %
-%   Place |\tms{id}| before the token and |\tme{id}| after it.
+%   Place |\bxl{id}| before the token and |\bxr{id}| after it.
 %
 % Mandatory arguments
 % -------------------------------------------------
 %
 %   {<id>}
-%       Base name matching the \tms{id}/\tme{id} marks.
+%       Base name matching the \bxl{id}/\bxr{id} marks.
 %
 %   {<text>}
 %       Explanation text in the note.
