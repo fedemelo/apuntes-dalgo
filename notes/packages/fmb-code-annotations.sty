@@ -50,29 +50,22 @@
 % Optional key-value options
 % -------------------------------------------------
 %
-%   anchor=<coordinate>
-%       Horizontal reference coordinate used to
-%       place the brace.
-%
-%       Default:
-%           current bounding box.east
-%
 %   xshift=<dimension>
-%       Horizontal displacement applied to the
-%       brace position relative to the anchor.
+%       Horizontal displacement of the brace from
+%       the bottom mark.
 %
 %       Positive values move the brace right.
 %       Negative values move it left.
 %
 %       Default:
-%           10pt
+%           15pt
 %
 %   noteshift=<dimension>
-%       Horizontal distance between the brace and
-%       the annotation text.
+%       Horizontal distance between the brace tip
+%       and the annotation text.
 %
 %       Default:
-%           5pt
+%           0pt
 %
 %   width=<dimension>
 %       Text width of the annotation node.
@@ -88,7 +81,7 @@
 %       Larger values produce "deeper" braces.
 %
 %       Default:
-%           5pt
+%           3pt
 
 \pgfkeys{
     /codebrace/.is family,
@@ -156,43 +149,46 @@
 % Optional key-value options
 % -------------------------------------------------
 %
-%   notepos=<TikZ coordinate>
-%       Where to place the note.
+%   notepos=<calc expression>
+%       Where to place the note, written as a TikZ
+%       calc expression without the outer ($ ... $).
+%       E.g.: (cbox@id.east)+(2cm,1cm)
+%             (current page.east)+(-8.5cm,-0.5cm)
 %
 %       Default:
-%           auto (1.5cm below the box)
+%           auto (1.5cm to the right of the box)
 %
 %   noteanchor=<anchor>
 %       Anchor of the note node used for positioning.
 %
 %       Default:
-%           north
+%           west
 %
 %   from=<anchor>
 %       Box anchor where the arrow starts.
 %
 %       Default:
-%           south
+%           east
 %
 %   to=<anchor>
 %       Note anchor where the arrow ends.
 %
 %       Default:
-%           north
+%           west
 %
 %   curve=<to-path options>
 %       TikZ to-path options controlling the arrow shape.
-%       E.g.: bend right=5, out=90 in=180
+%       E.g.: bend left=25, out=90 in=180
 %
 %       Default:
 %           {} (straight line)
 %
 %   arrstyle=<draw options>
 %       Extra options passed to \draw for the arrow.
-%       E.g.: dotted, dashed
+%       E.g.: solid, dashed
 %
 %       Default:
-%           {} (solid)
+%           dotted
 %
 %   width=<dimension>
 %       Text width of the note node.
@@ -205,18 +201,18 @@
     /codebox,
     default/.style = {
         notepos    = auto,
-        noteanchor = north,
-        from       = south,
-        to         = north,
+        noteanchor = west,
+        from       = east,
+        to         = west,
         curve      = {},
-        arrstyle   = {},
+        arrstyle   = dotted,
         width      = 3cm,
     },
-    notepos/.estore    in = \codeboxnotepos,
+    notepos/.store     in = \codeboxnotepos,
     noteanchor/.estore in = \codeboxnoteanchor,
     from/.estore       in = \codeboxfrom,
     to/.estore         in = \codeboxto,
-    curve/.estore      in = \codeboxcurve,
+    curve/.code           = {\tikzset{codebox@curve@style/.style={#1}}},
     arrstyle/.estore   in = \codeboxarrstyle,
     width/.estore      in = \codeboxwidth,
 }
@@ -227,13 +223,14 @@
     \def\codebox@auto{auto}%
     \ifx\codeboxnotepos\codebox@auto
         \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
-            (cnote@#2) at ([yshift=-1.5cm] cbox@#2.south) {#3};%
+            (cnote@#2) at ([xshift=1.5cm] cbox@#2.east) {#3};%
     \else
+        \edef\codebox@pos{($ \codeboxnotepos $)}%
         \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
-            (cnote@#2) at (\codeboxnotepos) {#3};%
+            (cnote@#2) at \codebox@pos {#3};%
     \fi
     \draw[arr, \codeboxarrstyle]
-        (cbox@#2.\codeboxfrom) to[\codeboxcurve] (cnote@#2.\codeboxto);%
+        (cbox@#2.\codeboxfrom) to[codebox@curve@style] (cnote@#2.\codeboxto);%
 }
 
 \NewDocumentEnvironment{annotations}{}{%
