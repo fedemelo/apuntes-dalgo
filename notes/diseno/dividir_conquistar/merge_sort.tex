@@ -11,7 +11,11 @@ Haciendo explícitas las etapas:
     \item \textbf{Combinar}: Combinar las soluciones de cada mitad, que son subarreglos ordenados.
 \end{itemize}
 
-Los primeros dos pasos son muy sencillos porque en algún punto al dividir por la mitad se obtienen arreglos de longitud uno, que ya no hay que ordenar. Entonces, si encapsulamos el paso de combinar, este es el seudocódigo:
+\subsubsection{Dividir y conquistar el arreglo}
+
+Dividir el arreglo no tiene ciencia: se calcula la mitad con división entera y con eso se conocen los índices de cada segmento. La etapa de conquistar es simplemente hacer el llamado recursivo a cada mitad, porque en algún punto al dividir continuamente por la mitad se obtienen arreglos de longitud uno, que ya están ordenados.
+
+Por ahora, para no pensar en cómo combinar las soluciones, encapsulamos ese paso en una función que se implementará después. Con eso, este es el seudocódigo:
 \begin{pseudocode}
 función merge_sort(números: arreglo, ind_min: entero, ind_max: entero)
     |\br{gi}|if ind_min >= ind_max 
@@ -24,27 +28,27 @@ función merge_sort(números: arreglo, ind_min: entero, ind_max: entero)
     combinar(números, ind_min, ind_mitad, ind_max)
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=2.6cm, width=8cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place, pero se necesita el retorno como caso base de la recursión}
+    \codebrace[xshift=2.6cm, width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
 \end{annotations}
 
 Necesitamos tener los índices como parámetros porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo:
 
-\begin{pseudocode}
-merge_sort(números, 0, números.longitud-1)
-\end{pseudocode}
+\inline{merge_sort(números, 0, números.longitud-1)}
 
-Nótese que el arreglo no se divide físicamente en cada llamado recursivo; únicamente se delimitan distintas regiones mediante índices. En cada llamado recursivo ocurre lo siguiente:
+Nótese que el arreglo no se divide físicamente en cada llamado recursivo; únicamente se delimitan distintas regiones mediante índices. Esto es para que el algoritmo sea \emph{in-place}, es decir, modifique directamente el arreglo original, sin crear y retornar uno nuevo. En cada llamado recursivo ocurre lo siguiente:
 \begin{enumerate}
     \item Si el segmento tiene longitud 1 (o 0), se alcanza el caso base y la función termina.
     
     \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para la mitad izquierda y luego la derecha. El llamado a la mitad derecha empieza después de que termina el llamado a la mitad izquierda.
     
-    \item Una vez ambas llamadas retornan, se ejecuta \inline{combinar}, que mezcla ambas mitades ordenadas \emph{in-place} dentro del rango delimitado por \inline{ind_min} e \inline{ind_max}. 
+    \item Una vez ambas llamadas retornan, se ejecuta \inline{combinar}, que mezcla ambas mitades ordenadas in-place dentro del rango delimitado por \inline{ind_min} e \inline{ind_max}.
 \end{enumerate}
 
 Para arreglos largos, el caso base solo se alcanza después de muchos llamados recursivos, cuando el arreglo se ha dividido lo suficiente. Es decir: en las primeras invocaciones, siempre ocurre que el segmento se divide conceptualmente. Se acumulan llamados a \inline{merge_sort} uno encima de otro, sin retornar ni combinar. Ese es el \emph{descenso} de la recursión.
 
 Cuando algún llamado alcanza el caso base, ocurre el primer retorno. La ejecución continúa justo después de ese llamado recursivo (o sea, al final de la línea 5 o de la línea 6) y entonces pasa una de dos cosas: o se realiza otro llamado recursivo (que pronto alcanzará el caso base, porque el segmento ya es muy pequeño), o se ejecuta por primera vez el paso de combinar, mezclando esos dos segmentos (que son pequeños, porque hace poco se llegó al caso base). Después de combinar, la función termina y retorna a quien la había invocado. Así, los llamados a \inline{merge_sort} que se habían acumulado empiezan a retornar uno tras otro y la recursión comienza a \emph{desenrollarse}. Ese es el \emph{ascenso} de la recursión.
+
+\subsubsection{Combinar las mitades}
 
 Ahora, solo falta pensar en cómo combinar las mitades. Sorprendentemente, la mejor forma de combinarlas es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de esa pila con la primera de la otra y tomar la menor (que en la combinación es la que le sigue a la primera que se había tomado), y así sucesivamente. El seudocódigo es el siguiente:
 \begin{pseudocode}
