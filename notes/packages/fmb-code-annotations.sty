@@ -7,7 +7,10 @@
 % Place a zero-size remembered node at the current position.
 \newcommand{\tikzmark}[1]{\tikz[remember picture,overlay] \node (#1) {};}
 
-% Shorthand pair for bracketing a token to be boxed: |\tms{id}|TOKEN|\tme{id}|
+% Shorthand for brace marks: |\br{id}|
+\newcommand{\br}[1]{\tikzmark{#1}}
+
+% Shorthand pair for box marks: |\tms{id}|TOKEN|\tme{id}|
 \newcommand{\tms}[1]{\tikzmark{#1s}}
 \newcommand{\tme}[1]{\tikzmark{#1e}}
 
@@ -20,15 +23,221 @@
   brk/.style={draw=green!55!black, line width=0.7pt},
 }
 
-% Curly brace spanning a vertical range of code, with an inline label.
-%   #1 x-anchor mark   #2 extra x-offset (e.g. 15pt)
-%   #3 top mark        #4 bottom mark
-%   #5 note xshift     #6 note text-width   #7 note text
-\newcommand{\codebrace}[7]{%
-  \coordinate (brace@x) at ([xshift=#2] #1);%
-  \draw[brk, decorate, decoration={brace, mirror, amplitude=5pt}]%
-    (brace@x |- #3) -- (brace@x |- #4)%
-    node[midway, note, anchor=west, xshift=#5, text width=#6]{#7};%
+
+
+% Curly brace spanning a vertical range of code, with an inline label
+
+% -------------------------------------------------
+%
+%   \codebrace[<options>]{<top>}{<bottom>}{<text>}
+%
+% -------------------------------------------------
+% Mandatory arguments
+% -------------------------------------------------
+%
+%   {<top>}
+%       TikZ coordinate/node marking the TOP of the
+%       brace span.
+%
+%   {<bottom>}
+%       TikZ coordinate/node marking the BOTTOM of
+%       the brace span.
+%
+%   {<text>}
+%       Text displayed next to the brace.
+%
+% -------------------------------------------------
+% Optional key-value options
+% -------------------------------------------------
+%
+%   anchor=<coordinate>
+%       Horizontal reference coordinate used to
+%       place the brace.
+%
+%       Default:
+%           current bounding box.east
+%
+%   xshift=<dimension>
+%       Horizontal displacement applied to the
+%       brace position relative to the anchor.
+%
+%       Positive values move the brace right.
+%       Negative values move it left.
+%
+%       Default:
+%           10pt
+%
+%   noteshift=<dimension>
+%       Horizontal distance between the brace and
+%       the annotation text.
+%
+%       Default:
+%           5pt
+%
+%   width=<dimension>
+%       Text width of the annotation node.
+%
+%       Useful for wrapping long explanations.
+%
+%       Default:
+%           3cm
+%
+%   amplitude=<dimension>
+%       Curvature size of the curly brace.
+%
+%       Larger values produce "deeper" braces.
+%
+%       Default:
+%           5pt
+
+\pgfkeys{
+    /codebrace/.is family,
+    /codebrace,
+    default/.style = {
+        xshift = 15pt,
+        noteshift = 0pt,
+        width = 3cm,
+        amplitude = 3pt
+    },
+    xshift/.estore in = \codebracexshift,
+    noteshift/.estore in = \codebracenoteshift,
+    width/.estore in = \codebracewidth,
+    amplitude/.estore in = \codebraceamplitude,
 }
 
-\endinput
+\NewDocumentCommand{\codebrace}{O{} m m m}{%
+    \pgfkeys{/codebrace, default, #1}
+    \coordinate (brace@x)
+        at ([xshift=\codebracexshift] #3);
+    \draw[
+        brk,
+        decorate,
+        decoration = {
+            brace,
+            mirror,
+            amplitude=\codebraceamplitude
+        }
+    ]
+        ($ (brace@x |- #2) + (0, \dimexpr\ht\strutbox - 3pt\relax) $)
+        --
+        (brace@x |- #3)
+        node[
+            midway,
+            note,
+            anchor=west,
+            xshift=\codebracenoteshift,
+            text width=\codebracewidth
+        ]
+        {#4};
+}
+
+% Box around a code token, a floating note, and an arrow connecting them.
+%
+% -------------------------------------------------
+%
+%   \codebox[<options>]{<id>}{<text>}
+%
+% -------------------------------------------------
+% Marks in the listing
+% -------------------------------------------------
+%
+%   Place |\tms{id}| before the token and |\tme{id}| after it.
+%
+% Mandatory arguments
+% -------------------------------------------------
+%
+%   {<id>}
+%       Base name matching the \tms{id}/\tme{id} marks.
+%
+%   {<text>}
+%       Explanation text in the note.
+%
+% -------------------------------------------------
+% Optional key-value options
+% -------------------------------------------------
+%
+%   notepos=<TikZ coordinate>
+%       Where to place the note.
+%
+%       Default:
+%           auto (1.5cm below the box)
+%
+%   noteanchor=<anchor>
+%       Anchor of the note node used for positioning.
+%
+%       Default:
+%           north
+%
+%   from=<anchor>
+%       Box anchor where the arrow starts.
+%
+%       Default:
+%           south
+%
+%   to=<anchor>
+%       Note anchor where the arrow ends.
+%
+%       Default:
+%           north
+%
+%   curve=<to-path options>
+%       TikZ to-path options controlling the arrow shape.
+%       E.g.: bend right=5, out=90 in=180
+%
+%       Default:
+%           {} (straight line)
+%
+%   arrstyle=<draw options>
+%       Extra options passed to \draw for the arrow.
+%       E.g.: dotted, dashed
+%
+%       Default:
+%           {} (solid)
+%
+%   width=<dimension>
+%       Text width of the note node.
+%
+%       Default:
+%           3cm
+
+\pgfkeys{
+    /codebox/.is family,
+    /codebox,
+    default/.style = {
+        notepos    = auto,
+        noteanchor = north,
+        from       = south,
+        to         = north,
+        curve      = {},
+        arrstyle   = {},
+        width      = 3cm,
+    },
+    notepos/.estore    in = \codeboxnotepos,
+    noteanchor/.estore in = \codeboxnoteanchor,
+    from/.estore       in = \codeboxfrom,
+    to/.estore         in = \codeboxto,
+    curve/.estore      in = \codeboxcurve,
+    arrstyle/.estore   in = \codeboxarrstyle,
+    width/.estore      in = \codeboxwidth,
+}
+
+\NewDocumentCommand{\codebox}{O{} m m}{%
+    \pgfkeys{/codebox, default, #1}%
+    \node[box, fit=(#2s)(#2e)] (cbox@#2) {};%
+    \def\codebox@auto{auto}%
+    \ifx\codeboxnotepos\codebox@auto
+        \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
+            (cnote@#2) at ([yshift=-1.5cm] cbox@#2.south) {#3};%
+    \else
+        \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
+            (cnote@#2) at (\codeboxnotepos) {#3};%
+    \fi
+    \draw[arr, \codeboxarrstyle]
+        (cbox@#2.\codeboxfrom) to[\codeboxcurve] (cnote@#2.\codeboxto);%
+}
+
+\NewDocumentEnvironment{annotations}{}{%
+    \begin{tikzpicture}[remember picture, overlay]
+}{%
+    \end{tikzpicture}
+}
