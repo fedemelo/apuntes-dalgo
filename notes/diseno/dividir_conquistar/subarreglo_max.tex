@@ -14,14 +14,21 @@ Hay dos tipos de instancias de este problema que son muy fáciles:
   \item Cuando todos los valores son negativos, se quiere que la suma sea lo menos negativa, por lo que se forma el subarreglo con un solo elemento, el menos negativo.
 \end{itemize}
 
+Para facilitar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
+\begin{itemize}
+  \item \textbf{Entrada}: arreglo con $n$ números: $[a_0, a_2,\ldots,a_{n-1}]$.
+  \item \textbf{Salida}: índices $i$, $j$ del arreglo, donde $0 \leq i \leq j < n$ tales que la suma $\sum_{k=i}^j a_k$ es máxima.
+\end{itemize}
+Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
+
 \subsubsection{Solución por fuerza bruta}
 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
 \begin{pseudocode}
 función subarreglo_max_fuerza_bruta(numeros: arreglo)
     mayor = |$-\infty$|
-    pos_ini = 0
-    pos_fin = 0
+    ind_ini = 0
+    ind_fin = 0
 
     for i=0 to numeros.longitud-1
         suma = 0
@@ -30,10 +37,10 @@ función subarreglo_max_fuerza_bruta(numeros: arreglo)
 
             if suma > mayor
                 mayor = suma
-                pos_ini = i
-                pos_fin = j
+                ind_ini = i
+                ind_fin = j
 
-    return pos_ini, pos_fin, mayor
+    return ind_ini, ind_fin, mayor
 \end{pseudocode}
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es $O(n^2)$.
 
@@ -47,15 +54,15 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-función subarr_max_div_conquistar(numeros: arreglo, pos_min: entero, pos_max: entero)
-    if pos_min == pos_max
-        return pos_min, pos_max, numeros[pos_min]
+función subarr_max_div_conquistar(numeros: arreglo, ind_min: entero, ind_max: entero)
+    if ind_min == ind_max
+        return ind_min, ind_max, numeros[ind_min]
 
-    pos_mitad = (pos_min + pos_max) // 2
+    ind_mitad = (ind_min + ind_max) // 2
 
-    ini_izq, fin_izq, suma_izq = subarr_max_div_conquistar(numeros, pos_min, pos_mitad)
-    ini_der, fin_der, suma_der = subarr_max_div_conquistar(numeros, pos_mitad+1, pos_max)
-    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros,pos_min,pos_mitad,pos_max)
+    ini_izq, fin_izq, suma_izq = subarr_max_div_conquistar(numeros, ind_min, ind_mitad)
+    ini_der, fin_der, suma_der = subarr_max_div_conquistar(numeros, ind_mitad+1, ind_max)
+    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros,ind_min,ind_mitad,ind_max)
 
     if suma_izq >= suma_der and suma_izq >= suma_mitad
         return ini_izq, fin_izq, suma_izq
@@ -68,20 +75,20 @@ Ahora sí, pensemos los subarreglos que pasan por donde se dividió el arreglo. 
 \begin{pseudocode}
 función subarr_max_transversal(
     numeros: arreglo,
-    pos_min: entero,
-    pos_mitad: entero,
-    pos_max: entero
+    ind_min: entero,
+    ind_mitad: entero,
+    ind_max: entero
 )
     suma_der, suma_izq = 0, 0
     mayor_der, mayor_izq = |$-\infty$|, |$-\infty$|
 
-    for i=pos_mitad to pos_max
+    for i=ind_mitad to ind_max
         suma_der += numeros[i]
         if suma_der > mayor_der
             mayor_der = suma_der
             extremo_der = i
 
-    for j=pos_mitad-1 downto pos_min
+    for j=ind_mitad-1 downto ind_min
         suma_izq += numeros[j]
         if suma_izq > mayor_izq
             mayor_izq = suma_izq
