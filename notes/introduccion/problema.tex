@@ -1,0 +1,41 @@
+\section{Problema}
+\label{subsec:problema}
+
+Un problema (en este contexto) es un enunciado que especifica qué se quiere obtener, sin decir cómo. Más formalmente:
+\begin{definicion}{Problema (computacional)}{problema}
+Especificación de una entrada y de una salida con base en la entrada.
+\end{definicion}
+
+E.g., el \emph{problema de ordenamiento} (\textit{sorting problem}, muy famoso):
+\begin{itemize}
+  \item \textbf{Entrada}: secuencia de $n$ números $a_1, a_2,\ldots,a_n$.
+  \item \textbf{Salida}: permutación $a_1', a_2',\ldots,a_n'$ tal que $a_1' \leq a_2' \leq \ldots \leq a_n'$
+\end{itemize}
+
+Una \emph{permutación} de una secuencia es un posible orden de sus elementos; es como decir, coloquialmente, un orden. Si la secuencia tiene más de un elemento, tiene muchas permutaciones. En este caso, el problema especifica como salida una permutación en la que los números están ordenados de menor a mayor.
+
+Una \emph{instancia} de un problema es una entrada específica, e.g., $1, 4, 2, 3, 2$ es una instancia del problema de ordenamiento, en cuyo caso una \emph{solución} es $1, 2, 2, 3, 4$.
+
+\subsection{Tipos de problemas}
+
+Hay muchos tipos de problemas computacionales. En general, un mismo problema de la vida real se puede modelar de varias formas, que pueden corresponder a un tipo de problema computacional diferente. Algunos tipos son:
+\begin{itemize}
+  \item \emph{Problemas de enumeración}: la salida son todas las soluciones válidas.
+  \item \emph{Problemas de conteo}: la salida es el número de soluciones válidas.
+  \item \emph{Problemas de optimización}: la salida es la mejor solución válida de acuerdo a algún criterio.
+  \item \emph{Problemas de búsqueda}: la salida es alguna solución válida para el problema, si existe.
+  \item \emph{Problemas de decisión}: la salida es un sí o un no.
+\end{itemize}
+Estas categorías no son mutuamente excluyentes, muchas veces son distintas perspectivas del mismo problema. Por ejemplo, para el problema de ordenamiento se puede abordar bajo cualquiera de las perspectivas anteriores:
+\begin{itemize}
+  \item Enumeración: dado un arreglo, listar todas las permutaciones ordenadas de sus elementos.
+  \item Conteo: dado un arreglo, determinar cuántas permutaciones distintas de sus elementos están ordenadas.
+  \item Optimización: dado un arreglo y un conjunto de operaciones permitidas, encontrar una secuencia de operaciones que lo ordene usando el menor número de operaciones posible.
+  \item Búsqueda: dado un arreglo, encontrar alguna permutación de sus elementos que esté ordenada.
+  \item Decisión: dado un arreglo, ¿está ordenado?
+\end{itemize}
+Se pueden formular aún más problemas relacionados a ordenar elementos que encajen en cualquiera de estas categorías. En este punto, no es tan inmediato determinar cómo traducir entre tipos de problemas, en gran parte porque las definiciones anteriores no son matemáticamente formales, sino más bien la intuición detrás de cada tipo de problema. Por lo pronto, al diseñar algoritmos nos ocuparemos de indicar qué tipo de problemas se pueden abordar con la técnica que se está presentando, sin perder de vista que muchos problemas admiten reformulaciones que los hacen encajar en distintos tipos.
+
+\subsubsection{Problemas de optimización}
+
+Antes de iniciar 
