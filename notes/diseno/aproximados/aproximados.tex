@@ -1,0 +1,19 @@
+\section{Algoritmos aproximados}
+
+Un \emph{algoritmo aproximado} arroja soluciones cercanas a la óptima. A causa de eso, los algoritmos aproximados son incorrectos, pero resultan útiles para problemas en los que no se conocen algoritmos correctos eficientes. En la práctica, cuasi optimalidad suele bastar para muchas aplicaciones, sobretodo si el algoritmo ejecuta en tiempo polinomial para el caso de uso esperado; en ese caso, suele preferirse a un algoritmo correcto pero no polinomial.
+
+\subsection{Razón y esquema de aproximación}
+
+Para determinar la calidad de un algoritmo aproximado se busca determinar qué tan cercana es la solución que produce a la solución óptima. Si, en un problema de maximización, la solución óptima tiene valor $C*$ y la aproximada es $C$, entonces $C*/C$ es el factor por el cual la óptima es mejor que la aproximada. Si las soluciones son iguales, el factor es $1$: la aproximada es igual de buena. Entre mayor sea el factor, peor es la aproximación: si es $1.5$, la solución óptima es $50\%$ mejor que la aproximada. El factor no puede ser menor que $1$ porque no hay soluciones mejores que la óptima.
+
+Si el problema es de minimización, la solución óptima es $C/C*$ por ciento mejor y el raciocinio es análogo: $1$ indica igualdad, $[1, \rho(n)]$ indica que la aproximada es peor y $(1, -\infty)$ es inviable. Se define la razón de aproximación independientemente de si el problema es de maximización o minimización, calculando ambas razones y tomando la mayor. Con eso, la razón de aproximación siempre mayor o igual a $1$ y siempre tiene sentido.
+
+\begin{definition}{Razón de aproximación}
+  Un aloritmo de aproximación para un problema de optimización tiene una \emph{razón de aproximación} de $\rho(n)$ si, para cualquier entrada de tamaño $n$, el costo $C$ de la solución producida por el algoritmo está dentro de un factor de $\rho(n)$ del costo $C*$ de una solución óptima:
+  \[\max\left\{\frac{C}{C*}, \frac{C*}{C}\right\} \leq \rho(n)\]
+\end{definition}
+
+La razón de aproximación puede ser una constante pero también puede ser una función de $n$. En ese último caso, el factor indica que entre más grande es la entrada, peor es la aproximación.
+
+%TODO: Terminar, siguen esquemas de aproximación y luego ya algoritmos
+% Aunque de pronto mejor presentar algoritmos y luego sí esquemas. Hmmm
