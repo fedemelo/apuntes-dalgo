@@ -6,12 +6,7 @@ La sucesión de Fibonacci comienza con 0 y 1, y cada número posterior es la sum
     F(1) &= 1 \\
     F(n) &= F(n-1) + F(n-2) \quad \text{para } n > 1
 \end{align*}
-El problema de calcular el enésimo número de Fibonacci cumple con las características para resolverse eficientemente usando programación dinámica: 
-\begin{itemize}
-    \item Se puede interpretar como un problema de optimización si el objetivo es encontrar la mínima cantidad de sumas para calcular $F(n)$.
-    \item Tiene subestructura óptima: la solución óptima para $F(n)$ se construye a partir de las soluciones óptimas para $F(n-1)$ y $F(n-2)$.
-    \item Presenta subproblemas superpuestos: para calcular $F(n)$ se necesitan calcular $F(n-1)$ y $F(n-2)$; para calcular $F(n-1)$ se necesitan calcular $F(n-2)$ y $F(n-3)$. En tan solo dos pasos, ya se ha calculado $F(n-2)$ dos veces. A medida que se avanza, la cantidad de cálculos repetidos crece exponencialmente.
-\end{itemize}
+El problema radica en calcular el enésimo número de Fibonacci, es decir, $F(n)$, para algún $n$ dado.
 
 \subsubsection{Algoritmo recursivo}
 
@@ -24,42 +19,46 @@ función fibonacci(n: entero) -> entero
     return fibonacci(n-1) + fibonacci(n-2)
 \end{pseudocode}
 
-Su ineficiencia radica precisamente en que presenta subproblemas superpuestos. 
+Su ineficiencia radica en que presenta subproblemas superpuestos: para calcular $F(n)$ se necesitan calcular $F(n-1)$ y $F(n-2)$; para calcular $F(n-1)$ se necesitan calcular $F(n-2)$ y $F(n-3)$. En tan solo dos pasos, ya se ha calculado $F(n-2)$ dos veces. A medida que se avanza, la cantidad de cálculos repetidos crece exponencialmente. De hecho, la complejidad temporal de ese algoritmo es $\Theta(\phi^n)$, donde $\phi$ es el número áureo, aproximadamente 1.618.
+
+Sabiendo que el algoritmo presenta subproblemas superpuestos, solo falta determinar si presenta subestructura óptima para concluir que se puede resolver eficientemente con programación dinámica. En este caso, sí la presenta: la solución óptima para $F(n)$ se construye a partir de las soluciones óptimas para dos subproblemas, $F(n-1)$ y $F(n-2)$.
 
 \subsubsection{Programación dinámica top-down}
 
-Una primera optimización es incluir memoización en la implementación recursiva para eliminar la redundancia que introducen los problemas superpuestos:
+Una primera optimización es la implementación top-down: incluir memoización en la implementación recursiva para eliminar la redundancia que introducen los problemas superpuestos:
 \begin{pseudocode}
 función fibonacci_top_down(n: entero) entero
-    soluciones = |\textrm{arreglo de tamaño }$n+1$|
+    soluciones = |\textrm{arreglo de enteros de tamaño }$n+1$|
     |\br{cbi}|soluciones[0] = 0
     soluciones[1] = 1|\br{cbf}|
 
     |\br{lli}|for i=2 to n
         soluciones[i] = -1|\br{llf}|
 
-    return fibonacci_top_down_recursion(n, soluciones)
+    return fibonacci_top_down_recursion(n, |\bxl{auxf}|soluciones)|\bxr{auxf}|
 
-función fibonacci_top_down_recursion(n: entero, soluciones: arreglo) entero
-    if soluciones[n] >= 0 
-        return soluciones[n]
-
-    soluciones[n] = fibonacci_top_down(n-1, soluciones) + fibonacci_top_down(n-2, soluciones)
-    return soluciones[n]
+función fibonacci_top_down_recursion(n: entero, soluciones: arreglo de enteros) entero
+    |\bxl{memo}|if soluciones[n] < 0|\bxr{memo}|
+        soluciones[n] = fibonacci_top_down(n-1, soluciones) + fibonacci_top_down(n-2, soluciones)
+    
+    |\bxl{rmemo}|return soluciones[n]|\bxr{rmemo}|
 \end{pseudocode}
 \begin{annotations}
     \codebrace{cbi}{cbf}{Se añaden los casos base directamente al arrreglo}
     \codebrace[width=9cm]{lli}{llf}{Se llena el resto del arreglo con -1, que indica que no se ha calculado ese término de la secuencia. Es inambiguo porque los términos calculados serán positivos}
+    \codebox[width=4.5cm]{auxf}{La función auxiliar recursiva recibe siempre la misma estructura y la va llenando}
+    \codebox[width=10cm]{memo}{La estructura aún no contiene la solución para este valor, entonces, se memoiza}
+    \codebox[width=6.5cm]{rmemo}{Se retorna siempre el valor memoizado (que puede que se haya calculado en ese llamado recursivo o en uno anterior)}
 \end{annotations}
 
-Esa implementación es top-down. Evidentemente, para calcular el enésimo número de Fibonacci es necesario calcular todos los anteriores, por ende, el algoritmo top-down es menos eficiente que el algoritmo bottom-up: ambos calculan todos los términos anteriores, pero el top-down tiene el sobrecosto de la recursión.
+Por definición, para calcular el enésimo número de Fibonacci es necesario calcular todos los anteriores, por ende, el algoritmo top-down es menos eficiente que el algoritmo bottom-up: ambos calculan todos los términos anteriores, pero el bottom-up evita el uso de recursión.
 
 \subsubsection{Programación dinámica bottom-up}
 
 El método bottom-up resuelve primero los problemas más pequeños. En este caso, eso traduce naturalmente a calcular primero los menores términos de la sucesión, o lo que es lo mismo, a calcularlos en orden:
 \begin{pseudocode}
 función fibonacci(n: entero) entero
-    soluciones = |\textrm{arreglo de tamaño }$n+1$|
+    soluciones = |\textrm{arreglo de enteros de tamaño }$n+1$|
     soluciones[0] = 0
     soluciones[1] = 1
     
@@ -68,7 +67,7 @@ función fibonacci(n: entero) entero
 
     return soluciones[n]
 \end{pseudocode}
-Este problema tiene la particularidad de que no hace falta preservar las soluciones previas, de forma que se puede ahorrar el espacio en memoria que ocupa el arreglo de soluciones:
+Como optimización adicional, este problema tiene la particularidad de que no hace falta preservar las soluciones previas, de forma que se puede ahorrar el espacio en memoria que ocupa el arreglo de soluciones:
 \begin{pseudocode}
 función fibonacci(n: entero) entero
     solucion_trasanterior = 0
