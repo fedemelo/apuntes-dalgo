@@ -2,9 +2,11 @@
 \documentclass{fmbnotes}
 
 \includeonly{
-% introduccion/introduccion,
-% analisis/analisis
+paratextos/prefacio,
+paratextos/preambulo,
+introduccion/introduccion,
 diseno/diseno,
+analisis/analisis,
 % apendices/apendices
 }
 
@@ -14,9 +16,11 @@ diseno/diseno,
 \newcommand*{\subtitulo}{Tomados como estudiante y revisados como profesor}
 \portada{\titulo}[\subtitulo]
 
+\include{paratextos/prefacio}
+\include{paratextos/preambulo}
 \include{introduccion/introduccion}
-\include{analisis/analisis}
 \include{diseno/diseno}
+\include{analisis/analisis}
 \include{apendices/apendices}
 
 \end{document}
