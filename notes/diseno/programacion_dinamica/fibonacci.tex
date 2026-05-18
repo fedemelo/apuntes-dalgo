@@ -8,7 +8,7 @@ La sucesión de Fibonacci comienza con 0 y 1, y cada número posterior es la sum
 \end{align*}
 El problema radica en calcular el enésimo número de Fibonacci, es decir, $F(n)$, para algún $n$ dado.
 
-\subsubsection{Algoritmo recursivo}
+\subsubsection{Solución recursiva}
 
 El algoritmo recursivo, que es el más intuitivo, es una traducción directa de la definición matemática:
 \begin{pseudocode}
@@ -23,9 +23,9 @@ Su ineficiencia radica en que presenta subproblemas superpuestos: para calcular 
 
 Sabiendo que el algoritmo presenta subproblemas superpuestos, solo falta determinar si presenta subestructura óptima para concluir que se puede resolver eficientemente con programación dinámica. En este caso, sí la presenta: la solución óptima para $F(n)$ se construye a partir de las soluciones óptimas para dos subproblemas, $F(n-1)$ y $F(n-2)$.
 
-\subsubsection{Programación dinámica top-down}
+\subsubsection{Solución top-down}
 
-Una primera optimización es la implementación top-down: incluir memoización en la implementación recursiva para eliminar la redundancia que introducen los problemas superpuestos:
+Una primera optimización es utilizar programación dinámica top-down: incluir memoización en la implementación recursiva para eliminar la redundancia que introducen los problemas superpuestos:
 \begin{pseudocode}
 función fibonacci_top_down(n: entero) entero
     soluciones = |\textrm{arreglo de enteros de tamaño }$n+1$|
@@ -53,9 +53,9 @@ función fibonacci_top_down_recursion(n: entero, soluciones: arreglo de enteros)
 
 Por definición, para calcular el enésimo número de Fibonacci es necesario calcular todos los anteriores, por ende, el algoritmo top-down es menos eficiente que el algoritmo bottom-up: ambos calculan todos los términos anteriores, pero el bottom-up evita el uso de recursión.
 
-\subsubsection{Programación dinámica bottom-up}
+\subsubsection{Solución bottom-up}
 
-El método bottom-up resuelve primero los problemas más pequeños. En este caso, eso traduce naturalmente a calcular primero los menores términos de la sucesión, o lo que es lo mismo, a calcularlos en orden:
+El método con programación dinámica bottom-up resuelve primero los problemas más pequeños. En este caso, eso traduce naturalmente a calcular primero los menores términos de la sucesión, o lo que es lo mismo, a calcularlos en orden:
 \begin{pseudocode}
 función fibonacci(n: entero) entero
     soluciones = |\textrm{arreglo de enteros de tamaño }$n+1$|
@@ -81,5 +81,3 @@ función fibonacci(n: entero) entero
     return solucion
 \end{pseudocode}
 Se obtiene un algoritmo cuya complejidad temporal es $\Theta(n)$ y cuya complejidad espacial es $\Theta(1)$.
-
-% --- 
