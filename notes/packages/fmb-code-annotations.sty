@@ -161,14 +161,23 @@
 % Optional key-value options
 % -------------------------------------------------
 %
+%   xshift=<dimension>
+%       Horizontal distance from the box to the note.
+%       Controls the arrow length in the default layout.
+%       Ignored when notepos is set explicitly.
+%
+%       Default:
+%           1.5cm
+%
 %   notepos=<calc expression>
 %       Where to place the note, written as a TikZ
 %       calc expression without the outer ($ ... $).
 %       E.g.: (cbox@id.east)+(2cm,1cm)
 %             (current page.east)+(-8.5cm,-0.5cm)
+%       Overrides xshift when set.
 %
 %       Default:
-%           auto (1.5cm to the right of the box)
+%           auto (xshift to the right of the box)
 %
 %   noteanchor=<anchor>
 %       Anchor of the note node used for positioning.
@@ -214,6 +223,7 @@
     default/.style = {
         notepos    = auto,
         noteanchor = west,
+        xshift     = 1.5cm,
         from       = east,
         to         = west,
         curve      = {},
@@ -222,6 +232,7 @@
     },
     notepos/.store     in = \codeboxnotepos,
     noteanchor/.estore in = \codeboxnoteanchor,
+    xshift/.estore     in = \codeboxnotexshift,
     from/.estore       in = \codeboxfrom,
     to/.estore         in = \codeboxto,
     curve/.code           = {\tikzset{codebox@curve@style/.style={#1}}},
@@ -235,7 +246,7 @@
     \def\codebox@auto{auto}%
     \ifx\codeboxnotepos\codebox@auto
         \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
-            (cnote@#2) at ([xshift=1.5cm] cbox@#2.east) {#3};%
+            (cnote@#2) at ([xshift=\codeboxnotexshift] cbox@#2.east) {#3};%
     \else
         \edef\codebox@pos{($ \codeboxnotepos $)}%
         \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
