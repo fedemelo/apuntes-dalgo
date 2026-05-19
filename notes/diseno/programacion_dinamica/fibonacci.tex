@@ -19,13 +19,13 @@ función fibonacci(n: entero) -> entero
     return fibonacci(n-1) + fibonacci(n-2)
 \end{pseudocode}
 
-Su ineficiencia radica en que presenta subproblemas superpuestos: para calcular $F(n)$ se necesitan calcular $F(n-1)$ y $F(n-2)$; para calcular $F(n-1)$ se necesitan calcular $F(n-2)$ y $F(n-3)$. En tan solo dos pasos, ya se ha calculado $F(n-2)$ dos veces. A medida que se avanza, la cantidad de cálculos repetidos crece exponencialmente. De hecho, la complejidad temporal de ese algoritmo es $\Theta(\phi^n)$, donde $\phi$ es el número áureo, aproximadamente 1.618.
+Sin embargo, este algoritmo es ineficiente porque presenta subproblemas superpuestos: para calcular $F(n)$ se necesitan calcular $F(n-1)$ y $F(n-2)$; para calcular $F(n-1)$ se necesitan calcular $F(n-2)$ y $F(n-3)$. En tan solo dos pasos, ya se repitió el cálculo de $F(n-2)$ dos veces. A medida que se avanza, la cantidad de cálculos repetidos crece exponencialmente. De hecho, la complejidad temporal de ese algoritmo es $\Theta(\phi^n)$, donde $\phi$ es el número áureo, aproximadamente 1.618.
 
 Sabiendo que el algoritmo presenta subproblemas superpuestos, solo falta determinar si presenta subestructura óptima para concluir que se puede resolver eficientemente con programación dinámica. En este caso, sí la presenta: la solución óptima para $F(n)$ se construye a partir de las soluciones óptimas para dos subproblemas, $F(n-1)$ y $F(n-2)$.
 
 \subsubsection{Solución top-down}
 
-Una primera optimización es utilizar programación dinámica top-down: incluir memoización en la implementación recursiva para eliminar la redundancia que introducen los problemas superpuestos:
+Una primera optimización es utilizar programación dinámica top-down: se introduce una función principal, \inline{fibonacci_top_down}, que crea un arreglo donde se memoizarán las respuestas. Esa función principal llena el arreglo con $-1$ (que indica que esa solución no se ha calculado) y se lo pasa a la función auxiliar, que memoiza el cálculo si aún no está en el arreglo y retorna la solución memoizada.
 \begin{pseudocode}
 función fibonacci_top_down(n: entero) entero
     soluciones = |\textrm{arreglo de enteros de tamaño }$n+1$|
@@ -35,9 +35,9 @@ función fibonacci_top_down(n: entero) entero
     |\br{lli}|for i=2 to n
         soluciones[i] = -1|\br{llf}|
 
-    return fibonacci_top_down_recursion(n, |\bxl{auxf}|soluciones)|\bxr{auxf}|
+    return fibonacci_top_down_memoizado(n, |\bxl{auxf}|soluciones)|\bxr{auxf}|
 
-función fibonacci_top_down_recursion(n: entero, soluciones: arreglo de enteros) entero
+función fibonacci_top_down_memoizado(n: entero, soluciones: arreglo de enteros) entero
     |\bxl{memo}|if soluciones[n] < 0|\bxr{memo}|
         soluciones[n] = fibonacci_top_down(n-1, soluciones) + fibonacci_top_down(n-2, soluciones)
     
@@ -70,6 +70,8 @@ función fibonacci(n: entero) entero
 Como optimización adicional, este problema tiene la particularidad de que no hace falta preservar las soluciones previas, de forma que se puede ahorrar el espacio en memoria que ocupa el arreglo de soluciones:
 \begin{pseudocode}
 función fibonacci(n: entero) entero
+    if n >= 1 return n
+
     solucion_trasanterior = 0
     solucion_anterior = 1
     
@@ -81,3 +83,5 @@ función fibonacci(n: entero) entero
     return solucion
 \end{pseudocode}
 Se obtiene un algoritmo cuya complejidad temporal es $\Theta(n)$ y cuya complejidad espacial es $\Theta(1)$.
+
+\practicar[leetcode]{Fibonacci Number}{https://leetcode.com/problems/fibonacci-number/}
