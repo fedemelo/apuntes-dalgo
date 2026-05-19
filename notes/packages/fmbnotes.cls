@@ -109,6 +109,14 @@
 
 % New section style
 \renewcommand*{\section}{\@startsection{section}{1}{\z@}{-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}{\section@box}}
+
+% The tcolorbox used for section titles breaks the normal \@afterheading
+% page-break penalty, so we guard manually: require at least 4 lines of space
+% before typesetting the title; otherwise LaTeX breaks to the next page first.
+\RequirePackage{needspace}
+\let\section@boxed\section
+\renewcommand*{\section}{\needspace{4\baselineskip}\section@boxed}
+
 \addto\extrasspanish{\renewcommand*{\sectionautorefname}{sección}}% Section label name for autoref inserted in babel package
 
 
