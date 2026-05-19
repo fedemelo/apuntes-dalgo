@@ -67,6 +67,16 @@
 %       Default:
 %           0pt
 %
+%   yshift=<dimension>
+%       Vertical displacement of the annotation text
+%       relative to the brace midpoint.
+%
+%       Positive values move the text up.
+%       Negative values move it down.
+%
+%       Default:
+%           0pt
+%
 %   width=<dimension>
 %       Text width of the annotation node.
 %
@@ -89,11 +99,13 @@
     default/.style = {
         xshift = 15pt,
         noteshift = 0pt,
+        yshift = 0pt,
         width = 3cm,
         amplitude = 3pt
     },
     xshift/.estore in = \codebracexshift,
     noteshift/.estore in = \codebracenoteshift,
+    yshift/.estore in = \codebraceyshift,
     width/.estore in = \codebracewidth,
     amplitude/.estore in = \codebraceamplitude,
 }
@@ -107,7 +119,6 @@
         decorate,
         decoration = {
             brace,
-            mirror,
             amplitude=\codebraceamplitude
         }
     ]
@@ -118,7 +129,8 @@
             midway,
             note,
             anchor=west,
-            xshift=\codebracenoteshift,
+            xshift=\the\dimexpr\codebraceamplitude+\codebracenoteshift\relax,
+            yshift=\codebraceyshift,
             text width=\codebracewidth
         ]
         {#4};
