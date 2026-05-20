@@ -113,6 +113,51 @@ función corte_de_vara_bottom_up(n: entero, p: arreglo de enteros) entero
   \codebox[xshift=1cm, width=3.8cm]{cic}{Este ciclo hace que se solucione el problema de corte de vara para cada valor de \texttt{longitud} de \texttt{1} a \texttt{n}}
 \end{annotations}
 
+Esa solución cuenta con una complejidad temporal de $\Theta(n^2)$, por los dos ciclos anidados, y con una complejidad espacial de $\Theta(n)$, por el arreglo que se utiliza para la tabulación.
+
+\subsubsection{Obtener los tamaños de los cortes}
+
+Inicialmente, el problema de corte de vara se planteó como un problema de optimización, donde la respuesta esperada era el máximo ingreso posible. Sin embargo, el problema se podría plantear como un problema de búsqueda en el que se busca alguna configuración de cortes que maximiza el ingreso, en lugar del ingreso en sí.
+\begin{itemize}
+  \item Entradas: Un entero $n$ que representa la longitud de la vara y un arreglo $p$ de tamaño $n+1$, donde $p[i]$ es el precio de una vara de longitud $i$.
+  \item Salida: Una pila con las longitudes de las piezas que maximizan el precio de venta.
+\end{itemize}
+
+Para esto, al implementar el algoritmo de programación dinámica se debe no solo computar el valor óptimo sino también almacenar información para que, una vez se obtenga el valor óptimo, se pueda recuperar los pasos que se siguieron para obtenerlo. 
+
+En este caso, además de almacenar el precio óptimo para una longitud $\ell$, se almacena el primer corte que corresponde a ese precio óptimo. Solo se almacena el primer corte $c$ para cada longitud, porque para determinar posteriormente el resto de cortes (si se requieren más de un corte), basta con examinar el subproblema de la longitud restante, o sea, el subproblema de la vara de longitud $\ell-c$ (para el cual también se guardó el primer corte).
+
+\begin{pseudocode}
+función corte_de_vara_backtracking(n: entero, p: arreglo de enteros) pila de enteros
+    precios_optimos = \text{arreglo de enteros de longitud $n+1$}
+    cortes_optimos = \text{arreglo de enteros de longitud $n+1$}
+    precios_optimos[0] = 0
+
+    for longitud=1 to n
+        mayor_precio = |$-\infty$|
+        for i=1 to longitud
+            precio = p[i] + precios_optimos[longitud-i]
+            if precio > mayor_precio
+                mayor_precio = precio
+                |\bxl{mejor}|mejor_corte = i|\bxr{mejor}|
+        precios_optimos[longitud] = mayor_precio
+        |\bxl{optm}|cortes_optimos[longitud] = mejor_corte|\bxr{optm}|
+
+    segmentos = |\text{pila de enteros de longitud máxima $n$}|
+    |\br{cortsi}|i = n
+    while i > 0:
+        corte = cortes_optimos[i]
+        segmentos.put(corte)
+        i -= corte|\br{cortsf}|
+
+    return segmentos
+\end{pseudocode}
+\begin{annotations}
+    \codebox[notepos={(cbox@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
+    \codebox[xshift=2.7cm, width=5.7cm]{optm}{Para una longitud $\ell$, el primer corte es \inline{cortes_optimos[$\ell$]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{$\ell - $cortes_optimos[$\ell$]}}
+    \codebrace[xshift=3cm, width=6cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
+\end{annotations}
+
 \practicar[gfg]{Rod Cutting}{https://www.geeksforgeeks.org/problems/rod-cutting0840/1}
 
 
