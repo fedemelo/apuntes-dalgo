@@ -25,80 +25,84 @@ Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo 
 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
 \begin{pseudocode}
-función subarreglo_max_fuerza_bruta(numeros: arreglo) tripla de enteros
-    mayor = |$-\infty$|
-    ind_ini = 0
-    ind_fin = 0
+def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
+    largest = |$-\infty$|
 
-    for i=0 to numeros.longitud-1
-        suma = 0
-        for j=i to numeros.longitud-1
-            suma += numeros[j]
+    best_i = 0
+    best_j = 0
 
-            if suma > mayor
-                mayor = suma
-                ind_ini = i
-                ind_fin = j
-
-    return ind_ini, ind_fin, mayor
+    for i=0 to len(nums)-1:
+        total = 0
+        for j=i to len(nums)-1:
+            total += nums[j]
+            if total > largest:
+                largest = total
+                best_i = i
+                best_j = j
+    return best_i, best_j, largest
 \end{pseudocode}
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es $O(n^2)$.
 
 \subsubsection{Solución por dividir y conquistar}
 Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema es hallar un subarreglo máximo en el respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, podríamos tener el infortunio de partirlo justo donde estaba el subarreglo máximo, entonces en el paso de combinar las soluciones, tenemos que asegurarnos de contemplar esa posibilidad. Con eso, las etapas son:
-\begin{itemize}
-    \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
-    \item \textbf{Conquistar}: Para cada mitad, hallar un subarreglo máximo recursivamente.
-    \item \textbf{Combinar}: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por donde se dividió el arreglo.
-\end{itemize}
+\begin{enumerate}
+    \item Dividir el arreglo en dos mitades.
+    \item Conquistar: Para cada mitad, hallar un subarreglo máximo recursivamente.
+    \item Combinar: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por donde se dividió el arreglo.
+\end{enumerate}
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-función subarr_max_div_conquistar(
-    numeros: arreglo,
-    ind_min: entero,
-    ind_max: entero
-) tripla de enteros
-    if ind_min == ind_max
-        return ind_min, ind_max, numeros[ind_min]
+def max_subarray_divide_conquer(
+    nums: arreglo[int],
+    i: int,
+    j: int
+) -> tuple[int, int, int]:
+    if i == j:
+        return i, j, nums[i]
 
-    ind_mitad = (ind_min + ind_max) // 2
+    k = (i + j) // 2
 
-    ini_izq, fin_izq, suma_izq = subarr_max_div_conquistar(numeros, ind_min, ind_mitad)
-    ini_der, fin_der, suma_der = subarr_max_div_conquistar(numeros, ind_mitad+1, ind_max)
-    ini_mitad, fin_mitad, suma_mitad = subarr_max_transversal(numeros,ind_min,ind_mitad,ind_max)
+    left_i, left_j, left_sum = max_subarray_divide_conquer(nums, i, k)
+    right_i, right_j, right_sum = max_subarray_divide_conquer(nums, k+1, j)
+    cross_i, cross_j, cross_sum = max_crossing_subarray(nums, i, k, j)
 
-    if suma_izq >= suma_der and suma_izq >= suma_mitad
-        return ini_izq, fin_izq, suma_izq
-    if suma_der > suma_mitad
-        return ini_der, fin_der, suma_der
-    return ini_mitad, fin_mitad, suma_mitad
+    if left_sum >= right_sum and left_sum >= cross_sum:
+        return left_i, left_j, left_sum
+
+    if right_sum > cross_sum:
+        return right_i, right_j, right_sum
+
+    return cross_i, cross_j, cross_sum
 \end{pseudocode}
 
 Ahora sí, pensemos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
 \begin{pseudocode}
-función subarr_max_transversal(
-    numeros: arreglo,
-    ind_min: entero,
-    ind_mitad: entero,
-    ind_max: entero
-) tripla de enteros
-    suma_der, suma_izq = 0, 0
-    mayor_der, mayor_izq = |$-\infty$|, |$-\infty$|
+def max_crossing_subarray(
+    nums: arreglo[int],
+    i: int,
+    k: int,
+    j: int
+) -> tuple[int, int, int]:
+    right_sum = 0
+    left_sum = 0
 
-    for i=ind_mitad to ind_max
-        suma_der += numeros[i]
-        if suma_der > mayor_der
-            mayor_der = suma_der
-            extremo_der = i
+    largest_right = |$-\infty$|
+    largest_left = |$-\infty$|
 
-    for j=ind_mitad-1 downto ind_min
-        suma_izq += numeros[j]
-        if suma_izq > mayor_izq
-            mayor_izq = suma_izq
-            extremo_izq = j
+    for r=k to j:
+        right_sum += nums[r]
+        if right_sum > largest_right:
+            largest_right = right_sum
+            best_r = r
 
-    return extremo_izq, extremo_der, mayor_izq+mayor_der
+    for l=k-1 downto i:
+        left_sum += nums[l]
+        if left_sum > largest_left:
+            largest_left = left_sum
+            best_l = l
+
+    return best_l, best_r, largest_left + largest_right
 \end{pseudocode}
 
 % TODO: Anotar algoritmo
