@@ -1,0 +1,72 @@
+\subsection{Búsqueda binaria}
+
+La búsqueda binaria es un algoritmo para buscar si un elemento específico existe en una secuencia ordenada. El problema que resuelve es entonces:
+\begin{itemize}
+  \item Entrada: arreglo no vacío ordenado de enteros y número entero $k$
+  \item Salida: índice de $k$ en el arreglo o -1 si no está
+\end{itemize}
+
+El algoritmo es muy simple: se revisa el elemento del medio del arreglo. Si es $k$, encontramos lo que buscábamos y la salida es el índice del medio; si es menor, solo es sensato seguir buscando en la mitad derecha; si es mayor, solo en la mitad izquierda.
+
+\begin{pseudocode}
+def binary_search(nums: arreglo[int], target: int) -> int:
+    return binary_search_rec(nums, target, 0, len(nums) - 1)
+
+def binary_search_rec(nums: arreglo[int], target: int, i: int, j: int) -> int:
+    |\br{mi}|if j < i:
+        return -1|\br{mf}|
+
+    k = |\bxl{over}|i + (j - i) // 2|\bxr{over}|
+    if target < nums[k]:
+        return binary_search_rec(nums, target, i, k - 1)
+    if target > nums[k]:
+        return binary_search_rec(nums, target, k + 1, j)
+
+    return k
+\end{pseudocode}
+\begin{annotations}
+  \codebrace[width=6cm]{mi}{mf}{Si \inline{j} está a la izquierda de \inline{i}, los índices se cruzaron, lo que indica que el elemento no está.}
+  \codebox[xshift=0.5cm, width=7.5cm]{over}{Una alternativa para calcular la mitad es \inline{(i+j) // 2}, pero arriesga un overflow (en lenguajes de bajo nivel) si la suma es muy grande.}
+\end{annotations}
+
+Nótese que en los llamados recursivos se toma desde el índice de la mitad, \inline{k}, \textit{más uno} (o menos uno). Eso cumple dos funciones: primero, que no se vuelva a revisar la mitad; pero más importante aún, permite que a medida que el número no se encuentra y el segmento del arreglo que se contempla es cada vez más pequeño, de forma que el índice de la mitad se acerca más y más al extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con el extremo y la recursión no terminaría. Y no se puede detener cuando son iguales, porque ese caso de un único elemento sí se quiere revisar.
+
+Como cada vez que se parte el problema se reduce a la mitad, para determinar la complejidad se quiere saber cuántas veces se debe dividir la entrada de tamaño $n$ entre $2$ hasta que se llega a un problema de tamaño 1. Para conocer esa $x$ cantidad de veces, se formula:
+
+\begin{gather*}
+  n \underbrace{{} \cdot \frac{1}{2} \cdot \frac{1}{2} \cdots \frac{1}{2}}_{x \ \text{veces}} = 1 \\
+  \frac{n}{2^x} = 1
+\end{gather*}
+
+Despejando,
+
+\begin{gather*}
+  2^x = n \\
+  x = \log_2(n)
+\end{gather*}
+Es decir, el número de divisiones, que es el número de pasos, crece logarítmicamente con respecto al tamaño de la entrada.
+
+En este algoritmo, solo se realizan las etapas de dividir y conquistar; no es necesario combinar las soluciones. Eso facilita realizar una implementación iterativa del algoritmo:
+\begin{pseudocode}
+def binary_search_iter(nums: arreglo[int], target: int) -> int:
+    i = 0
+    j = len(nums) - 1
+    
+    idx = -1
+
+    while i <= j and idx == -1:
+        k = i + (j-i) // 2
+        if target < nums[k]:
+            j = k - 1
+        elif target > nums[k]:
+            i = k + 1
+        else:
+            idx = k
+        
+    return idx
+\end{pseudocode}
+
+
+\practicar[leetcode]{Binary Search}{https://leetcode.com/problems/binary-search/}
+
+
