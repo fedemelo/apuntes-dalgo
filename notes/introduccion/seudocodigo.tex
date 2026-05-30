@@ -1,32 +1,34 @@
 \section{Seudocódigo}
 
-El seudocódigo es básicamente algo que se parece a un lenguaje de programación pero que permite:
-\begin{itemize}
-  \item Despreocuparse de detalles de sintaxis o de implementación, como el manejo de errores.
-  \item Usar la forma más clara de expresarse en cada línea: a veces español, a veces matemática, a veces sintaxis de algún lenguaje de programación.
-\end{itemize}
-Entonces es muy útil para expresar algoritmos.
+\begin{tldr}
+  Se utiliza un seudocódigo inspirado en Python, excepto cuando una notación más universal, matemática o algorítmicamente explícita permite expresar mejor la idea.
+\end{tldr}
 
-En los textos formales se definen convenciones estrictas para el seudocódigo que se usa; eso elimina la ambigüedad, pero obliga al lector a aprenderse las convenciones, prácticamente un nuevo lenguaje. Contrariamente, en estos apuntes se utiliza un seudocódigo menos estructurado, basado en la sintaxis de Python, pero con varias libertades. Las ambigüedades se eliminan aclarándolas cuando aparecen.
+El seudocódigo es una forma de describir algoritmos parecida a los lenguajes de programación, pero que permite despreocuparse de detalles de sintaxis o de implementación, que no suelen ser relevantes al estudiar algorítmica, para enfocarse en resaltar las ideas del algoritmo. 
 
-En Python son muy idiomáticas la instrucciones de alto nivel, que automáticamente ordenan, buscan, etc. y que no existen en otros lenguajes. Ese tipo de instrucciones se omiten deliberadamente, primero porque formalmente arruinarían el análisis algorítmico, como se expone más adelante, y segundo porque la idea es precisamente entender cómo implementar eficientemente ese tipo de instrucciones. Así que, bajo esa perspectiva, el seudocódigo es más parecido a un lenguaje de programación de mediano o bajo nivel.
+No existe una única forma de escribir seudocódigo. Distintos libros, cursos y autores utilizan convenciones diferentes inspiradas en distintos lenguajes de programación. En los textos formales se definen convenciones estrictas para el seudocódigo que se usa; eso elimina la ambigüedad, pero obliga al lector a aprenderse las convenciones, prácticamente un nuevo lenguaje. 
+
+En estos apuntes se utiliza un seudocódigo inspirado en Python, que es un lenguaje con una sintaxis breve y legible. Como el objetivo no es aprender Python sino estudiar algoritmos, ocasionalmente se reemplazan construcciones específicas del lenguaje por notaciones más universales o explícitas. En particular, cuando una sintaxis oculta detalles relevantes para el análisis algorítmico, se prefiere una descripción que haga visibles dichos detalles. No usar trucos específicos de Python permite además que cualquier lector que conozca algún otro lenguaje imperativo pueda leer el código sin problema.
 
 E.g., una función que recibe un arreglo de números y encuentra el mayor:
 \begin{pseudocode}
-función encontrar_mayor(números: arreglo de enteros) entero
-    mayor = |$-\infty$|
-    for i=0 to números.longitud-1
-        if números[i] > mayor
-            mayor = números[i]
-    return mayor
+def find_largest(nums: arreglo[int]) -> int:
+    largest = |$-\infty$|
+    for i=0 to len(nums)-1:
+        if nums[i] > largest:
+            largest = nums[i]
+    return largest
 \end{pseudocode}
-Detalles de este seudocódigo que reflejan que su propósito es ser claro:
+
+En ese ejemplo, es evidente que el código se asemeja a Python, salvo algunos detalles. Los detalles más recurrentes en estas notas donde el seudocódgo difiere con Python son los siguientes:
 \begin{itemize}
-  \item Algunas palabras y tipos están en español. A pesar de que no se definieron de antemano, son muy claros porque son los términos que usamos para referirnos a esas cosas.
-  \item Omito detalles de sintaxis como los dos puntos, pero preservo los que otorgan claridad, como la indentación.
-  \item Evito sintaxis específica de algún lenguaje.
+  \item Al utilizar cualquier estructura de datos abstracta, como arreglos, colas, pilas, árboles, etc, la estructura se declara en español.
   \begin{itemize}
-    \item En el for uso una sintaxis que hace explícito el valor inicial y el valor final sin necesidad de usar iterables (y sin tener que desambibuar si se toma o no el útlimo valor; acá es claro que sí)
-    \item Presumo la existencia de un método \texttt{longitud} para obtener la longitud de un arreglo. Es una presunción razonable porque en cualquier lenguaje orientado a objetos existe algo así.
+    \item Por ejemplo, se utiliza el tipo \inline{arreglo} en lugar de utilizar objetos de la clase \inline{list}, para que tenga las propiedades de un arreglo abstracto, como tamaño fijo y acceso por índice en tiempo constante, en lugar de las del tipo \inline{list} que en Python corresponde a un arreglo dinámico.
   \end{itemize}
+  \item Los ciclos sobre rangos de enteros se escriben como \inline{for i=0 to n-1} en lugar de utilizar \inline{for i in range(n)}. La notación preferida es familiar para quienes provienen de otros lenguajes imperativos y además hace explícitos los límites del recorrido.
+  \item En lugar de usar \textit{slicing}, se escribe literalmente (en español) que se realiza una copia y de qué segmento específico del arreglo.
+  \item Cuando se usa la noción de infinito, se escribe el símbolo matemático $\infty$ en lugar de la sintaxis \verb|float('inf')|.
+  \item Se evita usar cualquier función, como \inline{sorted}, o librería, como \inline{itertools}, que encapsule operaciones complejas, pues el propósito es precisamente comprender cómo se implementarían desde cero.
 \end{itemize}
+Con lo anterior en mente, debería ser trivial traducir cualquiera de los algoritmos en estas notas a Python ejecutable, y también debería ser sencillo traducirlos a cualquier lenguaje imperativo.
