@@ -28,7 +28,7 @@
   keepspaces=true,
   keywordstyle=\color{mygray}\bfseries,
   language=Python,
-  morekeywords={to,downto,arreglo,entero,decimal,enteros,decimales,tupla,tripla},
+  morekeywords={to,downto,arreglo,tupla,tripla,bool,true,false,null},
   numbers=left,
   numbersep=5pt,
   numberstyle=\tiny\color{mygray},
@@ -55,4 +55,6 @@
   left=0pt, right=0pt, top=0pt, bottom=0pt,                                                                 
 }  
 
-\newcommand{\inline}{\lstinline[basicstyle=\normalsize\ttfamily]}
+\newcommand{\inline}[1]{%
+  {\ttfamily\catcode`\_=12\relax\endlinechar=-1\relax\scantokens{#1}}%
+}
