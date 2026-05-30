@@ -491,6 +491,32 @@
 	},
 	drop fuzzy shadow,#1} %Original
 
+% TL;DR — quick summary box, minimal style
+\newlength{\fmb@tldrindent}
+
+\newtcolorbox{tldr}[1][]{
+	enhanced,
+	before skip=3mm,
+	after skip=3mm,
+	boxrule=0mm,
+	left=8pt,
+	right=6pt,
+	top=3pt,
+	bottom=3pt,
+	colback=white,
+	colframe=white,
+	borderline west={1.5pt}{0pt}{black!30},
+	sharp corners,
+	fontupper=\small,
+	before upper={%
+		\settowidth{\fmb@tldrindent}{\small\textbf{TL;DR\quad}}%
+		\hangindent=\fmb@tldrindent\hangafter=1%
+		\noindent\phantom{\small\textbf{TL;DR\quad}}%
+		\llap{\textcolor{black!45}{\small\textbf{TL;DR\quad}}}%
+		\ignorespaces
+	},
+	#1}
+
 % Unidad
 \newtcbox{unidad}[1][]{enhanced,
 	before skip =2mm,
