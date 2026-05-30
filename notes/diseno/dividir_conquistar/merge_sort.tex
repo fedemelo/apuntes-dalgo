@@ -2,33 +2,34 @@
 
 Merge sort resuelve el problema de ordenamiento (definido en la sección \ref{subsec:problema}).
 
-La idea es dividir el arreglo a ordenar en dos mitades, ordenar cada mitad de forma recursiva (es decir, dividiendo cada una otra vez a la mitad, y así sucesivamente, hasta que queden pedazos de un elemento, que ya están ordenados) y luego combinar las soluciones.
+La idea es dividir el arreglo a ordenar en dos mitades, ordenar cada mitad de forma recursiva (es decir, dividiendo cada una otra vez en la mitad, y así sucesivamente, hasta que queden pedazos de un elemento, que ya están ordenados) y luego combinar las soluciones.
 
 Haciendo explícitas las etapas:
-\begin{itemize}
-    \item \textbf{Dividir}: Dividir el arreglo en dos mitades.
-    \item \textbf{Conquistar}: Ordenar cada mitad usando merge sort (o sea, aplicando estas etapas a cada mitad)
-    \item \textbf{Combinar}: Combinar las soluciones de cada mitad, que son subarreglos ordenados.
-\end{itemize}
+\begin{enumerate}
+    \item Dividir el arreglo en dos mitades.
+    \item Conquistar: Ordenar cada mitad usando merge sort (o sea, aplicando estas etapas a cada mitad)
+    \item Combinar las soluciones de cada mitad, que son subarreglos ordenados.
+\end{enumerate}
 
 \subsubsection{Dividir y conquistar el arreglo}
 
 Dividir el arreglo no tiene ciencia: se calcula la mitad con división entera y con eso se conocen los índices de cada segmento. La etapa de conquistar es simplemente hacer el llamado recursivo a cada mitad, porque en algún punto al dividir continuamente por la mitad se obtienen arreglos de longitud uno, que ya están ordenados.
 
-Por ahora, para no pensar en cómo combinar las soluciones, encapsulamos ese paso en una función que se implementará después. Con eso, este es el seudocódigo:
+Por ahora, para no pensar en cómo combinar las soluciones, encapsulamos ese paso en una función \inline{merge} que se implementará después. Con eso, este es el seudocódigo:
 \begin{pseudocode}
-función merge_sort(números: arreglo, ind_min: entero, ind_max: entero)
-    |\br{gi}|if ind_min >= ind_max 
+def merge_sort(nums: arreglo[int], i: int, j: int):
+    |\br{gi}|if i >= j:
         return|\br{gf}|
 
-    ind_mitad = (ind_min + ind_max) // 2
-    merge_sort(números, ind_min, ind_mitad)
-    merge_sort(números, ind_mitad+1, ind_max)
+    k = (i + j) // 2
 
-    combinar(números, ind_min, ind_mitad, ind_max)
+    merge_sort(nums, i, k)
+    merge_sort(nums, k + 1, j)
+
+    merge(nums, i, k, j)
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=2.6cm, width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
+    \codebrace[width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
 \end{annotations}
 
 Necesitamos tener los índices como parámetros porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo:
@@ -52,34 +53,36 @@ Cuando algún llamado alcanza el caso base, ocurre el primer retorno. La ejecuci
 
 Ahora, solo falta pensar en cómo combinar las mitades. Sorprendentemente, la mejor forma de combinarlas es la forma más intuitiva. Si cada arreglo fuera una pila de cartas, el método natural sería comparar la primera de cada pila y tomar la menor; luego comparar la siguiente de esa pila con la primera de la otra y tomar la menor (que en la combinación es la que le sigue a la primera que se había tomado), y así sucesivamente. El seudocódigo es el siguiente:
 \begin{pseudocode}
-función combinar(números: arreglo, ind_min: entero, ind_mitad: entero, ind_max: entero)
-    |\br{cpi}|izquierda = |\textrm{copia de números desde}| ind_min |\textrm{hasta}| ind_mitad
-    derecha = |\textrm{copia de números desde}| ind_mitad+1 |\textrm{hasta}| ind_max|\br{cpf}|
-    i = 0
-    j = 0
+def merge(nums: arreglo[int], i: int, k: int, j: int):
+    |\br{cpi}|left = |\textrm{copia de}| nums |\textrm{desde}| i |\textrm{hasta}| k
+    right = |\textrm{copia de}| nums |\textrm{desde}| k+1 |\textrm{hasta}| j|\br{cpf}|
 
-    |\br{ai}|while i < izquierda.longitud and j < derecha.longitud
-        if izquierda[i] |\bxl{es}|<=|\bxr{es}| derecha[j]
-            números[ind_min+i+j] = izquierda[i]
-            i++
-        else
-            números[ind_min+i+j] = derecha[j]
-            j++|\br{af}|
+    l = 0
+    |\bxl{ir}|r = 0|\bxr{ir}|
 
-    |\br{ii}|while i < izquierda.longitud
-        números[ind_min+i+j] = izquierda[i]
-        i++|\br{if}|
+    |\br{ai}|while l < len(left) and r < len(right):
+        if left[l] |\bxl{es}|<=|\bxr{es}| right[r]:
+            nums[i + l + r] = left[l]
+            l += 1
+        else:
+            nums[i + l + r] = right[r]
+            r += 1|\br{af}|
 
-    |\br{di}|while j < derecha.longitud
-        números[ind_min+i+j] = derecha[j]
-        j++|\br{df}|
+    |\br{ii}|while l < len(left):
+        nums[i + l + r] = left[l]
+        l += 1|\br{if}|
+
+    |\br{di}|while r < len(right):
+        nums[i + l + r] = right[r]
+        r += 1|\br{df}|
 \end{pseudocode}
 \begin{annotations}
     \codebrace[width=5.5cm]{cpi}{cpf}{Se crean arreglos nuevos con cada mitad. La complejidad espacial es entonces $\Theta(n)$.}
-    \codebrace[xshift=7.8cm, width=4.5cm]{ai}{af}{Lógica principal, cuando ambos subarreglos tienen elementos: se toma el menor y se añade a \texttt{números}.}
-    \codebrace[xshift=6cm, width=7cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \texttt{números}.}
-    \codebrace[xshift=6cm, width=7cm]{di}{df}{Se añade el excedente de la derecha a \texttt{números}. Si este while corre, es porque el anterior no corrió y viceversa.}
+    \codebox[xshift=0.5cm]{ir}{Índice en \inline{right}}
     \codebox[notepos={(cbox@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=5cm]{es}{\texttt{<=} en lugar de \texttt{<} para estabilidad.}
+    \codebrace[xshift=4.5cm, width=6cm]{ai}{af}{Lógica principal, cuando ambos subarreglos tienen elementos: se toma el menor y se añade a \inline{nums}.}
+    \codebrace[xshift=3.5cm, width=7.5cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \inline{nums}.}
+    \codebrace[xshift=3.5cm, width=6.5cm]{di}{df}{Se añade el excedente de la derecha a \inline{nums}. Si este while corre, es porque el anterior no corrió y viceversa.}
 \end{annotations}
 
 Un algoritmo es \emph{estable} si mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, se elige el elemento de la izquierda en caso de empate para que continúe ubicado antes que el de la derecha en la solución final.
