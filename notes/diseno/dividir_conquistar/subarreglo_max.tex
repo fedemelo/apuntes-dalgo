@@ -53,15 +53,10 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-def max_subarray_divide_conquer(
-    nums: arreglo[int],
-    i: int,
-    j: int
-) -> tuple[int, int, int]:
-    if i == j:
-        return i, j, nums[i]
+def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int, int, int]:
+    if i == j: return i, j, nums[i]
 
-    k = (i + j) // 2
+    k = i + (j - i) // 2
 
     left_i, left_j, left_sum = max_subarray_divide_conquer(nums, i, k)
     right_i, right_j, right_sum = max_subarray_divide_conquer(nums, k+1, j)
@@ -78,12 +73,7 @@ def max_subarray_divide_conquer(
 
 Ahora sí, pensemos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
 \begin{pseudocode}
-def max_crossing_subarray(
-    nums: arreglo[int],
-    i: int,
-    k: int,
-    j: int
-) -> tuple[int, int, int]:
+def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[int, int, int]:
     right_sum = 0
     left_sum = 0
 
