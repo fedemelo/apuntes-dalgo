@@ -1,4 +1,4 @@
-\subsection{Corte de vara}
+\subsection{Problema de corte de vara}
 
 El problema de corte de vara consiste en determinar cuál es la mejor forma de cortar una vara de longitud $n$, si cada posible longitud entera se puede vender a un precio específico. El objetivo es maximizar los ingresos.
 
@@ -34,18 +34,18 @@ Para diseñar una solución recursiva, lo primero que hay que pensar es cómo di
   \item El primer caso de cortar en la primera unidad de longitud. Eso arroja un pedazo de longitud $1$ y otro de longitud $n-1$. Ese último pedazo de longitud $n-1$ se puede seguir cortando (si $n$ es grande) y entonces se tiene el mismo problema: cuál es la forma de cortarlo para maximizar los ingresos.
   \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud $2$ se vende a $p[2]$, pero falta evaluar cómo cortar el pedazo de longitud $n-2$ de forma óptima.
 \end{itemize}
-Con eso es fácil construir una implementación recursiva, \inline{corte_de_vara_recursivo} que evalúe el primer caso como \inline{p[1] + corte_de_vara_recursivo(n-1, p)}; el segundo, como \inline{p[2] + corte_de_vara_recursivo(n-2, p)} y así hasta \inline{p[n] + corte_de_vara_recursivo(0, p)}, donde ese último llamado recursivo evidentemente es un caso base.
+Con eso es fácil construir una implementación recursiva, \inline{rod_cut_rec} que evalúe el primer caso como \inline{p[1] + rod_cut_rec(n-1, p)}; el segundo, como \inline{p[2] + rod_cut_rec(n-2, p)} y así hasta \inline{p[n] + rod_cut_rec(0, p)}, donde ese último llamado recursivo evidentemente es un caso base.
 \begin{pseudocode}
-función corte_de_vara_recursivo(n: entero, p: arreglo de enteros) entero
-    if n <= 0 return p[0]
+def rod_cut_rec(n: int, prices: arreglo[int]) -> int:
+    if n == 0: return 0
 
-    mayor_precio = |$-\infty$|
-    for i=1 to n
-        precio = p[i] + corte_de_vara_recursivo(n-i, p)
-        if precio > mayor_precio
-            mayor_precio = precio
-          
-    return mayor_precio
+    optimal_rev = |$-\infty$|
+    for i=1 to n:
+        revenue = prices[i] + rod_cut_rec(n-i, prices)
+        if revenue > optimal_rev:
+            optimal_rev = revenue
+    
+    return optimal_rev
 \end{pseudocode}
 El raciocinio que usamos para esta implementación deja claro que el problema cuenta con subestructura óptima. Falta ver si también presenta subproblemas superpuestos, pues solo en ese caso un algoritmo de programación dinámica mejoraría la eficiencia.
 
@@ -55,65 +55,64 @@ El raciocinio que usamos para esta implementación deja claro que el problema cu
 
 Para eliminar la redundancia que introducen los problemas superpuestos, se implementa un algoritmo top-down. Se añade una función principal que crea un arreglo donde la función auxiliar recursiva memoiza el cálculo del mejor precio para cada longitud.
 \begin{pseudocode}
-función corte_de_vara_top_down(n: entero, p: arreglo de enteros) entero
-    |\br{arri}|precios_optimos = |\text{arreglo de enteros de longitud $n+1$}|
-    precios_optimos[0] = 0
+def rod_cut_top_down(n: int, prices: arreglo[int]) -> int:
+    |\br{arri}|optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    optimal_revs[0] = 0
+    for i=1 to n:
+        optimal_revs[i] = |$-\infty$||\br{arrf}|
 
-    for i=1 to n
-        precios_optimos = |$-\infty$||\br{arrf}|
+    return rod_cut_memo(n, prices, optimal_revs)
 
-    return corte_de_vara_memoizado(n, p, precios_optimos)
+def rod_cut_memo(n: int, prices: arreglo[int], optimal_revs: arreglo[int]) -> int:
+    |\br{memoi}|if optimal_revs[n] >= 0:
+        return optimal_revs[n]|\br{memof}|
 
-función corte_de_vara_memoizado(
-    n: entero, 
-    p: arreglo de enteros, 
-    precios_optimos: arreglo de enteros
-) entero
-    |\br{memoi}|if precios_optimos[n] >= 0
-        return precios_optimos[n]|\br{memof}|
+    optimal_rev = |$-\infty$|
+    for i=1 to n:
+        revenue = prices[i] + rod_cut_memo(n - i, prices, optimal_revs)
+        if revenue > optimal_rev:
+            optimal_rev = revenue
 
-    mayor_precio = |$-\infty$|
-    for i=1 to n
-        precio = p[i] + corte_de_vara_memoizado(n-i, p, precios_optimos)
-        if precio > mayor_precio
-            mayor_precio = precio
-
-    |\br{reti}|precios_optimos[n] = mayor_precio
-    return mayor_precio|\br{retf}|
+    |\br{reti}|optimal_revs[n] = optimal_rev
+    return optimal_rev|\br{retf}|
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[xshift=5.5cm, width=4.5cm]{arri}{arrf}{Se crea el arreglo lleno de $-\infty$ (salvo el caso base) para indicar las soluciones que aún no se han memoizado.}
+  \codebrace[xshift=4cm, width=6.5cm]{arri}{arrf}{Se crea el arreglo lleno de $-\infty$ (salvo el caso base) para indicar las soluciones que aún no se han memoizado.}
   \codebrace[width=8cm]{memoi}{memof}{Si el valor está memoizado, se retorna enseguida para no recomputarlo.}
-  \codebrace[xshift=3cm, width=5.7cm]{reti}{retf}{El valor se calcula normalmente y justo antes de retornarlo, se memoiza para los llamados siguientes.}
+  \codebrace[xshift=2.5cm, width=5cm]{reti}{retf}{Justo antes de retornar el valor, se memoiza para los llamados siguientes.}
 \end{annotations}
 
 \subsubsection{Solución bottom-up}
 
-Para diseñar el algoritmo bottom-up es necesario cambiar levemente de perspectiva. Tanto la solución recursiva como el algoritmo top-down ya contienen un ciclo, por lo que esta solución necesita dos ciclos: uno externo, que toma el lugar de la recursión y uno interno que sigue siendo muy similar al ciclo de los algoritmos previos.
+Para diseñar el algoritmo bottom-up se debe reemplazar la recursión del algoritmo top-down por un ciclo. 
+
+En el algoritmo top-down, los llamados recursivos a la función auxiliar \inline{rod_cut_memo}, con distintos valores como argumento para \inline{n}, representan los subproblemas: cada llamado evalúa cómo cortar una posible longitud de la vara (dada por un valor distinto de \inline{n}).
+
+Como en la solución bottom-up no se invocan funciones auxiliares, el valor de \inline{n} que entra como parámetro no cambia. Por tanto, el ciclo que hace falta introducir, que reemplaza la recursión, es uno que revisa todos los posibles valores de \inline{n}, es decir todos los subproblemas, y para cada uno de ellos sigue la misma lógica que la función auxiliar de la versión top-down. Con eso, la solución bottom-up acaba con dos ciclos: uno externo, que toma el lugar de la recursión, y uno interno, idéntico al ciclo único de los algoritmos previos.
 
 \begin{pseudocode}
-función corte_de_vara_bottom_up(n: entero, p: arreglo de enteros) entero
-    |\br{arri}|precios_optimos = |\text{arreglo de enteros de longitud $n+1$}|
-    precios_optimos[0] = 0|\br{arrf}|
+def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
+    |\br{arri}|optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    optimal_revs[0] = 0|\br{arrf}|
 
-    |\bxl{cic}|for longitud=1 to n|\bxr{cic}|
-        |\br{inti}|mayor_precio = |$-\infty$|
-        for i=1 to longitud
-            precio = p[i] + precios_optimos[longitud-i]
-            if precio > mayor_precio
-                mayor_precio = precio
-
-        precios_optimos[longitud] = mayor_precio|\br{intf}|
+    |\bxl{cic}|for subprob_len=1 to n:|\bxr{cic}|
+        optimal_rev = |$-\infty$|
+        |\br{inti}|for i=1 to subprob_len:
+            revenue = prices[i] + optimal_revs[subprob_len-i]
+            if revenue > optimal_rev:
+                optimal_rev = revenue|\br{intf}|
+            
+        optimal_revs[subprob_len] = optimal_rev
     
-    return precios_optimos[n]
+    return optimal_revs[n]
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[xshift=5.5cm, yshift=-0.2cm, width=5cm]{arri}{arrf}{En bottom-up, el arreglo se llena en orden: no hay que llenarlo de antemano como en top-down, con el primer elemento basta.}
-  \codebrace[xshift=1.5cm, width=6cm]{inti}{intf}{El ciclo interno es prácticamente idéntico al de los algoritmos anteriores. Cambia que \texttt{n} ahora es \texttt{longitud} y el uso de la tabulación en lugar de un llamado recursivo}
-  \codebox[xshift=1cm, width=3.8cm]{cic}{Este ciclo hace que se solucione el problema de corte de vara para cada valor de \texttt{longitud} de \texttt{1} a \texttt{n}}
+  \codebrace[xshift=5cm, width=7cm]{arri}{arrf}{Como el arreglo se llenará en orden, no hay que llenarlo de antemano como en top-down, con el primer elemento basta.}
+  \codebox[xshift=0.5cm, width=10.5cm]{cic}{En top-down, la longitud \inline{n} cambia en cada llamado recursivo para cada subproblema; acá, \inline{n} nunca cambia, entonces \inline{subprob_len} toma su rol como la longitud de cada subproblema.}
+  \codebrace[xshift=4.5cm, width=5cm, yshift=-0.2cm]{inti}{intf}{El ciclo interno es calcado de las versiones anteriores, pero la tabulación reemplaza la recursión.}
 \end{annotations}
 
-Esa solución cuenta con una complejidad temporal de $\Theta(n^2)$, por los dos ciclos anidados, y con una complejidad espacial de $\Theta(n)$, por el arreglo que se utiliza para la tabulación.
+Esa solución cuenta con complejidad temporal de $\Theta(n^2)$, por los dos ciclos anidados, y con complejidad espacial de $\Theta(n)$, por el arreglo que se utiliza para la tabulación.
 
 \subsubsection{Obtener los tamaños de los cortes}
 
@@ -128,34 +127,34 @@ Para esto, al implementar el algoritmo de programación dinámica se debe no sol
 En este caso, además de almacenar el precio óptimo para una longitud $\ell$, se almacena el primer corte que corresponde a ese precio óptimo. Solo se almacena el primer corte $c$ para cada longitud, porque para determinar posteriormente el resto de cortes (si se requieren más de un corte), basta con examinar el subproblema de la longitud restante, o sea, el subproblema de la vara de longitud $\ell-c$ (para el cual también se guardó el primer corte).
 
 \begin{pseudocode}
-función corte_de_vara_backtracking(n: entero, p: arreglo de enteros) pila de enteros
-    precios_optimos = \text{arreglo de enteros de longitud $n+1$}
-    cortes_optimos = \text{arreglo de enteros de longitud $n+1$}
-    precios_optimos[0] = 0
+def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
+    optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    optimal_revs[0] = 0
+    optimal_cuts = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
 
-    for longitud=1 to n
-        mayor_precio = |$-\infty$|
-        for i=1 to longitud
-            precio = p[i] + precios_optimos[longitud-i]
-            if precio > mayor_precio
-                mayor_precio = precio
-                |\bxl{mejor}|mejor_corte = i|\bxr{mejor}|
-        precios_optimos[longitud] = mayor_precio
-        |\bxl{optm}|cortes_optimos[longitud] = mejor_corte|\bxr{optm}|
+    for subprob_len=1 to n:
+        optimal_rev = |$-\infty$|
+        for i=1 to subprob_len:
+            revenue = prices[i] + optimal_revs[subprob_len-i]
+            if revenue > optimal_rev:
+                optimal_rev = revenue
+                |\bxl{mejor}|optimal_cut = i|\bxr{mejor}|
+        optimal_revs[subprob_len] = optimal_rev
+        |\bxl{optm}|optimal_cuts[subprob_len] = optimal_cut|\bxr{optm}|
 
-    segmentos = |\text{pila de enteros de longitud máxima $n$}|
+    segments = |\text{pila de }|int|\text{ de longitud máxima $n$}|
     |\br{cortsi}|i = n
     while i > 0:
-        corte = cortes_optimos[i]
-        segmentos.put(corte)
-        i -= corte|\br{cortsf}|
+        cut = optimal_cuts[i]
+        segments.put(cut)
+        i -= cut|\br{cortsf}|
 
-    return segmentos
+    return segments
 \end{pseudocode}
 \begin{annotations}
     \codebox[notepos={(cbox@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
-    \codebox[xshift=2.7cm, width=5.7cm]{optm}{Para una longitud $\ell$, el primer corte es \inline{cortes_optimos[$\ell$]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{$\ell - $cortes_optimos[$\ell$]}}
-    \codebrace[xshift=3cm, width=6cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
+    \codebox[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud $\ell$, el primer corte es \inline{cortes_optimos[$\ell$]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{$\ell - $cortes_optimos[$\ell$]}}
+    \codebrace[xshift=2.5cm, width=8.5cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
 \end{annotations}
 
 \practicar[gfg]{Rod Cutting}{https://www.geeksforgeeks.org/problems/rod-cutting0840/1}
