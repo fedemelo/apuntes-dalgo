@@ -6,6 +6,8 @@ La búsqueda binaria es un algoritmo para buscar si un elemento específico exis
   \item Salida: índice de $k$ en el arreglo o -1 si no está
 \end{itemize}
 
+\subsubsection{Solución recursiva}
+
 El algoritmo es muy simple: se revisa el elemento del medio del arreglo. Si es $k$, encontramos lo que buscábamos y la salida es el índice del medio; si es menor, solo es sensato seguir buscando en la mitad derecha; si es mayor, solo en la mitad izquierda.
 
 \begin{pseudocode}
@@ -45,6 +47,8 @@ Despejando,
   x = \log_2(n)
 \end{gather*}
 Es decir, el número de divisiones, que es el número de pasos, crece logarítmicamente con respecto al tamaño de la entrada.
+
+\subsubsection{Solución iterativa}
 
 En este algoritmo, solo se realizan las etapas de dividir y conquistar; no es necesario combinar las soluciones. Eso facilita realizar una implementación iterativa del algoritmo:
 \begin{pseudocode}
