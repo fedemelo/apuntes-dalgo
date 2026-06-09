@@ -1,0 +1,18 @@
+\section{Multiplicación matricial}
+\label{apx:multiplicacion_matricial}
+
+La multiplicación de matrices es una generalización del producto punto entre vectores. Si el número de columnas de \( \bmat{A} \) es igual al número de filas de \( \bmat{B} \), el producto \( \bmat{A}\bmat{B} \) está definido y se dice que \( \bmat{A} \) y  \( \bmat{B} \) son compatibles bajo la multiplicación. 
+
+El producto de dos matrices \( \bmat{A}_{p \times q} \) y \( \bmat{B}_{q \times r} \) consiste en el producto punto de cada fila de \( \bmat{A} \) con cada columna de \( \bmat{B} \). En la matriz resultado $\bmat{C}_{p \times r}$, el elemento $c_{ij}$ que está la $i$-ésima fila y $j$-ésima columna de $\bmat{C}$, se computa como el producto punto de la $i$-ésima fila de $\bmat{A}$ y la $j$-ésima columna de $\bmat{B}$:
+\[c_{ij} = \sum_{k = 1}^{q} a_{ik} b_{kj}\]
+Es decir: se multiplica el primer elemento en la $i$-ésima fila de $\bmat{A}$ por el primer elemento de la $j$-ésima columna de $\bmat{B}$, luego el segundo de cada una, el tercero, y así; y luego su suma da lugar al elemento $c_{ij}$. 
+
+Es por eso que el número de columnas de $\bmat{A}_{p\times q}$ debe ser igual al número de filas de $\bmat{B}_{q \times r}$: para que las $p$ filas de $\bmat{A}$ (cada una con $q$ elementos, la cantidad de columnas) tengan cada una la misma cantidad de elementos que cada columna de $\bmat{B}$ (cada una con $q$ elementos, la cantidad de filas) y el producto punto esté bien definido. $\bmat{C}$ es de tamaño $p\times r$ porque hereda la cantidad de filas de $\bmat{A}$ y el número de columnas de $\bmat{B}$.
+
+Se hace evidente que la multiplicación de matrices no es conmutativa: en general, $\bmat{A} \bmat{B} \neq \bmat{B} \bmat{A}$, pues si las matrices no son cuadradas los dos productos no tienen el mismo tamaño, muchas veces ni siquiera están ambos definidos. Esto hace que sea importante aclarar si se multiplica \say{por derecha} o \say{por izquierda}.
+
+Nótese que la multiplicación de una matriz \( \bmat{A}_{m \times n} \) por un vector \( \bvec{v} \) solo está definida por derecha si \(\bvec{v} \in \mathbb{R}^{n}\) (y es, por convención, un vector columna), pues el vector toma el rol de una matriz $n\times 1$. Similarmente, esa multiplicación solo está definida por izquierda si \(\bvec{v} \in \mathbb{R}^{m}\) y se usa \(\transpose{\bvec{v}}\) (o sea la transpuesta: se usa como vector fila o como matriz  $1\times n$). La multiplicación entre una matriz y un vector columna resulta en un vector columna, como el producto entre una matriz y un vector fila es un vector fila.
+
+La multiplicación de matrices es asociativa, las multiplicaciones en cadena se pueden agrupar en cualquier orden sin alterar la secuencia de las matrices:
+\[\bmat{A}  \bmat{B}  \bmat{C} = (\bmat{A}  \bmat{B})  \bmat{C} = \bmat{A}  (\bmat{B}  \bmat{C})\]
+Esto se debe a que cada elemento del resultado final se computa mediante la sumatoria de productos entre escalares que se mostró recién. Al encadenar multiplicaciones, lo que se genera es una secuencia de sumatorias anidadas. Como la suma y la multiplicación de números reales son conmutativas y asociativas, el orden en que se resuelvan estas sumatorias no altera el resultado.
