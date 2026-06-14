@@ -1,0 +1,40 @@
+\section{Recursión}
+
+Una función (matemática o de programación) es \emph{recursiva} si está definida en términos de sí misma.
+
+En términos conceptuales, para resolver un problema utilizando recursión, el problema se debe poder dividir en subproblemas más pequeños con la misma estructura del original. Las soluciones a esos subproblemas se utilizan para solucionar el problema original. 
+
+En términos de implementación, una función recursiva se debe invocar a sí misma. Por ende, dada una función $F$, la entrada $X$ de la invocación original $F(X)$ debe poderse dividir en pedazos con su misma estructura (mismo tipo de dato), $x_1 \in X, x_2 \in X, \dots, x_n \in X$, que son usados como argumentos de los llamados recursivos: $F(x_1), F(x_2), \ldots, F(x_n)$. Cada uno de esos llamados representa la solución a un subproblema.
+
+Toda función recursiva consta de dos elementos:
+\begin{itemize}
+  \item Uno o más casos en los que la función retorna sin invocarse a sí misma, denominados \emph{casos base}.
+  \begin{itemize}
+    \item Un caso base se alcanza cuando el subproblema es tan pequeño que puede solucionarse sin recursión.
+  \end{itemize}
+  \item  Una \emph{relación de recurrencia}, que define la relación entre la solución del problema y la solución de sus subproblemas.
+  \begin{itemize}
+    \item Esa relación de recurrencia combina de alguna manera los resultados de los llamados recursivos $F(x_1), F(x_2), \ldots, F(x_n)$ para obtener la solución al problema original.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Sucesión de Fibonacci}
+
+Se presenta la sucesión de Fibonacci como ejemplo clásico de recursión. La sucesión comienza con 0 y 1, y cada número posterior es la suma de los dos anteriores. Formalmente:
+\begin{align*}
+    F(0) &= 0 \\
+    F(1) &= 1 \\
+    F(n) &= F(n-1) + F(n-2) \quad \text{para } n > 1
+\end{align*}
+Allí, los casos base son las primeras dos expresiones y la relación de recurrencia es la tercera expresión. Se puede traducir esa definición a una implementación recursiva directamente:
+\begin{pseudocode}
+def fibonacci(n: int) -> int:
+    if n <= 1: 
+        return n
+
+    return fibonacci(n-1) + fibonacci(n-2)
+\end{pseudocode}
+
+\input{diseno/recursion/ejecucion}
+\input{diseno/recursion/complejidad}
+\input{diseno/recursion/recursion_iteracion}
