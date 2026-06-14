@@ -28,5 +28,22 @@ A pesar de que el análisis anterior es útil para dimensionar por qué es impor
 \end{enumerate}
 En general, para $n$ matrices hay $\frac{2n!}{(n+1)!n!}$ posibles agrupaciones completas. Ese cálculo corresponde a la sucesión de números de Catalán, cuya deducción es poco trivial, por lo que se desglosa en el \ref{apx:numeros_catalan}. El caso es que, enfrentados a la imposibilidad de elegir la mejor agrupación empleando solo álgebra, es hora de diseñar algoritmos.
 
-\subsubsection{Solución recursiva}
+\subsubsection{Subestructura óptima}
 
+Una forma de ver la subestructura óptima en este problema es pensarlo desde el final hacia el principio.  Independientemente de cómo se hayan agrupado las matrices para multiplicarlas, la última multiplicación tendrá que ser entre dos matrices. Ambas matrices vienen de multiplicar varias otras; si la primera es el producto de $k$ matrices, la segunda es el producto de $n-k$ matrices: $(\bmat{A}_1 \cdots \bmat{A}_k)(\bmat{A}_{k+1}\cdots \bmat{A}_n)$. Esa última expresión generaliza cualquier agrupación si $1\leq k < n$ y la abreviamos $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$.  
+
+A partir de esa idea, la subestructura óptima radica en que, para que ese producto $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$ sea la agrupación óptima, entonces ambos factores $\bmat{A}_{1..k}$ y $\bmat{A}_{k+1..n}$ deben estar, a su vez, agrupados óptimamente. Eso se debe a que si alguno de los factores se pudiera agrupar mejor, entonces bastaría con reemplazarlo por esa mejor agrupación para obtener una una agrupación final mejor que la óptima, lo cual es una contradicción. Así pues, todo subproblema tiene la forma $\bmat{A}_{i..k} \bmat{A}_{k+1..j}$ para algunos valores $1 \leq i\leq k\leq j < n$.
+
+\subsubsection{Formulación recursiva}
+
+Con base en lo anterior, se puede formular una solución recursiva. Cada subproblema $\bmat{A}_{i..k} \bmat{A}_{k+1..j}$ solo es interesante si $i < j$; cuando $i \geq j$ solo hay una (o ninguna) matriz. Para evaluar cuál agrupación $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$ tiene menor costo, se debe buscar la de menor costo considerando cada posible $k$ entre $i$ y $j$ .
+
+Recuérdese que el costo está dado por: el costo de las multiplicaciones $\bmat{A}_{1..k}$, más el de las multiplicaciones $\bmat{A}_{k+1..n}$, sumados al costo de multiplicar $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$. Para formular ese último costo, se necesita las dimensiones de las matrices, entonces se va a denotar el tamaño de la $k$-ésima matriz como $p_k \times p_{k+1}$, de forma que el producto queda como: $(\bmat{A}_{1_{p_1 \times p_2}} \cdots \bmat{A}_{k_{p_k \times p_{k+1}}})(\bmat{A}_{{k+1}_{p_{k+1} \times p_{k+2}}}\cdots \bmat{A}_{n_{n\times n+1}})$
+
+Con todo eso en mente, sea $f(i,j)$ el costo óptimo de multiplicar las matrices entre la $i$ y la $j$:
+\begin{gather*}
+f(i,j) = \begin{cases}
+  0 & \text{ si } i \geq j \\ 
+  \min\limits_{i \leq k < j} f(i, k) + f(k+1, j) + p_ip_{k+1}p_{j+1} & \text{ si } i < j \\ 
+\end{cases}
+\end{gather*}
