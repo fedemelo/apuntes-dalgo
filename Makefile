@@ -17,12 +17,29 @@ build:  # Full compile. As many runs as needed to place overlays, resolve cross-
 	cd $(NOTES_DIR) && $(LATEXMK) dalgo.tex
 
 clean:  # Remove all temporary files
-	find . \( -name "*.aux" -o -name "*.log" -o -name "*.out" -o -name "*.toc" -o -name "*.pyg" \) -exec rm {} +
-	find . -name "*.bak0" -exec rm {} +
-	find . \( -name "*.bbl" -o -name "*.blg" \) -exec rm {} +
-	find . \( -name "*.glg" -o -name "*.glo" -o -name "*.gls" -o -name "*.ist" \) -exec rm {} +
-	find . \( -name "*.fdb_latexmk" -o -name "*.fls" \) -exec rm {} +
-	find . \( -name "*.gz" -o -name "*.lof" -o -name "*.lot" -o -name "*.run.xml" \) -exec rm {} +
+	find . \
+	\( \
+		-name "*.aux" -o \
+		-name "*.log" -o \
+		-name "*.out" -o \
+		-name "*.toc" -o \
+		-name "*.pyg" -o \
+		-name "*.bak0" -o \
+		-name "*.bbl" -o \
+		-name "*.blg" -o \
+		-name "*.glg" -o \
+		-name "*.glo" -o \
+		-name "*.gls" -o \
+		-name "*.ist" -o \
+		-name "*.fdb_latexmk" -o \
+		-name "*.fls" -o \
+		-name "*.gz" -o \
+		-name "*.lof" -o \
+		-name "*.lot" -o \
+		-name "*.run.xml" -o \
+		-name "*.listing" \
+	\) \
+	-exec rm {} +
 
 clean-all: clean  # Remove all temporary files and the generated pdf
 	find . -name "*.pdf" -exec rm {} +
