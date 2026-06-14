@@ -2,33 +2,37 @@
 
 La \emph{programación dinámica}\footnote{El nombre no tiene relación con cómo funciona la técnica; fue un término acuñado por Richard Bellman en la década de 1950 para describir su investigación, deliberadamente ambiguo para evitar la aversión de la Fuerza Aérea estadounidense hacia la investigación matemática en aquel entonces.} es una técnica de diseño de algoritmos usualmente aplicable a problemas de optimización o de conteo.
 
-Se puede ver como una mejora de dividir y conquistar para ciertos problemas. En ocasiones, al usar dividir y conquistar, los subproblemas en los que se dividió el problema original comparten subsubproblemas idénticos. Al resolver cada subproblema por aparte, los subsubproblemas iguales se resuelven varias veces. La idea fundamental de la programación dinámica es solo resolver cada subsubproblema una vez y almacenar su resultado en una estructura de datos para poder reutilizarlo. 
+Se puede ver como una mejora de dividir y conquistar para ciertos problemas. En ocasiones, al usar dividir y conquistar, los subproblemas en los que se dividió el problema original comparten subsubproblemas idénticos. Al resolver cada subproblema por aparte, los subsubproblemas iguales se resuelven varias veces. La idea fundamental de la programación dinámica es resolver cada subsubproblema solo una vez y almacenar su resultado en una estructura de datos para poder reutilizarlo. 
 
 En ese sentido, se realiza un \textit{trade-off} de complejidad espacial por complejidad temporal: se gasta más espacio para un algoritmo más veloz.
 
-Se puede aplicar programación dinámica a muchos problemas muy distintos, pero no a todos se puede y no a todos tiene sentido hacerlo. Primeramente, usualmente se aplica a problemas planteados como \emph{problemas de optimización}: problemas que tienen un conjunto de soluciones factibles, cada una con un valor, y en los que se busca una \emph{solución óptima}: una cuyo valor sea mínimo o máximo, acorde. Sumado a eso, los problemas que se resuelven eficientemente con programación dinámica tienen dos propiedades fundamentales:
+\subsubsection{Cuándo usar programación dinámica}
+
+No tiene sentido intentar diseñar algoritmos de programación dinámica para todos los problemas. Los problemas que se resuelven eficientemente con programación dinámica \textit{siempre} presentan dos propiedades:
 \begin{enumerate}
-    \item Los problemas \textit{deben} tener \emph{subestructura óptima}: que la solución óptima del problema original se pueda construir a partir de soluciones óptimas a sus subproblemas.
-    \item Para que la programación dinámica mejore la eficiencia, el problema debe presentar \emph{subproblemas superpuestos}, es decir, que un algoritmo recursivo para el problema acabaría resolviendo los mismos subproblemas varias veces.
+    \item \emph{Subestructura óptima}: la solución óptima del problema original se puede construir a partir de soluciones óptimas a sus subproblemas. Esto es un prerrequisito para que exista un algoritmo de programación dinámica.
+    \item \emph{Subproblemas superpuestos}: varios subproblemas tienen subsubproblemas repetidos, de forma que un algoritmo recursivo acabaría resolviendo los mismos subsubproblemas varias veces.
     \begin{itemize}
-        \item Para que eso ocurra, el espacio de posibles subproblemas debe ser pequeño, usualmente polinomial en el tamaño de la entrada.
-        \item Si el problema no presenta subproblemas superpuestos, usar programación dinámica no es más eficiente que usar dividir y conquistar.
+        \item Para que eso ocurra, el espacio de posibles subproblemas debe ser pequeño, usualmente polinomial en el tamaño de la entrada. Si el espacio es muy grande, es probable que pocos o ningún subsubproblema se repita.
+        \item Puede que exista un algoritmo de programación dinámica para el problema incluso si no presenta subproblemas superpuestos, pero entonces usar programación dinámica no es más eficiente que usar dividir y conquistar o alguna solución recursiva.
     \end{itemize}
 \end{enumerate}
+
+\subsubsection{Tipos de programación dinámica}
 
 Hay en esencia dos formas de diseñar algoritmos de programación dinámica: 
 \begin{itemize}
     \item \emph{\textit{Top-down}} (del problema más general a los más pequeños): Se resuelve el problema original de forma recursiva, pero cada vez que se resuelve un subproblema, se almacena su resultado para evitar tener que recomputarlo. A eso se le llama \emph{memoización}\footnote{El término "memoización" proviene del inglés \textit{memoization}, que significa convertir los resultados en un memo, abreviación del latín \textit{memorandum}: algo para recordar.}.
     \begin{itemize}
-        \item Se crea una estructura de datos para almacenar los resultados de cada llamado recursivo. Se llena de elementos iniciales que indiquen que el resultado en esa posición no se ha computado aún (e.g., \inline{null}, $\infty$, etc.). Para que la información persista entre llamados recursivos, la estructura tiene que estar definida afuera de la función recursiva, si no, cada llamado recursivo crearía su propia estructura, sin los resultados previos. Usualmente, la función recursiva pasa a ser una función auxiliar de una función principal en la que se define la estructura. 
+        \item En la implementación, siempre se crea una estructura de datos para almacenar los resultados de cada llamado recursivo, que inicialmente se llena con valores que indiquen que el resultado en esa posición no se ha computado aún (e.g., \inline{null}, $\infty$, etc.). Para que la información persista entre llamados recursivos, esa estructura tiene que estar definida afuera de la función recursiva, en otra función que invoca la recursiva; si no, cada llamado recursivo crearía su propia estructura, sin los resultados previos.
     \end{itemize}
     \item \emph{\textit{Bottom-up}} (de los problemas pequeños al general): Se resuelven primero los subproblemas más pequeños y se almacenan sus resultados en una tabla. A eso se le denomina \emph{tabulación}. Se usan esos resultados para resolver subproblemas más grandes, hasta llegar al problema original.
     \begin{itemize}
-        \item Como los subproblemas se resuelven en orden, se reemplaza el uso de recursión por un ciclo. 
+        \item Como los subproblemas se resuelven en orden de tamaño, se reemplaza el uso de recursión por un ciclo. 
     \end{itemize}
 \end{itemize}
 
-Como ambos métodos aprovechan la propiedad de subproblemas superpuestos, sus complejidades asintóticas suelen ser iguales. Sin embargo, si todos los subproblemas posibles se tienen que resolver al menos una vez, el algoritmo bottom-up suele ser más eficiente que el top-down por un factor constante, porque el algoritmo top-down tiene el sobrecosto de la recursión.
+Como ambos métodos aprovechan la propiedad de subproblemas superpuestos, sus complejidades asintóticas suelen ser iguales. Sin embargo, cuando \textit{todos} los subproblemas posibles se tienen que resolver al menos una vez, el algoritmo bottom-up suele ser más eficiente que el top-down por un factor constante, porque el algoritmo top-down tiene el sobrecosto de la recursión (véase el apéndice \ref{apx:recursion_iteracion}).
 
 Ocasionalmente, no es necesario resolver todos los subproblemas del espacio; en ese caso, la solución bottom-up puede ser peor porque requiere resolver los subproblemas pequeños primero para completar la tabulación, mientras que la solución top-down solo memoiza los subproblemas que sí se tienen que resolver.
 
