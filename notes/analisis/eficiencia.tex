@@ -3,7 +3,7 @@
 
 Entre dos algoritmos correctos que resuelven un mismo problema, naturalmente se prefiere el que menos recursos usa: el más \emph{eficiente}.
 
-Usualmente, el recurso más preciado es el tiempo, por lo cual cuando el análisis de eficiencia suele estar enfocado en el tiempo de ejecución; sin embargo, se pueden seguir principios similares para analizar otros recursos, como el uso de memoria.
+Usualmente, el recurso más preciado es el tiempo, por lo cual el análisis de eficiencia suele estar enfocado en el tiempo de ejecución; sin embargo, se pueden seguir principios similares para analizar otros recursos, como el uso de memoria.
 
 \subsection{Complejidad temporal}
 
@@ -42,17 +42,22 @@ Para analizar algoritmos, tiene sentido utilizar un modelo de computación que r
 
 Para ser formales, hace falta listar explícitamente qué se considera una instrucción elemental. Sin embargo esa labor es engorrosa, requiere conocimientos en arquitectura de computadores y aporta poco. Por lo pronto, basta con tener presente que la idea del modelo RAM es abstraer un computador real, por lo que las instrucciones simples en el modelo RAM son aquellas que son simples en un computador normal. Los bucles y las subrutinas, por ejemplo, no son instrucciones primitivas en un computador común, por lo que tampoco lo son en el modelo RAM.
 
-Existen otros muchos modelos de computación, que pretenden representar otras cosas: máquinas de Turing; manejo de memoria moderno con memoria externa, memoria virtual y caché; procesadores paralelos; números de gran tamaño; entre otros. No obstante, en el análisis clásico de algoritmos se da por sentado el modelo RAM y no se contempla ninguno de esos factores.
+Existen otros muchos modelos de computación, que pretenden representar otras cosas: máquinas de Turing; manejo de memoria moderno con memoria externa, memoria virtual y caché; procesadores paralelos; números de gran tamaño; entre otros. Incluso se puede usar un modelo RAM de costo variable, que contempla que las instrucciones elementales toman un tiempo proporcional al tamaño de los operandos. No obstante, en el análisis clásico de algoritmos ninguno de esos factores suele considerarse y por tanto se da por sentado el modelo RAM de costo uniforme.
 
-\subsubsection{Análisis exacto}
+\subsection{Análisis exacto}
 
 % TODO: Terminar análisis exacto. Pasar lo que está en el MD. O decidirme y quitarlo
 % En principio preferiría que no esté en las notas pq las extiende, a mi juicio, innecesariamente
+El análisis exacto de un algoritmo consiste en:
 \begin{enumerate} 
-  \item Asignar un tiempo constante a cada instrucción primitiva del algoritmo
+  \item Asignar un tiempo constante a cada instrucción elemental del algoritmo
   \item Contar cuántas veces ocurre cada instrucción
   \item Sumar esos tiempos
 \end{enumerate}
 A eso se le denomina \emph{análisis exacto} de la eficiencia.
 
 %TODO: Análisis asintótico y análisis amortizado, de obsidian
+% \subsection{Análisis asintótico}
+% \subsection{Análisis amortizado}
+
+
