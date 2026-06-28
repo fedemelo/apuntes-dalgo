@@ -1,7 +1,6 @@
 # Add `packages` directory to `TEXINPUTS` env var so pdftex can find custom packages
-# Directory is relative, so it looks for a packages/ directory 
-# within the directory where the tex file being compiled is located.
-TEXINPUTS := ./packages/:$(TEXINPUTS)
+# Absolute path so it resolves correctly regardless of which subdirectory is compiled.
+TEXINPUTS := $(CURDIR)/packages/:$(TEXINPUTS)
 export TEXINPUTS
 
 TEX=pdflatex -shell-escape

@@ -30,7 +30,7 @@
 %\setlength{\parskip}{0em}  % Space between paragraphs.
 %\renewcommand{\baselinestretch}{2}  % Interlineado.
 \usepackage{parskip}  % Add space between paragraphs and remove indentation, without getting unexpected vertical spacing.
-\renewcommand*{\emph}[1]{{\bfseries\textcolor{green!37!black}{#1}}}  % Green boldface emphasis.
+\newcommand*{\concept}[1]{{\bfseries\textcolor{green!37!black}{#1}}}  % Green boldface
 
 
 %%% 2. Page layout
