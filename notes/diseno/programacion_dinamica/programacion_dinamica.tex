@@ -1,6 +1,6 @@
 \section{Programación dinámica}
 
-La \emph{programación dinámica}\footnote{El nombre no tiene relación con cómo funciona la técnica; fue un término acuñado por Richard Bellman en la década de 1950 para describir su investigación, deliberadamente ambiguo para evitar la aversión de la Fuerza Aérea estadounidense hacia la investigación matemática en aquel entonces.} es una técnica de diseño de algoritmos usualmente aplicable a problemas de optimización o de conteo.
+La \concept{programación dinámica}\footnote{El nombre no tiene relación con cómo funciona la técnica; fue un término acuñado por Richard Bellman en la década de 1950 para describir su investigación, deliberadamente ambiguo para evitar la aversión de la Fuerza Aérea estadounidense hacia la investigación matemática en aquel entonces.} es una técnica de diseño de algoritmos usualmente aplicable a problemas de optimización o de conteo.
 
 Se puede ver como una mejora de dividir y conquistar para ciertos problemas. En ocasiones, al usar dividir y conquistar, los subproblemas en los que se dividió el problema original comparten subsubproblemas idénticos. Al resolver cada subproblema por aparte, los subsubproblemas iguales se resuelven varias veces. La idea fundamental de la programación dinámica es resolver cada subsubproblema solo una vez y almacenar su resultado en una estructura de datos para poder reutilizarlo. 
 
@@ -10,8 +10,8 @@ En ese sentido, se realiza un \textit{trade-off} de complejidad espacial por com
 
 No tiene sentido intentar diseñar algoritmos de programación dinámica para todos los problemas. Los problemas que se resuelven eficientemente con programación dinámica \textit{siempre} presentan dos propiedades:
 \begin{enumerate}
-    \item \emph{Subestructura óptima}: la solución óptima del problema original se puede construir a partir de soluciones óptimas a sus subproblemas. Esto es un prerrequisito para que exista un algoritmo de programación dinámica.
-    \item \emph{Subproblemas superpuestos}: varios subproblemas tienen subsubproblemas repetidos, de forma que un algoritmo recursivo acabaría resolviendo los mismos subsubproblemas varias veces.
+    \item \concept{Subestructura óptima}: la solución óptima del problema original se puede construir a partir de soluciones óptimas a sus subproblemas. Esto es un prerrequisito para que exista un algoritmo de programación dinámica.
+    \item \concept{Subproblemas superpuestos}: varios subproblemas tienen subsubproblemas repetidos, de forma que un algoritmo recursivo acabaría resolviendo los mismos subsubproblemas varias veces.
     \begin{itemize}
         \item Para que eso ocurra, el espacio de posibles subproblemas debe ser pequeño, usualmente polinomial en el tamaño de la entrada. Si el espacio es muy grande, es probable que pocos o ningún subsubproblema se repita.
         \item Puede que exista un algoritmo de programación dinámica para el problema incluso si no presenta subproblemas superpuestos, pero entonces usar programación dinámica no es más eficiente que usar dividir y conquistar o alguna solución recursiva.
@@ -22,11 +22,11 @@ No tiene sentido intentar diseñar algoritmos de programación dinámica para to
 
 Hay en esencia dos formas de diseñar algoritmos de programación dinámica: 
 \begin{itemize}
-    \item \emph{\textit{Top-down}} (del problema más general a los más pequeños): Se resuelve el problema original de forma recursiva, pero cada vez que se resuelve un subproblema, se almacena su resultado para evitar tener que recomputarlo. A eso se le llama \emph{memoización}\footnote{El término "memoización" proviene del inglés \textit{memoization}, que significa convertir los resultados en un memo, abreviación del latín \textit{memorandum}: algo para recordar.}.
+    \item \concept{\textit{Top-down}} (del problema más general a los más pequeños): Se resuelve el problema original de forma recursiva, pero cada vez que se resuelve un subproblema, se almacena su resultado para evitar tener que recomputarlo. A eso se le llama \concept{memoización}\footnote{El término "memoización" proviene del inglés \textit{memoization}, que significa convertir los resultados en un memo, abreviación del latín \textit{memorandum}: algo para recordar.}.
     \begin{itemize}
         \item En la implementación, siempre se crea una estructura de datos para almacenar los resultados de cada llamado recursivo, que inicialmente se llena con valores que indiquen que el resultado en esa posición no se ha computado aún (e.g., \inline{null}, $\infty$, etc.). Para que la información persista entre llamados recursivos, esa estructura tiene que estar definida afuera de la función recursiva, en otra función que invoca la recursiva; si no, cada llamado recursivo crearía su propia estructura, sin los resultados previos.
     \end{itemize}
-    \item \emph{\textit{Bottom-up}} (de los problemas pequeños al general): Se resuelven primero los subproblemas más pequeños y se almacenan sus resultados en una tabla. A eso se le denomina \emph{tabulación}. Se usan esos resultados para resolver subproblemas más grandes, hasta llegar al problema original.
+    \item \concept{\textit{Bottom-up}} (de los problemas pequeños al general): Se resuelven primero los subproblemas más pequeños y se almacenan sus resultados en una tabla. A eso se le denomina \concept{tabulación}. Se usan esos resultados para resolver subproblemas más grandes, hasta llegar al problema original.
     \begin{itemize}
         \item Como los subproblemas se resuelven en orden de tamaño, se reemplaza el uso de recursión por un ciclo. 
     \end{itemize}
