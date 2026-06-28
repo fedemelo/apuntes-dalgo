@@ -1,6 +1,6 @@
 \section{Recursión}
 
-Una función (matemática o de programación) es \emph{recursiva} si está definida en términos de sí misma.
+Una función (matemática o de programación) es \concept{recursiva} si está definida en términos de sí misma.
 
 En términos conceptuales, para resolver un problema utilizando recursión, el problema se debe poder dividir en subproblemas más pequeños con la misma estructura del original. Las soluciones a esos subproblemas se utilizan para solucionar el problema original. 
 
@@ -8,11 +8,11 @@ En términos de implementación, una función recursiva se debe invocar a sí mi
 
 Toda función recursiva consta de dos elementos:
 \begin{itemize}
-  \item Uno o más casos en los que la función retorna sin invocarse a sí misma, denominados \emph{casos base}.
+  \item Uno o más casos en los que la función retorna sin invocarse a sí misma, denominados \concept{casos base}.
   \begin{itemize}
     \item Un caso base se alcanza cuando el subproblema es tan pequeño que puede solucionarse sin recursión.
   \end{itemize}
-  \item  Una \emph{relación de recurrencia}, que define la relación entre la solución del problema y la solución de sus subproblemas.
+  \item  Una \concept{relación de recurrencia}, que define la relación entre la solución del problema y la solución de sus subproblemas.
   \begin{itemize}
     \item Esa relación de recurrencia combina de alguna manera los resultados de los llamados recursivos $F(x_1), F(x_2), \ldots, F(x_n)$ para obtener la solución al problema original.
   \end{itemize}
