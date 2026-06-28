@@ -6,15 +6,22 @@ export TEXINPUTS
 
 TEX=pdflatex -shell-escape
 LATEXMK=latexmk -pdf -pdflatex="pdflatex -shell-escape %O %S"
-NOTES_DIR=notes
+DALGO_DIR=notes
+GRAPHS_DIR=graphs
 
-.PHONY: notes build clean clean-all
+.PHONY: clean clean-all sml-dalgo dalgo sml-grafos grafos
 
-notes:
-	cd $(NOTES_DIR) && $(TEX) dalgo.tex
+sml-dalgo:
+	cd $(DALGO_DIR) && $(TEX) dalgo.tex
 
-build:  # Full compile. As many runs as needed to place overlays, resolve cross-references, etc.
-	cd $(NOTES_DIR) && $(LATEXMK) dalgo.tex
+dalgo:
+	cd $(DALGO_DIR) && $(LATEXMK) dalgo.tex
+
+sml-grafos:
+	cd $(GRAPHS_DIR) && $(TEX) grafos.tex
+
+grafos:
+	cd $(GRAPHS_DIR) && $(LATEXMK) grafos.tex
 
 clean:  # Remove all temporary files
 	find . \
