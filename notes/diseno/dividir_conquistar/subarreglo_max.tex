@@ -2,8 +2,8 @@
 
 Dado un arreglo de números, a un subarreglo contiguo no vacío cuya suma (de sus elementos) es mayor que la de cualquier otro subarreglo contiguo se le denomina un \concept{subarreglo máximo}. El problema de encontrar un subarreglo máximo se define como:
 \begin{itemize}
-  \item \textbf{Entrada}: arreglo con $n$ números: $[a_1, a_2,\ldots,a_n]$.
-  \item \textbf{Salida}: subarreglo contiguo $[a_i, a_{i+1},\ldots,a_j]$ no vacío tal que la suma $\sum_{k=i}^j a_k$ es máxima.
+  \item \textbf{Entrada}: arreglo con \(n\) números: \([a_1, a_2,\ldots,a_n]\).
+  \item \textbf{Salida}: subarreglo contiguo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.
 \end{itemize}
 \say{es máxima} se puede formalizar en una expresión matemática que básicamente dice que esa sumatoria es mayor que cualquier otra sumatoria de elementos contiguos que se pueda formular. Nótese que podría haber más de un subarreglo máximo: podrían haber varios cuya suma sea igual. Basta con hallar cualquiera que sea máximo.
 % TODO: Vale la pena escribir la expresión?
@@ -16,8 +16,8 @@ Hay dos tipos de instancias de este problema que son muy fáciles:
 
 Para facilitar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
 \begin{itemize}
-  \item \textbf{Entrada}: arreglo con $n$ números: $[a_0, a_2,\ldots,a_{n-1}]$.
-  \item \textbf{Salida}: índices $i$, $j$ del arreglo, donde $0 \leq i \leq j < n$ tales que la suma $\sum_{k=i}^j a_k$ es máxima.
+  \item \textbf{Entrada}: arreglo con \(n\) números: \([a_0, a_2,\ldots,a_{n-1}]\).
+  \item \textbf{Salida}: índices \(i\), \(j\) del arreglo, donde \(0 \leq i \leq j < n\) tales que la suma \(\sum_{k=i}^j a_k\) es máxima.
 \end{itemize}
 Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
 
@@ -26,7 +26,7 @@ Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
 \begin{pseudocode}
 def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
-    largest = |$-\infty$|
+    largest = |\(-\infty\)|
 
     best_i = 0
     best_j = 0
@@ -41,7 +41,7 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
                 best_j = j
     return best_i, best_j, largest
 \end{pseudocode}
-Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es $O(n^2)$.
+Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
 
 \subsubsection{Solución por dividir y conquistar}
 Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema es hallar un subarreglo máximo en el respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, podríamos tener el infortunio de partirlo justo donde estaba el subarreglo máximo, entonces en el paso de combinar las soluciones, tenemos que asegurarnos de contemplar esa posibilidad. Con eso, las etapas son:
@@ -77,8 +77,8 @@ def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[i
     right_sum = 0
     left_sum = 0
 
-    largest_right = |$-\infty$|
-    largest_left = |$-\infty$|
+    largest_right = |\(-\infty\)|
+    largest_left = |\(-\infty\)|
 
     for r=k to j:
         right_sum += nums[r]
@@ -99,4 +99,3 @@ def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[i
 % TODO: Análisis de complejidad así sea light
 
 \practicar[leetcode]{Maximum Subarray}{https://leetcode.com/problems/maximum-subarray/}
-

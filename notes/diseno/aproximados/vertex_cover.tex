@@ -1,6 +1,6 @@
 \subsection{Problema de vertex-cover}
 
-Un cubrimiento por vértices (\textit{vertex cover}) de un grafo $(V,E)$ es un subconjunto de vértices $S\subseteq V$ que cubre todas las aristas, es decir, que toda arista $(u,v) \in E$ tiene al menos un extremo en $S$: $u\in S$ o $v\in S$.
+Un cubrimiento por vértices (\textit{vertex cover}) de un grafo \((V,E)\) es un subconjunto de vértices \(S\subseteq V\) que cubre todas las aristas, es decir, que toda arista \((u,v) \in E\) tiene al menos un extremo en \(S\): \(u\in S\) o \(v\in S\).
 
 El \concept{problema de vertex-cover} consiste en hallar un cubrimiento por vértices de tamaño mínimo.
 
@@ -12,13 +12,13 @@ La idea es: mientras queden aristas sin cubrir, se elige arbitrariamente una de 
 
 \begin{pseudocode}
 def aprox_vertex_cover(G: grafo) -> set[vértices]:
-    |$S$| = |$\varnothing$|
-    |$E$| = |\textrm{copia de las aristas de }$G$| 
-    while |$E \neq \varnothing$|:
-        |$e$| = |\textrm{eje arbitrario }$(u, v) \in E$| 
-        |$S$| = |$S \cup \{u, v\}$|
-        |\textrm{eliminar cada arista incidente a }$u$\textrm{ o }$v$\textrm{ de }$E$|
-    return |$S$|
+    |\(S\)| = |\(\varnothing\)|
+    |\(E\)| = |\textrm{copia de las aristas de }\(G\)| 
+    while |\(E \neq \varnothing\)|:
+        |\(e\)| = |\textrm{eje arbitrario }\((u, v) \in E\)| 
+        |\(S\)| = |\(S \cup \{u, v\}\)|
+        |\textrm{eliminar cada arista incidente a }\(u\)\textrm{ o }\(v\)\textrm{ de }\(E\)|
+    return |\(S\)|
 \end{pseudocode}
 
 \subsubsection{Complejidad temporal}

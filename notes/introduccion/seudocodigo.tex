@@ -13,7 +13,7 @@ En estos apuntes se utiliza un seudocódigo inspirado en Python, que es un lengu
 E.g., una función que recibe un arreglo de números y encuentra el mayor:
 \begin{pseudocode}
 def find_largest(nums: arreglo[int]) -> int:
-    largest = |$-\infty$|
+    largest = |\(-\infty\)|
     for i=0 to len(nums)-1:
         if nums[i] > largest:
             largest = nums[i]
@@ -28,7 +28,7 @@ En ese ejemplo, es evidente que el código se asemeja a Python, salvo algunos de
   \end{itemize}
   \item Los ciclos sobre rangos de enteros se escriben como \inline{for i=0 to n-1} en lugar de utilizar \inline{for i in range(n)}. La notación preferida es familiar para quienes provienen de otros lenguajes imperativos y además hace explícitos los límites del recorrido.
   \item En lugar de usar \textit{slicing}, se escribe literalmente (en español) que se realiza una copia y de qué segmento específico del arreglo.
-  \item Cuando se usa la noción de infinito, se escribe el símbolo matemático $\infty$ en lugar de la sintaxis \verb|float('inf')|.
+  \item Cuando se usa la noción de infinito, se escribe el símbolo matemático \(\infty\) en lugar de la sintaxis \verb|float('inf')|.
   \item Se evita usar cualquier función, como \inline{sorted}, o librería, como \inline{itertools}, que encapsule operaciones complejas, pues el propósito es precisamente comprender cómo se implementarían desde cero.
 \end{itemize}
 Con lo anterior en mente, debería ser trivial traducir cualquiera de los algoritmos en estas notas a Python ejecutable, y también debería ser sencillo traducirlos a cualquier lenguaje imperativo.

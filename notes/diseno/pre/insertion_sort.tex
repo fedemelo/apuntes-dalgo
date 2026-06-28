@@ -26,13 +26,13 @@ def insertion_sort(nums: arreglo):
 
 El algoritmo presenta un ciclo anidado dentro de otro. El ciclo externo siempre recorre el arreglo completo, pero la cantidad de veces que ejecuta el cuerpo del ciclo interno depende de qué tanto haya que retroceder cada elemento, es decir, de qué tan ordenado esté el arreglo.
 
-El mejor caso es cuando el arreglo está ordenado, pues no hay que retroceder ningún elemento y el cuerpo del ciclo interno nunca ejecuta. En ese caso el costo computacional está dado solo por el ciclo externo, que indefectiblemente revisa todos los elementos. Sea $T_\text{mejor}$ la función para ese costo computacional, $T_\text{mejor} \in \Theta(n)$.
+El mejor caso es cuando el arreglo está ordenado, pues no hay que retroceder ningún elemento y el cuerpo del ciclo interno nunca ejecuta. En ese caso el costo computacional está dado solo por el ciclo externo, que indefectiblemente revisa todos los elementos. Sea \(T_\text{mejor}\) la función para ese costo computacional, \(T_\text{mejor} \in \Theta(n)\).
 
-El peor caso es cuando el ciclo interno tiene que retroceder cada elemento hasta el principio, es decir, cuando el arreglo está en orden inverso. En ese caso, para cada elemento $i$, el ciclo interno debe retrocederlo $i-1$ veces; la cantidad de operaciones es entonces:
+El peor caso es cuando el ciclo interno tiene que retroceder cada elemento hasta el principio, es decir, cuando el arreglo está en orden inverso. En ese caso, para cada elemento \(i\), el ciclo interno debe retrocederlo \(i-1\) veces; la cantidad de operaciones es entonces:
 \[\sum_{i=2}^n (i-1) = 1+2+\cdots+(n-1) = \frac{n^2-n}{2}.\]
-Eso, aunado a las operaciones del ciclo externo, da la siguiente función para el costo computacional, donde $c$ denota el tiempo que demoran las operaciones constantes:
+Eso, aunado a las operaciones del ciclo externo, da la siguiente función para el costo computacional, donde \(c\) denota el tiempo que demoran las operaciones constantes:
 \[T_\text{peor}(n) = cn + c\frac{n^2-n}{2}\]
-Ergo, $T_\text{peor} \in \Theta(n^2)$. Convencionalmente, se dice que insertion sort es $\Theta(n^2)$, entendiendo que se hace referencia específicamente al peor caso.
+Ergo, \(T_\text{peor} \in \Theta(n^2)\). Convencionalmente, se dice que insertion sort es \(\Theta(n^2)\), entendiendo que se hace referencia específicamente al peor caso.
 
 \begin{tip}
 Para resolver la sumatoria se empleó la fórmula de Gauss, cuyo argumento subyacente es bastante simple y se expone en el \ref{apx:sumatorias}.

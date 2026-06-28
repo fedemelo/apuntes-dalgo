@@ -4,28 +4,28 @@ Los problemas que se pueden resolver con un computador se clasifican de acuerdo 
 
 Otra forma de comparar problemas es a través de reducciones. Una \concept{reducción} consiste en transformar un problema en otro, tal que resolver ese otro te permita resolver el original.
 \begin{definicion}{Reducción}{reduccion}
-  Un problema $A$ se puede \concept{reducir} a otro problema $B$ si existe un algoritmo que, para cualquier instancia de $A$, construya una instancia de $B$ tal que la solución de esa instancia de $B$ permita construir la solución de la instancia original de $A$.
+  Un problema \(A\) se puede \concept{reducir} a otro problema \(B\) si existe un algoritmo que, para cualquier instancia de \(A\), construya una instancia de \(B\) tal que la solución de esa instancia de \(B\) permita construir la solución de la instancia original de \(A\).
 \end{definicion}
-Si existe una reducción de $A$ a $B$ y esa reducción es polinomial, el algoritmo que resuelve $B$ ahora se puede utilizar para resolver $A$ y entonces se dice que $B$ es igual o más difícil que $A$. Usualmente, cuando se habla de una reducción, se presume que es polinomial, porque de lo contrario no es útil: si la reducción es más compleja que resolver el problema, no sirve de nada transformarlo.
+Si existe una reducción de \(A\) a \(B\) y esa reducción es polinomial, el algoritmo que resuelve \(B\) ahora se puede utilizar para resolver \(A\) y entonces se dice que \(B\) es igual o más difícil que \(A\). Usualmente, cuando se habla de una reducción, se presume que es polinomial, porque de lo contrario no es útil: si la reducción es más compleja que resolver el problema, no sirve de nada transformarlo.
 
 Con eso, se describe la clasificación formal de problemas, aunque solo más adelante se dan definiciones genuinamente rigurosas para cada clase de problemas. La clasificación es la siguiente: 
 \begin{itemize}
   \item P (\concept{polinomial}): problemas para los que se conoce algún algoritmo polinomial correcto que los resuelva.
   \item NP (\concept{no determinista polinomial}): problemas para los que se conoce algún algoritmo polinomial que, dado un candidato de solución, verifique si es correcto.
   \begin{itemize}
-    \item Como todos los problemas que están en P se resuelven polinomialmente, también están en NP, porque también se pueden verificar polinomialmente. Es decir, $\mathrm{P} \subseteq \mathrm{NP}$.
-    \item Puede ser que todos los problemas que se pueden verificar en tiempo polinomial también se puedan resolver en tiempo polinomial, es decir, que $\mathrm{P} = \mathrm{NP}$, pero no se ha demostrado ni refutado esa posibilidad. A esta interrogante se le llama \concept{P vs NP}\footnote{El Clay Mathematics Institute ofrece un premio de un millón de dólares a quien resuelva P vs NP, como parte de sus \textit{Millennium Prize Problems}}.
+    \item Como todos los problemas que están en P se resuelven polinomialmente, también están en NP, porque también se pueden verificar polinomialmente. Es decir, \(\mathrm{P} \subseteq \mathrm{NP}\).
+    \item Puede ser que todos los problemas que se pueden verificar en tiempo polinomial también se puedan resolver en tiempo polinomial, es decir, que \(\mathrm{P} = \mathrm{NP}\), pero no se ha demostrado ni refutado esa posibilidad. A esta interrogante se le llama \concept{P vs NP}\footnote{El Clay Mathematics Institute ofrece un premio de un millón de dólares a quien resuelva P vs NP, como parte de sus \textit{Millennium Prize Problems}}.
   \end{itemize}
   \item NP-Hard (\concept{no determinista polinomial difícil}): problemas tal que cualquier problema en NP se puede reducir en tiempo polinomial a ellos.
   \begin{itemize}
     \item Como cualquier problema en NP se puede reducir polinomialmente a ellos, se dice que son igual o más difíciles que cualquier problema NP.
     \item No necesariamente los problemas NP-Hard son NP; muchos no se pueden verificar en tiempo polinomial.
-    \item Si mañana se encuentra un algoritmo polinomial para resolver algún problema NP-Hard, sería revolucionario: cada problema NP se puede reducir polinomialmente a ese problema NP-Hard, que ahora podría solucionarse polinomialmente con ese nuevo algoritmo. Eso implicaría que todo problema NP sería polinomial, o sea que $\mathrm{P} = \mathrm{NP}$.
+    \item Si mañana se encuentra un algoritmo polinomial para resolver algún problema NP-Hard, sería revolucionario: cada problema NP se puede reducir polinomialmente a ese problema NP-Hard, que ahora podría solucionarse polinomialmente con ese nuevo algoritmo. Eso implicaría que todo problema NP sería polinomial, o sea que \(\mathrm{P} = \mathrm{NP}\).
   \end{itemize}
   \item NP-Completo (\concept{no determinista polinomial completo}): problemas NP-Hard que son NP.
   \begin{itemize}
     \item Como son NP-Hard, para ninguno se conoce un algoritmo polinomial, pero como son NP, se pueden verificar en tiempo polinomial. En ese sentido, son los problemas más difíciles de NP.
-    \item Son los más interesantes porque muchos problemas NP Completos son muy similares a problemas que sabemos que son P. Entonces es muy tentador intentar encontrar un algoritmo polinomial para alguno y concluir que $\mathrm{P} = \mathrm{NP}$.
+    \item Son los más interesantes porque muchos problemas NP Completos son muy similares a problemas que sabemos que son P. Entonces es muy tentador intentar encontrar un algoritmo polinomial para alguno y concluir que \(\mathrm{P} = \mathrm{NP}\).
   \end{itemize}
 \end{itemize}
 
@@ -35,9 +35,9 @@ Resulta evidente que las relaciones de contenencia entre esas clases dependen de
 
 \subsection{P vs NP}
 
-Muchos de los problemas NP-Hard y NPC se han estudiado al detalle por décadas, muchas veces individualmente, y nadie ha encontrado un algoritmo polinomial para ninguno. El hecho de que encontrar un algoritmo polinomial para alguno implica que siempre han existido algoritmos polinomiales para todos, implica que sería muy sorprendente que $\mathrm{P} = \mathrm{NP}$. Sin embargo, hay que contemplar esa posibilidad, por remota que sea.
+Muchos de los problemas NP-Hard y NPC se han estudiado al detalle por décadas, muchas veces individualmente, y nadie ha encontrado un algoritmo polinomial para ninguno. El hecho de que encontrar un algoritmo polinomial para alguno implica que siempre han existido algoritmos polinomiales para todos, implica que sería muy sorprendente que \(\mathrm{P} = \mathrm{NP}\). Sin embargo, hay que contemplar esa posibilidad, por remota que sea.
 
-Para hacer más énfasis en lo anterior, imagine que muchas personas han buscado duendes en su jardín durante años, y nadie ha encontrado ninguno. Eso sugiere que no existen, pero ahora imagine un supuesto más fuerte aún: que si alguien encuentra un duende en su jardín, significa que siempre habían habido duendes en cada jardín del mundo, pero nadie los había encontrado nunca. Eso significa no solo que quien encontró el duende tuvo gran habilidad o que su jardín era especial, sino también que todos los demás estuvieron rodeados de duendes todo el tiempo sin darse cuenta. Por eso es que se dice que es muy improbable que $P = NP$.
+Para hacer más énfasis en lo anterior, imagine que muchas personas han buscado duendes en su jardín durante años, y nadie ha encontrado ninguno. Eso sugiere que no existen, pero ahora imagine un supuesto más fuerte aún: que si alguien encuentra un duende en su jardín, significa que siempre habían habido duendes en cada jardín del mundo, pero nadie los había encontrado nunca. Eso significa no solo que quien encontró el duende tuvo gran habilidad o que su jardín era especial, sino también que todos los demás estuvieron rodeados de duendes todo el tiempo sin darse cuenta. Por eso es que se dice que es muy improbable que \(P = NP\).
 
 \subsection{Problemas de decisión}
 
@@ -47,8 +47,5 @@ De esos problemas, no todos se pueden resolver con un computador, incluso cuando
 
 Muchos de los problemas de algoritmia son problemas de optimización, en donde 
 % TODO: Completar
-
-
-
 
 % TODO: Acá falta ampliar! Decidible vs indecidible, PSPACE, EXPSPACE, NEXPSAPCE, etc.

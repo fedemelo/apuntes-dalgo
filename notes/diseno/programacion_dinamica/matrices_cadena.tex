@@ -8,39 +8,39 @@ La multiplicación de matrices en cadena es un ejemplo clásico de optimización
   Si no recuerda las peculiaridades de la multiplicación de matrices, lea antes el \ref{apx:multiplicacion_matricial}.
 \end{tip}
 
-Primero, miremos cuántas operaciones se necesitan para multiplicar dos matrices. Para $\bmat{A}_{p\times q} \bmat{B}_{q \times r}$, el resultado será de tamaño $p\times r$, donde cada uno de los $pr$ elementos se computa mediante un producto punto entre vectores de tamaño $q$. En cada producto punto se realizan entonces $q$ multiplicaciones entre escalares, para un total de $pqr$ productos entre escalares.
+Primero, miremos cuántas operaciones se necesitan para multiplicar dos matrices. Para \(\bmat{A}_{p\times q} \bmat{B}_{q \times r}\), el resultado será de tamaño \(p\times r\), donde cada uno de los \(pr\) elementos se computa mediante un producto punto entre vectores de tamaño \(q\). En cada producto punto se realizan entonces \(q\) multiplicaciones entre escalares, para un total de \(pqr\) productos entre escalares.
 
 Para una multiplicación en cadena de tres matrices:
 \begin{itemize}
-  \item Si se multiplica agrupando las matrices como $(\bmat{A}_{p\times q} \bmat{B}_{q \times r}) \bmat{C}_{r \times s}$ (que es equivalente a no agrupar, se multiplica de izquierda a derecha), el costo computacional está dado por $pqr$ del producto $(\bmat{A}\bmat{B})_{p\times r}$, al que se le suma $prs$ de la multiplicación entre ese producto y $\bmat{C}_{r \times s}$, acumulando \[pqr + prs = pr(q+s).\] Esa expresión es pequeña cuando $p$ y $r$ son pequeños comparados con $q$ y $s$.
-  \item Si realiza el producto con la otra agrupación posible, $\bmat{A}_{p\times q} (\bmat{B}_{q \times r} \bmat{C}_{r \times s})$, se cuentan $qrs$ operaciones dentro del paréntesis, sumadas a $pqs$ cuando se multiplica $\bmat{A}$ por eso, para un total de \[pqs + qrs = qs(p+r)\] Esta agrupación es preferible cuando $q$ y $s$ son pequeños relativos a $p$ y $r$.
+  \item Si se multiplica agrupando las matrices como \((\bmat{A}_{p\times q} \bmat{B}_{q \times r}) \bmat{C}_{r \times s}\) (que es equivalente a no agrupar, se multiplica de izquierda a derecha), el costo computacional está dado por \(pqr\) del producto \((\bmat{A}\bmat{B})_{p\times r}\), al que se le suma \(prs\) de la multiplicación entre ese producto y \(\bmat{C}_{r \times s}\), acumulando \[pqr + prs = pr(q+s).\] Esa expresión es pequeña cuando \(p\) y \(r\) son pequeños comparados con \(q\) y \(s\).
+  \item Si realiza el producto con la otra agrupación posible, \(\bmat{A}_{p\times q} (\bmat{B}_{q \times r} \bmat{C}_{r \times s})\), se cuentan \(qrs\) operaciones dentro del paréntesis, sumadas a \(pqs\) cuando se multiplica \(\bmat{A}\) por eso, para un total de \[pqs + qrs = qs(p+r)\] Esta agrupación es preferible cuando \(q\) y \(s\) son pequeños relativos a \(p\) y \(r\).
 \end{itemize}
    
-A partir de ese análisis es fácil fabricar ejemplos que ilustran cuán distintos son los costos computacionales con tres matrices de tamaños concretos: para el producto $\bmat{A}_{100\times 3} \bmat{B}_{3 \times 150} \bmat{C}_{150 \times 2}$, computar $\bmat{A} \bmat{B} \bmat{C}$ requiere de $100\cdot 150(3+2) = 75000$ multiplicaciones escalares, mientras que computar $\bmat{A} (\bmat{B} \bmat{C})$ requiere de tan solo $3 * 2(100 + 150) = 1500$ multiplicaciones, ¡50 veces menos!
+A partir de ese análisis es fácil fabricar ejemplos que ilustran cuán distintos son los costos computacionales con tres matrices de tamaños concretos: para el producto \(\bmat{A}_{100\times 3} \bmat{B}_{3 \times 150} \bmat{C}_{150 \times 2}\), computar \(\bmat{A} \bmat{B} \bmat{C}\) requiere de \(100\cdot 150(3+2) = 75000\) multiplicaciones escalares, mientras que computar \(\bmat{A} (\bmat{B} \bmat{C})\) requiere de tan solo \(3 * 2(100 + 150) = 1500\) multiplicaciones, ¡50 veces menos!
 
 A pesar de que el análisis anterior es útil para dimensionar por qué es importante agrupar las matrices inteligentemente, es un análisis que no es escalable: a medida que el número de matrices a multiplicar incrementa, la cantidad de agrupaciones completas crece de forma exponencial en función del número de matrices y decidir con base en fórmulas se torna inviable. Para 3 matrices solo hay 2 formas de agruparlas completamente; para 4 matrices, ya hay 5 formas: 
 \begin{enumerate}
-  \item $((\bmat{A} \bmat{B}) \bmat{C}) \bmat{D}$, equivalente a $\bmat{A} \bmat{B} \bmat{C} \bmat{D}$
-  \item $(\bmat{A} (\bmat{B} \bmat{C})) \bmat{D}$, equivalente a $\bmat{A} (\bmat{B} \bmat{C}) \bmat{D}$
-  \item $\bmat{A} ((\bmat{B} \bmat{C}) \bmat{D})$, equivalente a $\bmat{A} (\bmat{B} \bmat{C} \bmat{D})$
-  \item $(\bmat{A} \bmat{B}) (\bmat{C} \bmat{D})$, equivalente a $\bmat{A} \bmat{B} (\bmat{C} \bmat{D})$
-  \item $\bmat{A} (\bmat{B} (\bmat{C} \bmat{D}))$
+  \item \(((\bmat{A} \bmat{B}) \bmat{C}) \bmat{D}\), equivalente a \(\bmat{A} \bmat{B} \bmat{C} \bmat{D}\)
+  \item \((\bmat{A} (\bmat{B} \bmat{C})) \bmat{D}\), equivalente a \(\bmat{A} (\bmat{B} \bmat{C}) \bmat{D}\)
+  \item \(\bmat{A} ((\bmat{B} \bmat{C}) \bmat{D})\), equivalente a \(\bmat{A} (\bmat{B} \bmat{C} \bmat{D})\)
+  \item \((\bmat{A} \bmat{B}) (\bmat{C} \bmat{D})\), equivalente a \(\bmat{A} \bmat{B} (\bmat{C} \bmat{D})\)
+  \item \(\bmat{A} (\bmat{B} (\bmat{C} \bmat{D}))\)
 \end{enumerate}
-En general, para $n$ matrices hay $\frac{2n!}{(n+1)!n!}$ posibles agrupaciones completas. Ese cálculo corresponde a la sucesión de números de Catalán, cuya deducción es poco trivial, por lo que se desglosa en el \ref{apx:numeros_catalan}. El caso es que, enfrentados a la imposibilidad de elegir la mejor agrupación empleando solo álgebra, es hora de diseñar algoritmos.
+En general, para \(n\) matrices hay \(\frac{2n!}{(n+1)!n!}\) posibles agrupaciones completas. Ese cálculo corresponde a la sucesión de números de Catalán, cuya deducción es poco trivial, por lo que se desglosa en el \ref{apx:numeros_catalan}. El caso es que, enfrentados a la imposibilidad de elegir la mejor agrupación empleando solo álgebra, es hora de diseñar algoritmos.
 
 \subsubsection{Subestructura óptima}
 
-Una forma de ver la subestructura óptima en este problema es pensarlo desde el final hacia el principio.  Independientemente de cómo se hayan agrupado las matrices para multiplicarlas, la última multiplicación tendrá que ser entre dos matrices. Ambas matrices vienen de multiplicar varias otras; si la primera es el producto de $k$ matrices, la segunda es el producto de $n-k$ matrices: $(\bmat{A}_1 \cdots \bmat{A}_k)(\bmat{A}_{k+1}\cdots \bmat{A}_n)$. Esa última expresión generaliza cualquier agrupación si $1\leq k < n$ y la abreviamos $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$.  
+Una forma de ver la subestructura óptima en este problema es pensarlo desde el final hacia el principio.  Independientemente de cómo se hayan agrupado las matrices para multiplicarlas, la última multiplicación tendrá que ser entre dos matrices. Ambas matrices vienen de multiplicar varias otras; si la primera es el producto de \(k\) matrices, la segunda es el producto de \(n-k\) matrices: \((\bmat{A}_1 \cdots \bmat{A}_k)(\bmat{A}_{k+1}\cdots \bmat{A}_n)\). Esa última expresión generaliza cualquier agrupación si \(1\leq k < n\) y la abreviamos \(\bmat{A}_{1..k} \bmat{A}_{k+1..n}\).  
 
-A partir de esa idea, la subestructura óptima radica en que, para que ese producto $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$ sea la agrupación óptima, entonces ambos factores $\bmat{A}_{1..k}$ y $\bmat{A}_{k+1..n}$ deben estar, a su vez, agrupados óptimamente. Eso se debe a que si alguno de los factores se pudiera agrupar mejor, entonces bastaría con reemplazarlo por esa mejor agrupación para obtener una una agrupación final mejor que la óptima, lo cual es una contradicción. Así pues, todo subproblema tiene la forma $\bmat{A}_{i..k} \bmat{A}_{k+1..j}$ para algunos valores $1 \leq i\leq k\leq j < n$.
+A partir de esa idea, la subestructura óptima radica en que, para que ese producto \(\bmat{A}_{1..k} \bmat{A}_{k+1..n}\) sea la agrupación óptima, entonces ambos factores \(\bmat{A}_{1..k}\) y \(\bmat{A}_{k+1..n}\) deben estar, a su vez, agrupados óptimamente. Eso se debe a que si alguno de los factores se pudiera agrupar mejor, entonces bastaría con reemplazarlo por esa mejor agrupación para obtener una una agrupación final mejor que la óptima, lo cual es una contradicción. Así pues, todo subproblema tiene la forma \(\bmat{A}_{i..k} \bmat{A}_{k+1..j}\) para algunos valores \(1 \leq i\leq k\leq j < n\).
 
 \subsubsection{Formulación recursiva}
 
-Con base en lo anterior, se puede formular una solución recursiva. Cada subproblema $\bmat{A}_{i..k} \bmat{A}_{k+1..j}$ solo es interesante si $i < j$; cuando $i \geq j$ solo hay una (o ninguna) matriz. Para evaluar cuál agrupación $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$ tiene menor costo, se debe buscar la de menor costo considerando cada posible $k$ entre $i$ y $j$ .
+Con base en lo anterior, se puede formular una solución recursiva. Cada subproblema \(\bmat{A}_{i..k} \bmat{A}_{k+1..j}\) solo es interesante si \(i < j\); cuando \(i \geq j\) solo hay una (o ninguna) matriz. Para evaluar cuál agrupación \(\bmat{A}_{1..k} \bmat{A}_{k+1..n}\) tiene menor costo, se debe buscar la de menor costo considerando cada posible \(k\) entre \(i\) y \(j\) .
 
-Recuérdese que el costo está dado por: el costo de las multiplicaciones $\bmat{A}_{1..k}$, más el de las multiplicaciones $\bmat{A}_{k+1..n}$, sumados al costo de multiplicar $\bmat{A}_{1..k} \bmat{A}_{k+1..n}$. Para formular ese último costo, se necesita las dimensiones de las matrices, entonces se va a denotar el tamaño de la $k$-ésima matriz como $p_k \times p_{k+1}$, de forma que el producto queda como: $(\bmat{A}_{1_{p_1 \times p_2}} \cdots \bmat{A}_{k_{p_k \times p_{k+1}}})(\bmat{A}_{{k+1}_{p_{k+1} \times p_{k+2}}}\cdots \bmat{A}_{n_{n\times n+1}})$
+Recuérdese que el costo está dado por: el costo de las multiplicaciones \(\bmat{A}_{1..k}\), más el de las multiplicaciones \(\bmat{A}_{k+1..n}\), sumados al costo de multiplicar \(\bmat{A}_{1..k} \bmat{A}_{k+1..n}\). Para formular ese último costo, se necesita las dimensiones de las matrices, entonces se va a denotar el tamaño de la \(k\)-ésima matriz como \(p_k \times p_{k+1}\), de forma que el producto queda como: \((\bmat{A}_{1_{p_1 \times p_2}} \cdots \bmat{A}_{k_{p_k \times p_{k+1}}})(\bmat{A}_{{k+1}_{p_{k+1} \times p_{k+2}}}\cdots \bmat{A}_{n_{n\times n+1}})\)
 
-Con todo eso en mente, sea $f(i,j)$ el costo óptimo de multiplicar las matrices entre la $i$ y la $j$:
+Con todo eso en mente, sea \(f(i,j)\) el costo óptimo de multiplicar las matrices entre la \(i\) y la \(j\):
 \begin{gather*}
 f(i,j) = \begin{cases}
   0 & \text{ si } i \geq j \\ 

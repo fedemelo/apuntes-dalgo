@@ -2,13 +2,13 @@
 
 La búsqueda binaria es un algoritmo para buscar si un elemento específico existe en una secuencia ordenada. El problema que resuelve es entonces:
 \begin{itemize}
-  \item Entrada: arreglo no vacío ordenado de enteros y número entero $k$
-  \item Salida: índice de $k$ en el arreglo o -1 si no está
+  \item Entrada: arreglo no vacío ordenado de enteros y número entero \(k\)
+  \item Salida: índice de \(k\) en el arreglo o -1 si no está
 \end{itemize}
 
 \subsubsection{Solución recursiva}
 
-El algoritmo es muy simple: se revisa el elemento del medio del arreglo. Si es $k$, encontramos lo que buscábamos y la salida es el índice del medio; si es menor, solo es sensato seguir buscando en la mitad derecha; si es mayor, solo en la mitad izquierda.
+El algoritmo es muy simple: se revisa el elemento del medio del arreglo. Si es \(k\), encontramos lo que buscábamos y la salida es el índice del medio; si es menor, solo es sensato seguir buscando en la mitad derecha; si es mayor, solo en la mitad izquierda.
 
 \begin{pseudocode}
 def binary_search(nums: arreglo[int], target: int) -> int:
@@ -33,7 +33,7 @@ def binary_search_rec(nums: arreglo[int], target: int, i: int, j: int) -> int:
 
 Nótese que en los llamados recursivos se toma desde el índice de la mitad, \inline{k}, \textit{más uno} (o menos uno). Eso cumple dos funciones: primero, que no se vuelva a revisar la mitad; pero más importante aún, permite que a medida que el número no se encuentra y el segmento del arreglo que se contempla es cada vez más pequeño, de forma que el índice de la mitad se acerca más y más al extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con el extremo y la recursión no terminaría. Y no se puede detener cuando son iguales, porque ese caso de un único elemento sí se quiere revisar.
 
-Como cada vez que se parte el problema se reduce a la mitad, para determinar la complejidad se quiere saber cuántas veces se debe dividir la entrada de tamaño $n$ entre $2$ hasta que se llega a un problema de tamaño 1. Para conocer esa $x$ cantidad de veces, se formula:
+Como cada vez que se parte el problema se reduce a la mitad, para determinar la complejidad se quiere saber cuántas veces se debe dividir la entrada de tamaño \(n\) entre \(2\) hasta que se llega a un problema de tamaño 1. Para conocer esa \(x\) cantidad de veces, se formula:
 
 \begin{gather*}
   n \underbrace{{} \cdot \frac{1}{2} \cdot \frac{1}{2} \cdots \frac{1}{2}}_{x \ \text{veces}} = 1 \\
@@ -72,5 +72,3 @@ def binary_search_iter(nums: arreglo[int], target: int) -> int:
 
 
 \practicar[leetcode]{Binary Search}{https://leetcode.com/problems/binary-search/}
-
-

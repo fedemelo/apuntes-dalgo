@@ -4,7 +4,7 @@ Una función (matemática o de programación) es \concept{recursiva} si está de
 
 En términos conceptuales, para resolver un problema utilizando recursión, el problema se debe poder dividir en subproblemas más pequeños con la misma estructura del original. Las soluciones a esos subproblemas se utilizan para solucionar el problema original. 
 
-En términos de implementación, una función recursiva se debe invocar a sí misma. Por ende, dada una función $F$, la entrada $X$ de la invocación original $F(X)$ debe poderse dividir en pedazos con su misma estructura (mismo tipo de dato), $x_1 \in X, x_2 \in X, \dots, x_n \in X$, que son usados como argumentos de los llamados recursivos: $F(x_1), F(x_2), \ldots, F(x_n)$. Cada uno de esos llamados representa la solución a un subproblema.
+En términos de implementación, una función recursiva se debe invocar a sí misma. Por ende, dada una función \(F\), la entrada \(X\) de la invocación original \(F(X)\) debe poderse dividir en pedazos con su misma estructura (mismo tipo de dato), \(x_1 \in X, x_2 \in X, \dots, x_n \in X\), que son usados como argumentos de los llamados recursivos: \(F(x_1), F(x_2), \ldots, F(x_n)\). Cada uno de esos llamados representa la solución a un subproblema.
 
 Toda función recursiva consta de dos elementos:
 \begin{itemize}
@@ -14,7 +14,7 @@ Toda función recursiva consta de dos elementos:
   \end{itemize}
   \item  Una \concept{relación de recurrencia}, que define la relación entre la solución del problema y la solución de sus subproblemas.
   \begin{itemize}
-    \item Esa relación de recurrencia combina de alguna manera los resultados de los llamados recursivos $F(x_1), F(x_2), \ldots, F(x_n)$ para obtener la solución al problema original.
+    \item Esa relación de recurrencia combina de alguna manera los resultados de los llamados recursivos \(F(x_1), F(x_2), \ldots, F(x_n)\) para obtener la solución al problema original.
   \end{itemize}
 \end{itemize}
 

@@ -1,45 +1,45 @@
 \subsection{Problema de corte de vara}
 
-El problema de corte de vara consiste en determinar cuál es la mejor forma de cortar una vara de longitud $n$, si cada posible longitud entera se puede vender a un precio específico. El objetivo es maximizar los ingresos.
+El problema de corte de vara consiste en determinar cuál es la mejor forma de cortar una vara de longitud \(n\), si cada posible longitud entera se puede vender a un precio específico. El objetivo es maximizar los ingresos.
 
-Las entradas del problema son entonces una longitud entera $n$ y una función $p$ que determina el precio que tendría cada pedazo. Para facilidad computacional, usualmente el problema se establece como:
+Las entradas del problema son entonces una longitud entera \(n\) y una función \(p\) que determina el precio que tendría cada pedazo. Para facilidad computacional, usualmente el problema se establece como:
 \begin{itemize}
-  \item Entradas: Un entero $n$ que representa la longitud de la vara y un arreglo $p$ de tamaño $n+1$, donde $p[i]$ es el precio de una vara de longitud $i$.
+  \item Entradas: Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).
   \item Salida: Los ingresos máximos que se pueden obtener al cortar la vara.
 \end{itemize}
-En ese modelo, $p[0] = 0$ porque longitud $0$ representa la ausencia de vara (y por ende de venta).
+En ese modelo, \(p[0] = 0\) porque longitud \(0\) representa la ausencia de vara (y por ende de venta).
 
-Considérese la instancia del problema con $n=4$ y $p = [0, 1, 5, 8, 9]$. En ese caso:
+Considérese la instancia del problema con \(n=4\) y \(p = [0, 1, 5, 8, 9]\). En ese caso:
 \begin{itemize}
-  \item Si no se corta la vara, se vende a $p[4]$, o sea a $\$9$.
-  \item Si se corta en un pedazo de longitud $3$ y otro de longitud $1$, se venden a $\$8$ y $\$1$, respectivamente, para obtener ingresos de $\$9$.
-  \item Si se corta en dos pedazos de longitud $2$, se venden a $\$10$.
-  \item Si se corta en pedazos de longitud $2$, $1$ y $1$, se venden a $\$7$.
-  \item Si se corta en cuatro pedazos de longitud $1$, se venden a $\$4$.
+  \item Si no se corta la vara, se vende a \(p[4]\), o sea a \(\$9\).
+  \item Si se corta en un pedazo de longitud \(3\) y otro de longitud \(1\), se venden a \(\$8\) y \(\$1\), respectivamente, para obtener ingresos de \(\$9\).
+  \item Si se corta en dos pedazos de longitud \(2\), se venden a \(\$10\).
+  \item Si se corta en pedazos de longitud \(2\), \(1\) y \(1\), se venden a \(\$7\).
+  \item Si se corta en cuatro pedazos de longitud \(1\), se venden a \(\$4\).
 \end{itemize}
-Entonces, la mejor forma de cortar la vara es en dos pedazos de longitud $2$, para obtener ingresos de $\$10$. Como $n$ es pequeño, esta instancia se resuelve por fuerza bruta, mirando todas las formas de cortar la vara y calculando los ingresos para cada una.
+Entonces, la mejor forma de cortar la vara es en dos pedazos de longitud \(2\), para obtener ingresos de \(\$10\). Como \(n\) es pequeño, esta instancia se resuelve por fuerza bruta, mirando todas las formas de cortar la vara y calculando los ingresos para cada una.
 
-Para un valor arbitrario de $n$, hay muchas formas de cortar la vara. En cada unidad de longitud, hay dos alternativas: se corta o no. Entonces hay $2$ posibilidades para cada una de las $n-1$ unidades de longitud ($n-1$ porque en la longitud $n$ ya no se puede cortar), lo que da $\underbrace{2\cdot2\cdots2}_{n-1 \text{ veces}} = 2^{n-1}$ combinaciones totales.
+Para un valor arbitrario de \(n\), hay muchas formas de cortar la vara. En cada unidad de longitud, hay dos alternativas: se corta o no. Entonces hay \(2\) posibilidades para cada una de las \(n-1\) unidades de longitud (\(n-1\) porque en la longitud \(n\) ya no se puede cortar), lo que da \(\underbrace{2\cdot2\cdots2}_{n-1 \text{ veces}} = 2^{n-1}\) combinaciones totales.
 
-El conteo anterior no contempla que algunas combinaciones están repetidas, porque el orden de los pedazos no importa: es lo mismo cortar en la primera unidad de longitud y obtener un pedazo de longitud $1$ y otro de longitud $n-1$, que en la penúltima unidad de longitud, obteniendo un pedazo de longitud $n-1$ y otro de longitud $1$. Esta observación tiene dos implicaciones:
+El conteo anterior no contempla que algunas combinaciones están repetidas, porque el orden de los pedazos no importa: es lo mismo cortar en la primera unidad de longitud y obtener un pedazo de longitud \(1\) y otro de longitud \(n-1\), que en la penúltima unidad de longitud, obteniendo un pedazo de longitud \(n-1\) y otro de longitud \(1\). Esta observación tiene dos implicaciones:
 \begin{itemize}
-  \item Primero, reduce el número de combinaciones de $2^{n-1}$ a un valor dado por la función de partición de enteros, $\mathrm{e}^\mathrm{\pi}\sqrt{2n/3}/(4n\sqrt{3})$. Esta es una gran mejora, pero la cantidad de combinaciones sigue lejos de ser polinomial. (No se muestra la deducción de la función de partición porque es un problema de conteo mucho más difícil).
-  \item Segundo, implica que no se debe pensar en cortar o no en cada unidad, sino que se puede pensar en cortar de forma que los pedazos queden en tamaño no decreciente. Eso igual va a contemplar todas las combinaciones: no contempla ($n-2$, $2$), ni ($n-2$, $1$, $1$); pero sí ($2$, $n-2$), también ($1$, $1$, $n-2$), etc., y como dan los mismos ingresos, con eso basta.
+  \item Primero, reduce el número de combinaciones de \(2^{n-1}\) a un valor dado por la función de partición de enteros, \(\mathrm{e}^\mathrm{\pi}\sqrt{2n/3}/(4n\sqrt{3})\). Esta es una gran mejora, pero la cantidad de combinaciones sigue lejos de ser polinomial. (No se muestra la deducción de la función de partición porque es un problema de conteo mucho más difícil).
+  \item Segundo, implica que no se debe pensar en cortar o no en cada unidad, sino que se puede pensar en cortar de forma que los pedazos queden en tamaño no decreciente. Eso igual va a contemplar todas las combinaciones: no contempla (\(n-2\), \(2\)), ni (\(n-2\), \(1\), \(1\)); pero sí (\(2\), \(n-2\)), también (\(1\), \(1\), \(n-2\)), etc., y como dan los mismos ingresos, con eso basta.
 \end{itemize}
 
 \subsubsection{Solución recursiva}
 
-Para diseñar una solución recursiva, lo primero que hay que pensar es cómo dividir este problema en subproblemas. En este caso es relativamente fácil, porque dada una vara de longitud $n$, se querría evaluar:
+Para diseñar una solución recursiva, lo primero que hay que pensar es cómo dividir este problema en subproblemas. En este caso es relativamente fácil, porque dada una vara de longitud \(n\), se querría evaluar:
 \begin{itemize}
-  \item El primer caso de cortar en la primera unidad de longitud. Eso arroja un pedazo de longitud $1$ y otro de longitud $n-1$. Ese último pedazo de longitud $n-1$ se puede seguir cortando (si $n$ es grande) y entonces se tiene el mismo problema: cuál es la forma de cortarlo para maximizar los ingresos.
-  \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud $2$ se vende a $p[2]$, pero falta evaluar cómo cortar el pedazo de longitud $n-2$ de forma óptima.
+  \item El primer caso de cortar en la primera unidad de longitud. Eso arroja un pedazo de longitud \(1\) y otro de longitud \(n-1\). Ese último pedazo de longitud \(n-1\) se puede seguir cortando (si \(n\) es grande) y entonces se tiene el mismo problema: cuál es la forma de cortarlo para maximizar los ingresos.
+  \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud \(2\) se vende a \(p[2]\), pero falta evaluar cómo cortar el pedazo de longitud \(n-2\) de forma óptima.
 \end{itemize}
 Con eso es fácil construir una implementación recursiva, \inline{rod_cut_rec} que evalúe el primer caso como \inline{p[1] + rod_cut_rec(n-1, p)}; el segundo, como \inline{p[2] + rod_cut_rec(n-2, p)} y así hasta \inline{p[n] + rod_cut_rec(0, p)}, donde ese último llamado recursivo evidentemente es un caso base.
 \begin{pseudocode}
 def rod_cut_rec(n: int, prices: arreglo[int]) -> int:
     if n == 0: return 0
 
-    optimal_rev = |$-\infty$|
+    optimal_rev = |\(-\infty\)|
     for i=1 to n:
         revenue = prices[i] + rod_cut_rec(n-i, prices)
         if revenue > optimal_rev:
@@ -56,10 +56,10 @@ El raciocinio que usamos para esta implementación deja claro que el problema cu
 Para eliminar la redundancia que introducen los problemas superpuestos, se implementa un algoritmo top-down. Se añade una función principal que crea un arreglo donde la función auxiliar recursiva memoiza el cálculo del mejor precio para cada longitud.
 \begin{pseudocode}
 def rod_cut_top_down(n: int, prices: arreglo[int]) -> int:
-    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
+    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
     optimal_revs[0] = 0
     for i=1 to n:
-        optimal_revs[i] = |$-\infty$||\br{arrf}|
+        optimal_revs[i] = |\(-\infty\)||\br{arrf}|
 
     return rod_cut_memo(n, prices, optimal_revs)
 
@@ -67,7 +67,7 @@ def rod_cut_memo(n: int, prices: arreglo[int], optimal_revs: arreglo[int]) -> in
     |\br{memoi}|if optimal_revs[n] >= 0:
         return optimal_revs[n]|\br{memof}|
 
-    optimal_rev = |$-\infty$|
+    optimal_rev = |\(-\infty\)|
     for i=1 to n:
         revenue = prices[i] + rod_cut_memo(n - i, prices, optimal_revs)
         if revenue > optimal_rev:
@@ -77,7 +77,7 @@ def rod_cut_memo(n: int, prices: arreglo[int], optimal_revs: arreglo[int]) -> in
     return optimal_rev|\br{retf}|
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[xshift=4cm, width=6.5cm]{arri}{arrf}{Se crea el arreglo lleno de $-\infty$ (salvo el caso base) para indicar las soluciones que aún no se han memoizado.}
+  \codebrace[xshift=4cm, width=6.5cm]{arri}{arrf}{Se crea el arreglo lleno de \(-\infty\) (salvo el caso base) para indicar las soluciones que aún no se han memoizado.}
   \codebrace[width=8cm]{memoi}{memof}{Si el valor está memoizado, se retorna enseguida para no recomputarlo.}
   \codebrace[xshift=2.5cm, width=5cm]{reti}{retf}{Justo antes de retornar el valor, se memoiza para los llamados siguientes.}
 \end{annotations}
@@ -92,11 +92,11 @@ Como en la solución bottom-up no se invocan funciones auxiliares, el valor de \
 
 \begin{pseudocode}
 def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
-    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
+    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
     optimal_revs[0] = 0|\br{arrf}|
 
     |\bxl{cic}|for subprob_len=1 to n:|\bxr{cic}|
-        optimal_rev = |$-\infty$|
+        optimal_rev = |\(-\infty\)|
         |\br{inti}|for i=1 to subprob_len:
             revenue = prices[i] + optimal_revs[subprob_len-i]
             if revenue > optimal_rev:
@@ -112,28 +112,28 @@ def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
   \codebrace[xshift=4.5cm, width=5cm, yshift=-0.2cm]{inti}{intf}{El ciclo interno es calcado de las versiones anteriores, pero la tabulación reemplaza la recursión.}
 \end{annotations}
 
-Esa solución cuenta con complejidad temporal de $\Theta(n^2)$, por los dos ciclos anidados, y con complejidad espacial de $\Theta(n)$, por el arreglo que se utiliza para la tabulación.
+Esa solución cuenta con complejidad temporal de \(\Theta(n^2)\), por los dos ciclos anidados, y con complejidad espacial de \(\Theta(n)\), por el arreglo que se utiliza para la tabulación.
 
 \subsubsection{Obtener los tamaños de los cortes}
 
 Inicialmente, el problema de corte de vara se planteó como un problema de optimización, donde la respuesta esperada era el máximo ingreso posible. Sin embargo, el problema se podría plantear como un problema de búsqueda en el que se busca alguna configuración de cortes que maximiza el ingreso, en lugar del ingreso en sí.
 \begin{itemize}
-  \item Entradas: Un entero $n$ que representa la longitud de la vara y un arreglo $p$ de tamaño $n+1$, donde $p[i]$ es el precio de una vara de longitud $i$.
+  \item Entradas: Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).
   \item Salida: Una pila con las longitudes de las piezas que maximizan el precio de venta.
 \end{itemize}
 
 Para esto, al implementar el algoritmo de programación dinámica se debe no solo computar el valor óptimo sino también almacenar información para que, una vez se obtenga el valor óptimo, se pueda recuperar los pasos que se siguieron para obtenerlo. 
 
-En este caso, además de almacenar el precio óptimo para una longitud $\ell$, se almacena el primer corte que corresponde a ese precio óptimo. Solo se almacena el primer corte $c$ para cada longitud, porque para determinar posteriormente el resto de cortes (si se requieren más de un corte), basta con examinar el subproblema de la longitud restante, o sea, el subproblema de la vara de longitud $\ell-c$ (para el cual también se guardó el primer corte).
+En este caso, además de almacenar el precio óptimo para una longitud \(\ell\), se almacena el primer corte que corresponde a ese precio óptimo. Solo se almacena el primer corte \(c\) para cada longitud, porque para determinar posteriormente el resto de cortes (si se requieren más de un corte), basta con examinar el subproblema de la longitud restante, o sea, el subproblema de la vara de longitud \(\ell-c\) (para el cual también se guardó el primer corte).
 
 \begin{pseudocode}
 def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
-    optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
+    optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
     optimal_revs[0] = 0
-    optimal_cuts = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
+    optimal_cuts = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
 
     for subprob_len=1 to n:
-        optimal_rev = |$-\infty$|
+        optimal_rev = |\(-\infty\)|
         for i=1 to subprob_len:
             revenue = prices[i] + optimal_revs[subprob_len-i]
             if revenue > optimal_rev:
@@ -142,7 +142,7 @@ def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
         optimal_revs[subprob_len] = optimal_rev
         |\bxl{optm}|optimal_cuts[subprob_len] = optimal_cut|\bxr{optm}|
 
-    segments = |\textrm{pila de }|int|\textrm{ de longitud máxima $n$}|
+    segments = |\textrm{pila de }|int|\textrm{ de longitud máxima \(n\)}|
     |\br{cortsi}|i = n
     while i > 0:
         cut = optimal_cuts[i]
@@ -153,18 +153,8 @@ def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
 \end{pseudocode}
 \begin{annotations}
     \codebox[notepos={(cbox@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
-    \codebox[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud $\ell$, el primer corte es \inline{cortes_optimos[$\ell$]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{$\ell - $cortes_optimos[$\ell$]}}
+    \codebox[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud \(\ell\), el primer corte es \inline{cortes_optimos[\(\ell\)]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{\(\ell - \)cortes_optimos[\(\ell\)]}}
     \codebrace[xshift=2.5cm, width=8.5cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
 \end{annotations}
 
 \practicar[gfg]{Rod Cutting}{https://www.geeksforgeeks.org/problems/rod-cutting0840/1}
-
-
-
-
-
-
-
-
-
-
