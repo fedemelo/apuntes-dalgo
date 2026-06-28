@@ -1,13 +1,13 @@
 \section{Eficiencia}
 \label{sec:eficiencia}
 
-Entre dos algoritmos correctos que resuelven un mismo problema, naturalmente se prefiere el que menos recursos usa: el más \emph{eficiente}.
+Entre dos algoritmos correctos que resuelven un mismo problema, naturalmente se prefiere el que menos recursos usa: el más \concept{eficiente}.
 
 Usualmente, el recurso más preciado es el tiempo, por lo cual el análisis de eficiencia suele estar enfocado en el tiempo de ejecución; sin embargo, se pueden seguir principios similares para analizar otros recursos, como el uso de memoria.
 
 \subsection{Complejidad temporal}
 
-Dado un algoritmo, (usualmente) es posible realizar una \emph{implementación}: escribir un programa que ejecuta el algoritmo. El tiempo de ejecución de una implementación de un algoritmo depende de:
+Dado un algoritmo, (usualmente) es posible realizar una \concept{implementación}: escribir un programa que ejecuta el algoritmo. El tiempo de ejecución de una implementación de un algoritmo depende de:
 \begin{enumerate}
   \item La máquina en la que se ejecuta.
   \item El lenguaje de programación en el que se implementa.
@@ -15,17 +15,17 @@ Dado un algoritmo, (usualmente) es posible realizar una \emph{implementación}: 
   \item Los datos que recibe el programa como entrada.
 \end{enumerate}
 
-Al analizar un algoritmo, se pretende sacar conclusiones generales; por ende, no basta con implementar el algoritmo en una máquina y lenguaje específicos para medir su tiempo de ejecución. Como solución, se intenta contar el número de operaciones elementales que realiza el algoritmo. Para eso, en lugar de ejecutar el algoritmo en una máquina real, se analiza el algoritmo en el marco de un \emph{modelo de computación} que abstrae la máquina física y define cuáles operaciones son elementales.
+Al analizar un algoritmo, se pretende sacar conclusiones generales; por ende, no basta con implementar el algoritmo en una máquina y lenguaje específicos para medir su tiempo de ejecución. Como solución, se intenta contar el número de operaciones elementales que realiza el algoritmo. Para eso, en lugar de ejecutar el algoritmo en una máquina real, se analiza el algoritmo en el marco de un \concept{modelo de computación} que abstrae la máquina física y define cuáles operaciones son elementales.
 
-Usualmente, la cantidad de operaciones depende de qué tantos datos el algoritmo recibe como entrada. Por ello, la cantidad se expresa como una función matemática del tamaño de la entrada. Esa función se denomina \emph{costo computacional temporal}.
+Usualmente, la cantidad de operaciones depende de qué tantos datos el algoritmo recibe como entrada. Por ello, la cantidad se expresa como una función matemática del tamaño de la entrada. Esa función se denomina \concept{costo computacional temporal}.
 
-Se puede analizar el crecimiento asintótico de esa función para saber cómo escala el costo del algoritmo a medida que aumenta el tamaño de la entrada. El resultado de ese análisis es la \emph{complejidad temporal} del algoritmo, y suele ser el objetivo último del análisis de eficiencia.
+Se puede analizar el crecimiento asintótico de esa función para saber cómo escala el costo del algoritmo a medida que aumenta el tamaño de la entrada. El resultado de ese análisis es la \concept{complejidad temporal} del algoritmo, y suele ser el objetivo último del análisis de eficiencia.
 
 \subsubsection{Modelo de computación RAM}
 
 Un modelo de computación es una abstracción de la máquina en la que se ejecuta un algoritmo, que especifica cuáles son las operaciones primitivas disponibles y cuál es el costo asociado a cada una.
 
-Para analizar algoritmos, tiene sentido utilizar un modelo de computación que represente razonablemente bien a los computadores convencionales modernos. Un modelo de computación apropiado es el \emph{modelo RAM de costo uniforme}, (\textit{Random Access Machine}, máquina de acceso aleatorio\footnote{No confundir este uso de la abreviación RAM como el modelo de computación de máquina de acceso aleatorio con el uso que se le da en otros contextos de informática como la memoria de acceso aleatorio.}) que establece las siguientes propiedades:
+Para analizar algoritmos, tiene sentido utilizar un modelo de computación que represente razonablemente bien a los computadores convencionales modernos. Un modelo de computación apropiado es el \concept{modelo RAM de costo uniforme}, (\textit{Random Access Machine}, máquina de acceso aleatorio\footnote{No confundir este uso de la abreviación RAM como el modelo de computación de máquina de acceso aleatorio con el uso que se le da en otros contextos de informática como la memoria de acceso aleatorio.}) que establece las siguientes propiedades:
 \begin{itemize}
   \item El modelo describe un único procesador secuencial. 
   \begin{itemize}
@@ -54,7 +54,7 @@ El análisis exacto de un algoritmo consiste en:
   \item Contar cuántas veces ocurre cada instrucción
   \item Sumar esos tiempos
 \end{enumerate}
-A eso se le denomina \emph{análisis exacto} de la eficiencia.
+A eso se le denomina \concept{análisis exacto} de la eficiencia.
 
 %TODO: Análisis asintótico y análisis amortizado, de obsidian
 % \subsection{Análisis asintótico}

@@ -1,28 +1,28 @@
 \section{Intratabilidad}
 
-Los problemas que se pueden resolver con un computador se clasifican de acuerdo a la complejidad temporal del mejor algoritmo conocido para resolverlos. Eso da una noción de su dificultad: si alguien ha encontrado un algoritmo polinomial para el problema, se dice que es \emph{tratable}\footnote{Se usa la palabra tratable como un calco de la palabra inglesa \emph{tractable}, cuya traducción es más cercana a \say{manejable}}; si nadie lo ha hecho, de forma que solo se conocen algoritmos de tiempo súperpolinomial, se dice que es \emph{intratable}.
+Los problemas que se pueden resolver con un computador se clasifican de acuerdo a la complejidad temporal del mejor algoritmo conocido para resolverlos. Eso da una noción de su dificultad: si alguien ha encontrado un algoritmo polinomial para el problema, se dice que es \concept{tratable}\footnote{Se usa la palabra tratable como un calco de la palabra inglesa \concept{tractable}, cuya traducción es más cercana a \say{manejable}}; si nadie lo ha hecho, de forma que solo se conocen algoritmos de tiempo súperpolinomial, se dice que es \concept{intratable}.
 
-Otra forma de comparar problemas es a través de reducciones. Una \emph{reducción} consiste en transformar un problema en otro, tal que resolver ese otro te permita resolver el original.
+Otra forma de comparar problemas es a través de reducciones. Una \concept{reducción} consiste en transformar un problema en otro, tal que resolver ese otro te permita resolver el original.
 \begin{definicion}{Reducción}{reduccion}
-  Un problema $A$ se puede \emph{reducir} a otro problema $B$ si existe un algoritmo que, para cualquier instancia de $A$, construya una instancia de $B$ tal que la solución de esa instancia de $B$ permita construir la solución de la instancia original de $A$.
+  Un problema $A$ se puede \concept{reducir} a otro problema $B$ si existe un algoritmo que, para cualquier instancia de $A$, construya una instancia de $B$ tal que la solución de esa instancia de $B$ permita construir la solución de la instancia original de $A$.
 \end{definicion}
 Si existe una reducción de $A$ a $B$ y esa reducción es polinomial, el algoritmo que resuelve $B$ ahora se puede utilizar para resolver $A$ y entonces se dice que $B$ es igual o más difícil que $A$. Usualmente, cuando se habla de una reducción, se presume que es polinomial, porque de lo contrario no es útil: si la reducción es más compleja que resolver el problema, no sirve de nada transformarlo.
 
 Con eso, se describe la clasificación formal de problemas, aunque solo más adelante se dan definiciones genuinamente rigurosas para cada clase de problemas. La clasificación es la siguiente: 
 \begin{itemize}
-  \item P (\emph{polinomial}): problemas para los que se conoce algún algoritmo polinomial correcto que los resuelva.
-  \item NP (\emph{no determinista polinomial}): problemas para los que se conoce algún algoritmo polinomial que, dado un candidato de solución, verifique si es correcto.
+  \item P (\concept{polinomial}): problemas para los que se conoce algún algoritmo polinomial correcto que los resuelva.
+  \item NP (\concept{no determinista polinomial}): problemas para los que se conoce algún algoritmo polinomial que, dado un candidato de solución, verifique si es correcto.
   \begin{itemize}
     \item Como todos los problemas que están en P se resuelven polinomialmente, también están en NP, porque también se pueden verificar polinomialmente. Es decir, $\mathrm{P} \subseteq \mathrm{NP}$.
-    \item Puede ser que todos los problemas que se pueden verificar en tiempo polinomial también se puedan resolver en tiempo polinomial, es decir, que $\mathrm{P} = \mathrm{NP}$, pero no se ha demostrado ni refutado esa posibilidad. A esta interrogante se le llama \emph{P vs NP}\footnote{El Clay Mathematics Institute ofrece un premio de un millón de dólares a quien resuelva P vs NP, como parte de sus \textit{Millennium Prize Problems}}.
+    \item Puede ser que todos los problemas que se pueden verificar en tiempo polinomial también se puedan resolver en tiempo polinomial, es decir, que $\mathrm{P} = \mathrm{NP}$, pero no se ha demostrado ni refutado esa posibilidad. A esta interrogante se le llama \concept{P vs NP}\footnote{El Clay Mathematics Institute ofrece un premio de un millón de dólares a quien resuelva P vs NP, como parte de sus \textit{Millennium Prize Problems}}.
   \end{itemize}
-  \item NP-Hard (\emph{no determinista polinomial difícil}): problemas tal que cualquier problema en NP se puede reducir en tiempo polinomial a ellos.
+  \item NP-Hard (\concept{no determinista polinomial difícil}): problemas tal que cualquier problema en NP se puede reducir en tiempo polinomial a ellos.
   \begin{itemize}
     \item Como cualquier problema en NP se puede reducir polinomialmente a ellos, se dice que son igual o más difíciles que cualquier problema NP.
     \item No necesariamente los problemas NP-Hard son NP; muchos no se pueden verificar en tiempo polinomial.
     \item Si mañana se encuentra un algoritmo polinomial para resolver algún problema NP-Hard, sería revolucionario: cada problema NP se puede reducir polinomialmente a ese problema NP-Hard, que ahora podría solucionarse polinomialmente con ese nuevo algoritmo. Eso implicaría que todo problema NP sería polinomial, o sea que $\mathrm{P} = \mathrm{NP}$.
   \end{itemize}
-  \item NP-Completo (\emph{no determinista polinomial completo}): problemas NP-Hard que son NP.
+  \item NP-Completo (\concept{no determinista polinomial completo}): problemas NP-Hard que son NP.
   \begin{itemize}
     \item Como son NP-Hard, para ninguno se conoce un algoritmo polinomial, pero como son NP, se pueden verificar en tiempo polinomial. En ese sentido, son los problemas más difíciles de NP.
     \item Son los más interesantes porque muchos problemas NP Completos son muy similares a problemas que sabemos que son P. Entonces es muy tentador intentar encontrar un algoritmo polinomial para alguno y concluir que $\mathrm{P} = \mathrm{NP}$.
@@ -41,9 +41,9 @@ Para hacer más énfasis en lo anterior, imagine que muchas personas han buscado
 
 \subsection{Problemas de decisión}
 
-A pesar de que informalmente se usan las clases P, NP y NP-Hard, para clasificar prácticamente cualquier problema computacional, esta categorías aplican formalmente solo a \emph{problemas de decisión}, es decir, problemas que se pueden responder con un sí o un no. 
+A pesar de que informalmente se usan las clases P, NP y NP-Hard, para clasificar prácticamente cualquier problema computacional, esta categorías aplican formalmente solo a \concept{problemas de decisión}, es decir, problemas que se pueden responder con un sí o un no. 
 
-De esos problemas, no todos se pueden resolver con un computador, incluso cuando se pueden modelar matemáticamente. Los círculos externo de la figura \ref{fig:p-vs-np} representan únicamente los problemas de decisión que son computables, que se llaman \emph{decidibles}. 
+De esos problemas, no todos se pueden resolver con un computador, incluso cuando se pueden modelar matemáticamente. Los círculos externo de la figura \ref{fig:p-vs-np} representan únicamente los problemas de decisión que son computables, que se llaman \concept{decidibles}. 
 
 Muchos de los problemas de algoritmia son problemas de optimización, en donde 
 % TODO: Completar
