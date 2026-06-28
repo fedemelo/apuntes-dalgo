@@ -56,7 +56,7 @@ El raciocinio que usamos para esta implementación deja claro que el problema cu
 Para eliminar la redundancia que introducen los problemas superpuestos, se implementa un algoritmo top-down. Se añade una función principal que crea un arreglo donde la función auxiliar recursiva memoiza el cálculo del mejor precio para cada longitud.
 \begin{pseudocode}
 def rod_cut_top_down(n: int, prices: arreglo[int]) -> int:
-    |\br{arri}|optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
     optimal_revs[0] = 0
     for i=1 to n:
         optimal_revs[i] = |$-\infty$||\br{arrf}|
@@ -92,7 +92,7 @@ Como en la solución bottom-up no se invocan funciones auxiliares, el valor de \
 
 \begin{pseudocode}
 def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
-    |\br{arri}|optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
     optimal_revs[0] = 0|\br{arrf}|
 
     |\bxl{cic}|for subprob_len=1 to n:|\bxr{cic}|
@@ -128,9 +128,9 @@ En este caso, además de almacenar el precio óptimo para una longitud $\ell$, s
 
 \begin{pseudocode}
 def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
-    optimal_revs = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
     optimal_revs[0] = 0
-    optimal_cuts = |\text{arreglo de }|int|\text{ de longitud $n+1$}|
+    optimal_cuts = |\textrm{arreglo de }|int|\textrm{ de longitud $n+1$}|
 
     for subprob_len=1 to n:
         optimal_rev = |$-\infty$|
@@ -142,7 +142,7 @@ def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
         optimal_revs[subprob_len] = optimal_rev
         |\bxl{optm}|optimal_cuts[subprob_len] = optimal_cut|\bxr{optm}|
 
-    segments = |\text{pila de }|int|\text{ de longitud máxima $n$}|
+    segments = |\textrm{pila de }|int|\textrm{ de longitud máxima $n$}|
     |\br{cortsi}|i = n
     while i > 0:
         cut = optimal_cuts[i]
