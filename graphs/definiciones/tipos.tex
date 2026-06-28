@@ -1,0 +1,33 @@
+
+\subsection{Tipos de grafo}
+\label{sec:tipos_de_grafo}
+
+Dependiendo del tipo de grafo, el objeto matemático es ligeramente distinto. Salvo que se diga lo contrario, se presume que todo grafo es simple, no dirigido y no ponderado, de acuerdo con las definiciones a continuación.
+
+\subsubsection{Dirigido o no dirigido}
+\label{sec:dirigido_vs_no_dirigido}
+
+Dependiendo de la estructura del conjunto de arcos, un grafo es dirigido o no dirigido:
+
+\begin{itemize}
+  \item Si los arcos de un grafo se dirigen de un vértice hacia otro, el grafo es \concept{dirigido}. En ese caso, $E \subseteq V \times V$ y los arcos son pares \emph{ordenados} de la forma $(u,v)$.
+  \item Si los arcos de un grafo no tienen dirección, el grafo es \concept{no dirigido}. Si $\binom{V}{2}$ denota el conjunto de subconjuntos de cardinalidad $2$ de $V$, entonces $E \subseteq \binom{V}{2}$, es decir, los arcos son pares \emph{no ordenados} de la forma $\{u,v\}$.
+\end{itemize}
+
+Indistintamente de si el grafo es dirigido o no, es común denotar los arcos como $uv$ cuando no hace falta ser explícito en su estructura, en lugar de $(u,v)$ y $\{u,v\}$, respectivamente.
+
+\subsubsection{Simple o multigrafo}
+\label{sec:simple_o_multigrafo}
+
+Un \concept{lazo} (\textit{loop}) es un arco que conecta un vértice consigo mismo, de la forma $\{v, v\}$ en un grafo no dirigido o $(v, v)$ en un grafo dirigido.
+
+Un grafo es \concept{simple} si no tiene lazos y además hay a lo sumo un arco entre cada par de vértices. Salvo que explícitamente se diga lo contrario, los conceptos en estos apuntes suponen grafos simples.
+
+Si un grafo puede tener lazos, se dice que es un \concept{grafo simple con lazos}. Su conjunto de arcos es de la forma $E \subseteq \binom{V}{2} \cup \{\{a\}|a\in V\}$ y los lazos son conjuntos \textit{singleton} con un solo vértice.
+
+Si un grafo puede tener múltiples arcos entre el mismo par de vértices, se dice que es un \concept{multigrafo}. En ese caso, $E \subseteq \binom{V}{2} \times \mathbb{N}$ es el conjunto de arcos, de la forma $(\{u, v\}, n)$ donde $u,v\in V$ y $n \in \mathbb{N}$. El número asociado a cada arco no es un peso, a diferencia de en un \hyperref[sec:grafos_ponderados]{grafo ponderado}. Es un diferenciador, para discernir entre arcos que conectan el mismo par de vértices.
+
+\subsubsection{Grafos ponderados}
+\label{sec:grafos_ponderados}
+
+Un grafo \concept{ponderado} es una tripla $G = (V, E, w)$, donde $(V, E)$ es un grafo (de cualquiera de los tipos anteriormente definidos) y $w\colon E \to \mathbb{R}$ es una función de pesos que asigna un número real a cada arco.
