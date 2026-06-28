@@ -1,17 +1,24 @@
 \section{Algoritmos aproximados}
 
-Un \emph{algoritmo aproximado} arroja soluciones cercanas a la óptima. A causa de eso, los algoritmos aproximados son incorrectos, pero resultan útiles para problemas en los que no se conocen algoritmos correctos eficientes. En la práctica, cuasi optimalidad suele bastar para muchas aplicaciones, sobretodo si el algoritmo ejecuta en tiempo polinomial para el caso de uso esperado; en ese caso, suele preferirse a un algoritmo correcto pero no polinomial.
+Un \concept{algoritmo aproximado} arroja soluciones cercanas a la óptima. A causa de eso, los algoritmos aproximados son incorrectos, pero resultan útiles para problemas en los que no se conocen algoritmos correctos eficientes. En la práctica, cuasi optimalidad suele bastar para muchas aplicaciones, sobretodo si el algoritmo ejecuta en tiempo polinomial para el caso de uso esperado; en ese caso, suele preferirse a un algoritmo correcto pero no polinomial.
 
 \subsection{Razón de aproximación}
 
 Para determinar la calidad de un algoritmo aproximado se busca determinar qué tan cercana es la solución que produce a la solución óptima. 
 
-Para un problema de maximización cuya solución óptima tiene un valor $C^* > 0$, si un algoritmo aproximado produce una solución con valor $C > 0$, el factor por el cual la óptima es mejor que la aproximada es $\frac{C^*}{C}$ y se denomina \emph{razón de aproximación}. Entre mayor sea el factor, peor es la aproximación: si el factor es $1$, las soluciones son igual de buenas; si es $1.5$, la solución óptima es $50\%$ mejor que la aproximada. El factor no puede ser menor que $1$ porque no hay soluciones mejores que la óptima, $0 < C \leq C^*$.
+Para un problema de maximización cuya solución óptima tiene un valor $C^* > 0$, si un algoritmo aproximado produce una solución con valor $C > 0$, el factor por el cual la óptima es mejor que la aproximada es la razón $\frac{C^*}{C}$. Entre mayor sea el factor, peor es la aproximación: si el factor es $1$, las soluciones son igual de buenas; si es $1.5$, la solución óptima es $50\%$ mejor que la aproximada. La razón no puede ser menor que $1$ porque no hay soluciones mejores que la óptima, $0 < C \leq C^*$.
 
-Similarmente, si el problema es de minimización, $C \geq C^* > 0$ y se toma como razón de aproximación la proporción $\frac{C}{C^*} \geq 1$. Usualmente se escribe la definición de razón de aproximación para contemplar cualquier problema de optimización:
-\[\max\left\{\frac{C}{C^*}, \frac{C^*}{C}\right\} \leq \rho(n)\]
-En esa definición, $\rho(n)$ es una cota superior sobre la calidad de la aproximación: en el peor caso, la solución aproximada es $\rho(n)$ veces mejor que la óptima. Se escribe en función del tamaño de la entrada $n$, contemplando el caso en el que la aproximación empeora conforme el tamaño de la entrada aumenta, pero $\rho(n)$ podría ser constante, en cuyo caso la calidad de la aproximación no depende de la entrada.
+Similarmente, si el problema es de minimización, $C \geq C^* > 0$ y la razón $\frac{C}{C^*} \geq 1$ indica cuánto mejor es la óptima de la aproximada. En general, si no se sabe si el problema de optimización busca el máximo o el mínimo, tomar $\max\{\frac{C^*}{C}, \frac{C}{C^*}\}$ elige automáticamente la proporción mayor que $1$, que es la que tiene sentido. Con base en esa idea, se define la razón de aproximación.
+
+\begin{definicion}{Razón de aproximación}{razon_aproximacion}
+  Un algoritmo tiene una \concept{razón de aproximación} de $\rho(n)$ si para cualquier tamaño de entrada $n$ se cumple que \[\max\left\{\frac{C}{C^*}, \frac{C^*}{C}\right\} \leq \rho(n).\]
+\end{definicion}
+
+La razón de aproximación es entonces una cota superior de la calidad de la aproximación: en el peor caso, la solución del algoritmo está dentro de un factor $\rho(n)$ de una solución óptima. Puede pasar que la aproximación empeora conforme el tamaño de la entrada aumenta; si, por el contrario, $\rho(n)$ es constante, la calidad de la aproximación no depende de la entrada.
+
+Los algoritmos aproximados se categorizan con base en su razón de aproximación; se dice que el algoritmo es de aproximación $\rho(n)$.
 
 % \subsubsection{Esquema de aproximación}
 %TODO: Esquemas de aproximación 
 
+\input{diseno/aproximados/vertex_cover}
