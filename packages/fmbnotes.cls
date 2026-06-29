@@ -19,11 +19,14 @@
 \RequirePackage{hyphenat}  % Manage hyphenation.
 \RequirePackage{multicol}  % Multiple columns
 \RequirePackage{pdfpages}  % Include pdf files in the document
-\RequirePackage{sectsty}  %Customize titles.
+\RequirePackage{sectsty}  % Customize titles.
+\RequirePackage{caption}  % Captions for non-float figures and tables.
 % Included below: geometry, tocbibind, placeins, longtable, tcolorbox, 
 
 
-%%% 0. inputlist macro to avoid writing redundant relative paths to input files
+%%% 0. Relative inputs and images helpers
+
+% \setinputbase, \inputfrombase and \inputlist
 
 % Usage:
 % \setinputbase{algorithms/design}
@@ -55,6 +58,51 @@
  }
 \ExplSyntaxOff
 
+
+%% \setimagebase, \inlineimage and \floatimage
+%
+% Usage:
+%
+% \setimagebase{algorithms/design/images}
+%
+% \inlineimage[width=.8\linewidth]
+%     {recursion_tree}
+%     [Recursion tree for Merge Sort.]
+%     [fig:merge-sort-tree]
+%
+% \floatimage[width=.8\linewidth]
+%     {recursion_tree}
+%     [Recursion tree for Merge Sort.]
+%     [fig:merge-sort-tree]
+
+\newcommand*{\imagebase}{}
+
+\newcommand*{\setimagebase}[1]{%
+    \renewcommand*{\imagebase}{#1}%
+}
+
+% \inlineimage[<graphics options>]{<file>}[<caption>][<label>]
+\NewDocumentCommand{\inlineimage}{O{} m o o}{%
+    \begingroup
+    \begin{center}
+        \includegraphics[#1]{\imagebase/#2}
+        \IfValueT{#3}{\captionof{figure}{#3}}
+        \IfValueT{#4}{\label{#4}}
+    \end{center}
+    \endgroup
+}
+
+% \floatimage[<graphics options>]{<file>}[<caption>][<label>]
+\NewDocumentCommand{\floatimage}{O{} m o o}{%
+    \begingroup
+    \begin{figure}
+        \centering
+        \includegraphics[#1]{\imagebase/#2}
+        \IfValueT{#3}{\caption{#3}}
+        \IfValueT{#4}{\label{#4}}
+    \end{figure}
+    \endgroup
+}
 
 %%% 1. Text format
 
