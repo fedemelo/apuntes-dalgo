@@ -1,20 +1,20 @@
 \subsection{Vocabulario}
 
-A continuación se define el vocabulario que comúnmente se utiliza al trabajar con grafos. Para esta sección, sea \(G=(V,E)\) un grafo simple y sean \(u, v \in V\) vértices.
+A continuación se define una parte del vocabulario común que se utiliza al estudiar grafos.
 
 \subsubsection{Orden y tamaño}
 
-El \concept{orden} de \(G\), denotado por \(|G|\), se define como el número de vértices: \[|G| = |V|.\] Es usual usar \(n\) para \(n = |G|\).
+El \concept{orden} de un grafo \(G\), denotado por \(|G|\), se define como el número de vértices: \[|G| = |V|.\] Es usual usar \(n\) para \(n = |G|\).
 
 Se define el \concept{tamaño} de \(G\), denotado por \(\varepsilon(G)\) o simplemente por \(\varepsilon\), como el número de arcos: \[\varepsilon = |E|.\]
 
 \subsubsection{Incidencia, adyacencia y vecindario}
 \label{sec:adyacencia}
 
-Para grafos \emph{no dirigidos}, se dice que un arco \(\{u,v\}\) (o simplemente \(uv\)) \concept{une} (\textit{joins}) los vértices \(u\) y \(v\). Se dice que \(u\) y \(v\) son \concept{incidentes} a el arco \(uv\), al igual que el arco \(uv\) es \concept{incidente} tanto a \(u\) como a \(v\).
+Se dice que un arco \(\{u,v\}\) (o simplemente \(uv\)) \concept{une} (\textit{joins}) los vértices \(u\) y \(v\). Se dice que \(u\) y \(v\) son \concept{incidentes} a el arco \(uv\), al igual que el arco \(uv\) es \concept{incidente} tanto a \(u\) como a \(v\).
 
 Más aún, se dice los vértices \(u\) y \(v\) son \concept{adyacentes} o \concept{vecinos}. Se denota que \(u\) y \(v\) son adyacentes por \[u \longrightarrow v.\]
-En un grafo no dirigido, es lo mismo escribir que \(u\longrightarrow v\), que \(v \longrightarrow u\) y que \(\{u,v\} \in E\).
+En un grafo \emph{no dirigido}, es lo mismo escribir que \(u\longrightarrow v\), que \(v \longrightarrow u\) y que \(\{u,v\} \in E\).
 
 El conjunto de los vértices adyacentes a \(v\) se denomina el \concept{vecindario} de \(v\) y se denota por \(\Gamma(v)\). \[\Gamma(v) = \{x \ | \ v \longrightarrow x\}\] Se dice que \(\Gamma(v)\) es el \concept{vecindario abierto} de \(v\) y que \(\Gamma(v) \cup \{v\}\) es el \concept{vecindario cerrado}.
 

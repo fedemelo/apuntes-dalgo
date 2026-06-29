@@ -1,0 +1,48 @@
+\subsection{Los puentes de Königsberg}
+\label{sec:los_puentes_de_konigsberg}
+
+El problema de los puentes de Königsberg es comúnmente considerado el problema que dio origen a la teoría de grafos, e incluso uno de los problemas que condujo al desarrollo de la topología.
+
+\concept{Topología}: rama de las matemáticas que estudia las propiedades de los objetos geométricos que permanecen invariantes bajo deformaciones continuas (como estirar o doblar, pero no romper ni pegar). Más simplemente, estudia las formas de las figuras geométricas sin preocuparse por las distancias.
+
+\subsubsection{Problema clásico}
+\label{sec:problema_clasico}
+
+Dada la geografía de la ciudad de Königsberg en el siglo XVIII (hoy Kaliningrado), con el río Pregel dividiendo el plano en 4 regiones unidas a través de 7 puentes: 
+\begin{figure}[h]
+  \centering
+  \includegraphics{./introduccion/konigsberg_bridges.png}
+\end{figure} 
+Tomando cualquier punto de partida, ¿es posible cruzar los 7 puentes y volver al mismo punto de partida cruzando cada puente exactamente una vez?
+
+\subsubsection{Solución}
+\label{sec:solucion_moderna}
+
+Usando teoría de grafos moderna, cada puente se toma como un arco de un grafo y por ende el problema se abstrae a uno más general: dado un multigrafo conexo no dirigido, determinar si existe una caminata tal que:
+\begin{itemize}
+  \item Contiene todos los arcos del grafo.
+  \item Contiene cada arco del grafo exactamente una vez.
+\end{itemize}
+
+Para que exista tal caminata, todos los  vértices intermedios (distintos al vértice inicial y al vértice final) deben tener grado par. Esto, para que en cada visita a un vértice intermedio sea posible usar un arco para llegar y otro distinto para salir. De lo contrario, o sería necesario repetir algún arco, o no se recorrerían todos los arcos.
+
+Más aún, respecto al vértice inicial \(u\) y el final \(v\):
+\begin{itemize}
+  \item Si \(u \neq v\), de forma que la caminata termina en un punto distinto al inicial, entonces el grado de ambos debe ser impar. Esto se debe a que los $2k + 1$ arcos incidentes corresponden a:
+  \begin{itemize}
+    \item $2k$ arcos que permiten visitar cada vértice $k$ veces, usando uno para llegar y otro para salir.
+    \item Un arco adicional que corresponde al arco inicial (para \(u\)) o al arco final (para \(v\)).
+  \end{itemize}
+  A esta caminata se le conoce como \concept{camino euleriano}.
+  \item Si \(u = v\), tal que se finaliza en el punto de partida (como en los puentes de Königsberg), el grado del vértice debe ser par. El raciocinio es análogo a antes, pero el vértice es incidente tanto al arco inicial como al arco final, entonces el grado está dado por $2k$ arcos que permiten visitar el vértice $k$ veces, llegando y saliendo por arcos distintos. A esta caminata se le conoce como \concept{circuito euleriano}.
+\end{itemize}
+
+Así pues, solo existe tal caminata si todos los vértices tienen grado par o si solo dos tienen grado impar: el de llegada y el de salida.  
+
+Aterrizando al problema de los puentes de Königsberg, en el que se pretende terminar en el punto de partida, es claro que solo tendría solución si todos los vértices tienen grado par. Se muestra el grafo que describe el problema para facilitar su inspección:
+\begin{figure}[h]
+  \centering
+  \includegraphics{./introduccion/konigsberg_graph.png}
+\end{figure} 
+
+Resulta evidente todo lo contrario: todos los vértices tienen grado impar. Por tanto, no es posible cruzar los 7 puentes, cada uno una vez, y volver al mismo punto de partida. Ni siquiera es posible cruzar cada puente una vez acabando en algún otro punto; tocaría repetir algún puente o no cruzarlos todos.
