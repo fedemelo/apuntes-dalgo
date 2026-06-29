@@ -1,10 +1,13 @@
+
 \part{Diseño de algoritmos}
 
 En esta parte de las notas se presentan distintas técnicas para diseñar algoritmos. No se presentan en orden de dificultad, principalmente debido a que la dificultad es subjetiva: cada método es difícil por una razón distinta. Pero sí se presentan en un orden conveniente, para que al explicar métodos posteriores se puedan dar por sentados conceptos de métodos anteriores.
 
-% \input{diseno/incremental} %  E.g., insertion sort
-\input{diseno/pre/insertion_sort}
-\input{diseno/recursion/recursion}
-\input{diseno/dividir_conquistar/dividir_conquistar}
-\input{diseno/programacion_dinamica/programacion_dinamica}
-\input{diseno/aproximados/aproximados}
+\setinputbase{diseno}
+\inputlist{
+  pre/insertion_sort,
+  recursion/recursion,
+  dividir_conquistar/dividir_conquistar,
+  programacion_dinamica/programacion_dinamica,
+  aproximados/aproximados,
+}

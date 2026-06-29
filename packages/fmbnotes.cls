@@ -23,6 +23,39 @@
 % Included below: geometry, tocbibind, placeins, longtable, tcolorbox, 
 
 
+%%% 0. inputlist macro to avoid writing redundant relative paths to input files
+
+% Usage:
+% \setinputbase{algorithms/design}
+% \inputlist{recursion/fibonacci, dp/knapsack, greedy/kruskal}
+
+% Expands to:
+% \input{algorithms/design/recursion/fibonacci}
+% \input{algorithms/design/dp/knapsack}
+% \input{algorithms/design/greedy/kruskal}
+
+\newcommand*{\inputbase}{}
+\newcommand*{\setinputbase}[1]{%
+    \renewcommand*{\inputbase}{#1}%
+}
+
+\newcommand*{\inputfrombase}[1]{%
+    \input{\inputbase/#1}%
+}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\inputlist}{m}
+ {
+  \clist_map_inline:nn { #1 }
+   {
+    \group_begin:
+    \inputfrombase{##1}
+    \group_end:
+   }
+ }
+\ExplSyntaxOff
+
+
 %%% 1. Text format
 
 %\renewcommand{\familydefault}{\sfdefault}  % Text in Sans-serif.
