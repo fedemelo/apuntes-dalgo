@@ -8,11 +8,9 @@ El problema de los puentes de Königsberg es comúnmente considerado el problema
 \subsubsection{Problema clásico}
 \label{sec:problema_clasico}
 
-Dada la geografía de la ciudad de Königsberg en el siglo XVIII (hoy Kaliningrado), con el río Pregel dividiendo el plano en 4 regiones unidas a través de 7 puentes: 
-\begin{figure}[h]
-  \centering
-  \includegraphics{./introduccion/konigsberg_bridges.png}
-\end{figure} 
+Dada la geografía de la ciudad de Königsberg en el siglo XVIII (hoy Kaliningrado), con el río Pregel dividiendo el plano en 4 regiones unidas a través de 7 puentes:
+\setimagebase{introduccion/puentes_konigsberg}
+\inlineimage{konigsberg_bridges.png}
 Tomando cualquier punto de partida, ¿es posible cruzar los 7 puentes y volver al mismo punto de partida cruzando cada puente exactamente una vez?
 
 \subsubsection{Solución}
@@ -40,9 +38,6 @@ Más aún, respecto al vértice inicial \(u\) y el final \(v\):
 Así pues, solo existe tal caminata si todos los vértices tienen grado par o si solo dos tienen grado impar: el de llegada y el de salida.  
 
 Aterrizando al problema de los puentes de Königsberg, en el que se pretende terminar en el punto de partida, es claro que solo tendría solución si todos los vértices tienen grado par. Se muestra el grafo que describe el problema para facilitar su inspección:
-\begin{figure}[h]
-  \centering
-  \includegraphics{./introduccion/konigsberg_graph.png}
-\end{figure} 
+\inlineimage{konigsberg_graph.png}
 
 Resulta evidente todo lo contrario: todos los vértices tienen grado impar. Por tanto, no es posible cruzar los 7 puentes, cada uno una vez, y volver al mismo punto de partida. Ni siquiera es posible cruzar cada puente una vez acabando en algún otro punto; tocaría repetir algún puente o no cruzarlos todos.
