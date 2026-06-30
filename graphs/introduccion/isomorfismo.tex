@@ -1,0 +1,15 @@
+\subsection{Isomorfismo}
+\label{sec:comparacion_de_grafos}
+
+La definición de igualdad entre grafos es intuitiva.
+\begin{definicion}{Igualdad (entre grafos)}{igualdad}
+  Dos grafos $G$ y $H$ son \concept{iguales}, denotado \(G=H\), si \(V(G)=V(H)\) y \(E(G)=E(H)\).
+\end{definicion}
+Naturalmente, esa definición obliga a que los nombres de los vértices de $G$ y $H$ sean iguales. Sin embargo, al estudiar grafos, frecuentemente interesa más la forma del grafo que cómo se etiquetaron sus vértices. A causa de eso, al comparar grafos, se suele usar la noción de isomorfismo.
+
+\begin{definicion}{Isomorfismo (entre grafos)}{isomorfismo}
+  Dos grafos $G$ y $H$ son \concept{isomorfos}, denotado \(G\cong H\), si existe una \emph{función biyectiva} \(f\colon V(G)\to V(H)\) tal que para todos \(u,v \in V(G)\), se cumple que \(u\longrightarrow v\) si y solamente si \(f(u) \longrightarrow f(v)\)
+\end{definicion} 
+Es decir: dos grafos son isomorfos si al renombrar los vértices de uno de los grafos usando una función, los grafos son iguales.
+
+El isomorfismo \(G\cong H\) implica, que \(|G|=|H|\) y que \(\varepsilon(G) = \varepsilon(H)\). Esas son entonces condiciones necesarias para que haya isomorfismo, pero no suficientes: dos grafos pueden ser del mismo orden y tamaño, pero tener estructuras de arcos distintas.
