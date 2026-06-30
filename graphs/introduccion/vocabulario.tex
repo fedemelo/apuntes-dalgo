@@ -45,24 +45,24 @@ Por ejemplo, todo grafo regular de grado \(3\) se puede dibujar con forma de cub
 \begin{center}
   \begin{tikzpicture}[scale=1,
     vertex/.style={circle, fill=black, inner sep=2pt}]
-    % Bottom face (outer square): x (down-left), u (down-right), v (up-right), w (up-left)
-    \node[vertex, label=below left:\(x\)]  (x) at (0,   0)   {};
-    \node[vertex, label=below right:\(u\)] (u) at (3,   0)   {};
-    \node[vertex, label=right:\(v\)]       (v) at (3,   3)   {};
-    \node[vertex, label=above left:\(w\)]  (w) at (0,   3)   {};
-    % Top face (inner square, offset up-right): d (down-left), a (down-right), b (up-right), c (up-left)
-    \node[vertex, label=below:\(d\)]       (d) at (1.5, 1.5) {};
-    \node[vertex, label=right:\(a\)]       (a) at (4.5, 1.5) {};
-    \node[vertex, label=above right:\(b\)] (b) at (4.5, 4.5) {};
-    \node[vertex, label=above:\(c\)]       (c) at (1.5, 4.5) {};
-    % Bottom face edges
-    \draw (x) -- (u) -- (v) -- (w) -- (x);
-    % Top face edges
-    \draw (d) -- (a) -- (b) -- (c) -- (d);
-    % Connecting edges
-    \draw (x) -- (d);
-    \draw (u) -- (a);
-    \draw (v) -- (b);
-    \draw (w) -- (c);
+    % Bottom face (front square): a (down-right), b (up-right), c (up-left), d (down-left)
+    \node[vertex, label=below left:\(d\)]   (d) at (0,   0)   {};
+    \node[vertex, label=below right:\(a\)]  (a) at (3,   0)   {};
+    \node[vertex, label=right:\(b\)]        (b) at (3,   3)   {};
+    \node[vertex, label=left:\(c\)]         (c) at (0,   3)   {};
+    \draw (a) -- (b) -- (c) -- (d) -- (a);
+
+    % Top face (back square, offset up-right): 
+    \node[vertex, label=below:\(x\)]        (x) at (1.5, 1.5) {};
+    \node[vertex, label=right:\(u\)]        (u) at (4.5, 1.5) {};
+    \node[vertex, label=above right:\(v\)]  (v) at (4.5, 4.5) {};
+    \node[vertex, label=above left:\(w\)]   (w) at (1.5, 4.5) {};
+    \draw (u) -- (v) -- (w) -- (x) -- (u);
+    
+    % Edges mapping faces
+    \draw (a) -- (u);
+    \draw (b) -- (v);
+    \draw (c) -- (w);
+    \draw (d) -- (x);
   \end{tikzpicture}
 \end{center}
