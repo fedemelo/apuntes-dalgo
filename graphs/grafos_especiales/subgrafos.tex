@@ -98,3 +98,17 @@ No se conoce una fórmula cerrada para contar los subgrafos inducidos módulo is
 %TODO: No hay una fórmula fácil para el número de subgrafos, es una sumatoria fea, pero podría añadirse esa sección.
 % \subsubsection{¿Cuántos subgrafos?}
 % \label{sec:cuantos_subgrafos}
+
+\subsection{Sumersión}
+\label{sec:sumersion}
+
+El concepto de sumersión generaliza la noción de desigualdad débil en cardinalidad de conjuntos, \(|A|\leq |B|\). 
+
+\begin{definicion}{}{}
+  Se dice que \(G\) está \emph{sumergido} es \(H\) si es isomorfo con algún subgrafo de \(H\).
+\end{definicion}
+Es decir, \(G\) está sumergido en \(H\) si existe una función \emph{inyectiva} \(f\colon V(G) \to V(H)\) tal que para todos \(u,v \in V(G)\), si \(u\longrightarrow v\) entonces \(f(u) \longrightarrow f(v)\).
+
+Dicho más simplemente, \(G\) tiene la misma estructura que algún subgrafo de \(H\): es idéntico pero potencialmente sus vértices tienen nombres distintos. Tanto así, que en ocasiones se dice simplemente que \(G\) es subgrafo de \(H\), incluso si en realidad es una sumersión, obviando los nombres de los vértices.
+
+Esta definición no es universal. Si en otro documento se de esa definición, pero reza \say{\(u\longrightarrow v\) si y solamente si \(f(u) \longrightarrow f(v)\)}, entonces se alude a una noción similar, pero \(G\) es isomorfo a un subgrafo \emph{inducido}.
