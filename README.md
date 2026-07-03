@@ -8,4 +8,4 @@ Los apuntes están presentados en el mismo formato en el que originalmente fuero
 
 Los apuntes han sido revisados durante mi etapa como profesor del curso de Diseño de Algoritmos en aras de procurar su correctitud.
 
-No me apoyé en inteligencia artificial para redactarlos (en aquel momento, los LLMs aún no se habían masficado). La he utilizado para revisarlos y mejorar varias de las figuras.
+No me apoyé en inteligencia artificial para redactarlos (en aquel momento, los LLMs aún no se habían masficado tanto). No obstante, la he utilizado para revisarlos y mejorar varias de las figuras.
