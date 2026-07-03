@@ -1,4 +1,4 @@
-Este repositorio contiene el código en LaTeX de dos documentos de apuntes:
+Este repositorio contiene el código en LaTeX y los PDFs correspondientes a dos documentos de apuntes:
 - Uno sobre algoritmos, dirigido principalmente a estudiantes de Ingeniería de Sistemas o Ciencias de la Computación
 - Otro sobre grafos, orientado a una audiencia más matemática
 
