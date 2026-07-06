@@ -85,10 +85,11 @@ El árbol de ejecución no enfatiza en el orden en el que se realizan los llamad
 \end{tikzpicture}
 \end{center}
 
-Como al invocar una función esta ejecuta de forma inmediata, la ejecución recursiva siempre explora completamente una rama del árbol antes de pasar a la siguiente. Con eso en mente y observando el flujo de ejecución expuesto arriba, se puede ver que el orden de ejecución de toda función recursiva está dado por un recorrido DFS %TODO: Hyperlink/ref!!
+Como al invocar una función esta empieza a ejecutar de forma inmediata, la ejecución recursiva siempre explora completamente una rama del árbol antes de pasar a la siguiente. Con eso en mente y observando el flujo de ejecución expuesto arriba, se puede ver que el orden de ejecución de toda función recursiva está dado por un recorrido DFS %TODO: Hyperlink/ref!!
 sobre el árbol de ejecución.
 
-\subsubsection{Pila de ejecución}
+\subsubsection{Pila de llamados}
+\label{sec:pila_de_llamados}
 
 La inmensa mayoría de las arquitecturas y entornos de ejecución modernos utilizan una \concept{pila de llamados} (\textit{call stack}) para administrar las llamadas a funciones. Se aprovecha la estructura LIFO (\textit{Last-In, First-Out}; última que entra, primera que sale) de la pila para que la última función en ser invocada termine primero.
 
