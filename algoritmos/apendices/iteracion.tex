@@ -1,6 +1,55 @@
 \section{Iteración} \label{apx:iteracion}
 
-La iteración es una forma de expresar repetición.
+La iteración es una forma de expresar repetición. Existen varias construcciones para expresar iteración (\inline{while}, \inline{for}, \inline{do-while}, etc), pero todas se pueden modelar bajo de una misma idea: repetir instrucciones mientras se cumpla una condición. Más formalmente, se realiza una transformación del estado del programa mientras se cumpla una condición sobre ese estado. El \concept{estado del programa}, denotado por \(\sigma\), se entiende como el conjunto de todas las variables cuyo valor puede afectar la ejecución del algoritmo.
 
-% TODO: Por qué es simplemente un wrapper de saltos/goto. Y entonces por qué no usar goto y ya.
-% TODO: Cómo es equivalente a la recursión.
+Con eso en mente, para escribir un ciclo de forma general, la condición booleana del ciclo, que determina si se ejecuta o no, se escribe en función del estado como \(B(\sigma)\) y la transformación que el cuerpo del ciclo le aplica al estado en cada iteración se escribe como \(T(\sigma)\). \(T\) representa entonces una abstracción del cuerpo del ciclo: puede corresponder a una única instrucción o a una secuencia arbitraria de instrucciones. Con esa notación, la forma general de cualquier \inline{while} es:
+\begin{pseudocode}
+while |\(B(\sigma)\)|:
+    |\(\sigma\)| = |\(T(\sigma)\)|
+\end{pseudocode}
+Esa forma general corresponde a cualquier ciclo, como se verá caso por caso.
+
+\subsection{\texttt{for} a \texttt{while}}
+
+Un ciclo \inline{for i=0 to n}, característico de los lenguajes tipo C, no es más que un \inline{while} en el que la variable de control \(i\) forma parte del estado \(\sigma\): se inicializa antes del ciclo, la condición \(B(\sigma)\) verifica que no haya rebasado la cantidad esperada de iteraciones (donde el valor de \inline{n} también hace parte del estado) y la transformación \(T\) que se le da al estado incluye dos cosas: incrementar la variable de control y cualquier otra transformación adicional \(T'\).
+\begin{pseudocode}
+i = 0
+while i <= n:
+    |\(\sigma\)| = |\(T'(\sigma)\)|
+    i = i + 1
+\end{pseudocode}
+
+Un ciclo \inline{for elemento in iterable}, popularizado por Python, es análogo, con la diferencia de que la variable de control \(i\) actúa como un índice que accede a cada elemento del iterable. Así pues, la transformación \(T'\) que se realiza sobre el estado puede incluir realizar cualquier operación sobre cada elemento del iterable:
+\begin{pseudocode}
+i = 0
+while i < len(iterable):
+    elemento = iterable[i]
+    |\(\sigma\)| = |\(T'(\sigma)\)|
+    i = i + 1
+\end{pseudocode}
+
+\subsection{do-while a while}
+
+Un \inline{do-while} sólo difiere de un \inline{while} en que \(\sigma\) se transforma una primera vez antes de evaluar \(B(\sigma)\) por primera vez:
+\begin{pseudocode}
+|\(\sigma\)| = |\(T(\sigma)\)|
+while |\(B(\sigma)\)|:
+    |\(\sigma\)| = |\(T(\sigma)\)|
+\end{pseudocode}
+
+\subsection{La iteración como azúcar sintáctico}
+
+Aunque todos los ciclos se reducen al \inline{while}, no es una construcción primitiva. Cualquier forma de iteración es una envoltura de lo que a bajo nivel se implementa con saltos condicionales entre etiquetas, es decir, con \inline{goto} (del inglés \textit{go to}, ir a). Así pues, los ciclos son \concept{azúcar sintáctico}: sintaxis innecesaria que se añade a un lenguaje para hacerlo más cómodo de escribir. El compilador o intérprete traduce el \inline{while} anterior a algo equivalente a
+\begin{pseudocode}
+inicio:
+    if not |\(B(\sigma)\)|:
+        goto fin
+    |\(\sigma\)| = |\(T(\sigma)\)|
+    goto inicio
+fin:
+\end{pseudocode}
+Donde \inline{inicio} y \inline{fin} son etiquetas, es decir, nombres para posiciones del programa, y \inline{goto etiqueta} es una instrucción que transfiere la ejecución a la posición marcada por \inline{etiqueta}. El ciclo, entonces, no es más que un patrón recurrente de saltos: mientras \(B(\sigma)\) sea verdadero, el estado se transforma según \(T\) y se salta de vuelta al inicio; en cuanto \(B(\sigma)\) se torna falso, se salta al final.
+
+Una interrogante que surge naturalmente de lo anterior es por qué la mayoría de lenguajes modernos tienen varias construcciones iterativas en lugar de escribir directamente los \inline{goto}, y más aún, por qué muchos ni siquiera exponen en su sintaxis una instrucción de salto. La razón es que sintaxis que permita saltar a cualquier parte del código sin ninguna estructura dificulta significativamente predecir el comportamiento de un programa: obliga a rastrear manualmente cada salto posible. Eso propicia código enredado y difícil de interpretar, al que se le denomina \concept{código spaghetti}. En contraste, en los constructos como \inline{while} y \inline{for} se sabe de antemano que el único salto hacia atrás posible es al inicio del ciclo y que el único salto hacia adelante es a la instrucción inmediatamente posterior.
+
+Eliminar los saltos de los lenguajes, limitándolos a construcciones iterativas, no reduce el poder expresivo de los programas. El teorema de Böhm–Jacopini demuestra que cualquier algoritmo puede expresarse utilizando únicamente tres estructuras de control: secuencia, selección (mediante \inline{if}) e iteración (mediante \inline{while}). En consecuencia, las instrucciones de salto irrestricto como \inline{goto} no son necesarias para escribir ningún algoritmo, aunque sí pueden resultar convenientes en implementaciones de muy bajo nivel.
