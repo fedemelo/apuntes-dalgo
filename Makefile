@@ -5,16 +5,16 @@ export TEXINPUTS
 
 TEX=pdflatex -shell-escape
 LATEXMK=latexmk -pdf -pdflatex="pdflatex -shell-escape %O %S"
-DALGO_DIR=notes
+ALGORITMOS_DIR=algoritmos
 GRAPHS_DIR=graphs
 
-.PHONY: clean clean-all sml-dalgo dalgo sml-grafos grafos
+.PHONY: clean clean-all sml-algoritmos algoritmos sml-grafos grafos
 
-sml-dalgo:
-	cd $(DALGO_DIR) && $(TEX) dalgo.tex
+sml-algoritmos:
+	cd $(ALGORITMOS_DIR) && $(TEX) algoritmos.tex
 
-dalgo:
-	cd $(DALGO_DIR) && $(LATEXMK) dalgo.tex
+algoritmos:
+	cd $(ALGORITMOS_DIR) && $(LATEXMK) algoritmos.tex
 
 sml-grafos:
 	cd $(GRAPHS_DIR) && $(TEX) grafos.tex
