@@ -1,12 +1,8 @@
-\section{Seudocódigo}
+\subsection{Seudocódigo}
 
-\begin{tldr}
-  Se utiliza un seudocódigo inspirado en Python, excepto cuando una notación más universal, matemática o algorítmicamente explícita permite expresar mejor la idea.
-\end{tldr}
+El seudocódigo es una forma de describir algoritmos basada en lenguajes de programación, pero que permite despreocuparse de detalles de sintaxis o de implementación, usualmente irrelevantes al estudiar algorítmica.
 
-El seudocódigo es una forma de describir algoritmos parecida a los lenguajes de programación, pero que permite despreocuparse de detalles de sintaxis o de implementación, que no suelen ser relevantes al estudiar algorítmica, para enfocarse en resaltar las ideas del algoritmo. 
-
-No existe una única forma de escribir seudocódigo. Distintos libros, cursos y autores utilizan convenciones diferentes inspiradas en distintos lenguajes de programación. En los textos formales se definen convenciones estrictas para el seudocódigo que se usa; eso elimina la ambigüedad, pero obliga al lector a aprenderse las convenciones, prácticamente un nuevo lenguaje. 
+No existe una única forma de escribir seudocódigo. Distintas fuentes utilizan convenciones diferentes inspiradas en distintos lenguajes de programación. En los textos formales se definen convenciones estrictas para el seudocódigo que se usa; eso elimina la ambigüedad, pero obliga al lector a aprenderse las convenciones, prácticamente un nuevo lenguaje. 
 
 En estos apuntes se utiliza un seudocódigo inspirado en Python, que es un lenguaje con una sintaxis breve y legible. Como el objetivo no es aprender Python sino estudiar algoritmos, ocasionalmente se reemplazan construcciones específicas del lenguaje por notaciones más universales o explícitas. En particular, cuando una sintaxis oculta detalles relevantes para el análisis algorítmico, se prefiere una descripción que haga visibles dichos detalles. No usar trucos específicos de Python permite además que cualquier lector que conozca algún otro lenguaje imperativo pueda leer el código sin problema.
 
@@ -27,7 +23,7 @@ En ese ejemplo, es evidente que el código se asemeja a Python, salvo algunos de
     \item Por ejemplo, se utiliza el tipo \inline{arreglo} en lugar de utilizar objetos de la clase \inline{list}, para que tenga las propiedades de un arreglo abstracto, como tamaño fijo y acceso por índice en tiempo constante, en lugar de las del tipo \inline{list} que en Python corresponde a un arreglo dinámico.
   \end{itemize}
   \item Los ciclos sobre rangos de enteros se escriben como \inline{for i=0 to n-1} en lugar de utilizar \inline{for i in range(n)}. La notación preferida es familiar para quienes provienen de otros lenguajes imperativos y además hace explícitos los límites del recorrido.
-  \item En lugar de usar \textit{slicing}, se escribe literalmente (en español) que se realiza una copia y de qué segmento específico del arreglo.
+  \item En lugar de usar \textit{slicing}, se escribe literalmente (en español) que se realiza una copia y de qué segmento específico del arreglo o lista.
   \item Cuando se usa la noción de infinito, se escribe el símbolo matemático \(\infty\) en lugar de la sintaxis \verb|float('inf')|.
   \item Se evita usar cualquier función, como \inline{sorted}, o librería, como \inline{itertools}, que encapsule operaciones complejas, pues el propósito es precisamente comprender cómo se implementarían desde cero.
 \end{itemize}
