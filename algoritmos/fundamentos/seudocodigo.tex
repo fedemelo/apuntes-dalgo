@@ -6,9 +6,9 @@ No existe una forma estándar de escribir seudocódigo: distintas fuentes utiliz
 
 En estos apuntes se utiliza un seudocódigo inspirado en Python, por ser un lenguaje con una sintaxis breve y legible. Como la idea es describir el algoritmo, no se usan modismos específicos de Python: se escribe código familiar para cualquiera que domine algún lenguaje de programación imperativo.
 
-\subsubsection{Ejemplo del seuocódigo empleado}
+\subsubsection{Ejemplo de seudocódigo}
 
-E.g., una función que recibe un arreglo de números y encuentra el mayor:
+La siguiente función recibe un arreglo de números y retorna el mayor:
 \begin{pseudocode}
 def find_largest(nums: arreglo[int]) -> int:
     largest = |\(-\infty\)|
@@ -18,16 +18,16 @@ def find_largest(nums: arreglo[int]) -> int:
     return largest
 \end{pseudocode}
 
-En ese ejemplo, es evidente que el código se asemeja a Python, salvo algunos detalles. Los detalles más recurrentes en estas notas donde el seudocódgo difiere con Python son los siguientes:
+Es evidente que el código se asemeja a Python. Los detalles más recurrentes en estas notas donde el seudocódgo difiere con Python son los siguientes:
 \begin{itemize}
   \item Al utilizar cualquier estructura de datos abstracta, como arreglos, colas, pilas, árboles, etc, la estructura se declara en español.
   \begin{itemize}
-    \item Por ejemplo, se utiliza el tipo \inline{arreglo} en lugar de utilizar objetos de la clase \inline{list}, para que tenga las propiedades de un arreglo abstracto, como tamaño fijo y acceso por índice en tiempo constante, en lugar de las del tipo \inline{list} que en Python corresponde a un arreglo dinámico.
+    \item E.g., se utiliza el tipo \inline{arreglo} en lugar de objetos de la clase \inline{list}. Eso pretende representar un arreglo abstracto, con tamaño fijo y acceso por índice en tiempo constante, en lugar del tipo \inline{list} de Python que está implementado como un arreglo dinámico.
   \end{itemize}
-  \item Los ciclos sobre rangos de enteros se escriben como \inline{for i=0 to n-1} en lugar de utilizar \inline{for i in range(n)}. La notación preferida es familiar para quienes provienen de otros lenguajes imperativos y además hace explícitos los límites del recorrido.
+  \item Los ciclos sobre rangos de enteros se escriben como \inline{for i=0 to n-1} en lugar de \inline{for i in range(n)}, pues es más familiar para quienes provienen de otros lenguajes imperativos y además hace explícitos los límites del recorrido.
   \item En lugar de usar \textit{slicing}, se escribe literalmente (en español) que se realiza una copia y de qué segmento específico del arreglo o lista.
-  \item Se prefiere la notación matemática a sintaxis específica de Python, por ejemplo se usa la lemniscata \(\infty\) en lugar de la sintaxis \verb|float('inf')|.
+  \item Se prefiere la notación matemática sobre sintaxis específica de Python, por ejemplo se usa la lemniscata \(\infty\) en lugar de la sintaxis \verb|float('inf')|.
   \item Se evita usar cualquier función, como \inline{sorted}, o librería, como \inline{itertools}, que encapsule operaciones complejas, pues el propósito es precisamente comprender cómo se implementarían desde cero.
 \end{itemize}
 
-Con lo anterior en mente, debería ser trivial traducir cualquiera de los algoritmos en estas notas a Python ejecutable, y también debería ser sencillo traducirlos a cualquier lenguaje imperativo.
+Así pues, debería ser trivial traducir cualquiera de los algoritmos en estas notas a Python y similarmente debería ser sencillo traducirlo a cualquier lenguaje imperativo.
