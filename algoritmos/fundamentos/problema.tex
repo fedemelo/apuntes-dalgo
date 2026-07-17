@@ -1,9 +1,9 @@
 \section{Problema}
 \label{subsec:problema}
 
-Un problema (en el contexto de estas notas) es un enunciado que especifica qué se quiere obtener, sin decir cómo. Más formalmente:
+Un problema (computacional, evidentemente) es un enunciado que especifica qué se quiere obtener, sin decir cómo.
 \begin{definicion}{Problema (computacional)}{problema}
-Un \concept{problema} es una especificación de una entrada y de una salida esperada con base en la entrada.
+Especificación de una entrada y de una salida esperada con base en la entrada.
 \end{definicion}
 
 E.g., el \concept{problema de ordenamiento} (\textit{sorting problem}, muy famoso):
@@ -11,23 +11,24 @@ E.g., el \concept{problema de ordenamiento} (\textit{sorting problem}, muy famos
   \item \textbf{Entrada}: secuencia de \(n\) números \(a_1, a_2,\ldots,a_n\).
   \item \textbf{Salida}: permutación \(a_1', a_2',\ldots,a_n'\) tal que \(a_1' \leq a_2' \leq \ldots \leq a_n'\)
 \end{itemize}
-Una \concept{permutación} de una secuencia es un posible orden de sus elementos. Si la secuencia tiene más de un elemento, tiene muchas permutaciones. En este caso, el problema especifica como salida esperada una permutación en la que los números están ordenados de menor a mayor.
+Recuérdese que cada permutación de una secuencia es un posible orden de sus elementos. En este caso, la salida esperada es cualquier permutación en la que los números estén en orden no decreciente.
 
-En ocasiones los problemas están redactados de forma que no es inmediato identificar las especificaciones de la entrada y la salida esperada. Como el objetivo de estás notas es el estudio de algoritmos y no la comprensión lectora, siempre se especifican los problemas enunciando directamente la entrada y salida esperadas.
+% Hmm no sé si me gusta este apartado
+En ocasiones los problemas están redactados de forma que la entrada y la salida esperada están ocultas en el enunciado. En estas notas ese nunca será el caso, pues no se pretende ejercitar la habilidad de interpretar un problema, solo la de resolverlo.
 
 Una \concept{instancia} de un problema es una entrada específica, e.g., \(1, 4, 2, 3, 2\) es una instancia del problema de ordenamiento, en cuyo caso una \concept{solución} es \(1, 2, 2, 3, 4\).
 
 \subsection{Tipos de problemas}
 
-Los problemas computacionales se caracterizan en tipos con base en la estructura esperada de la solución. En general, un mismo problema de la vida real se puede modelar de varias formas, que pueden corresponder a un tipo de problema computacional diferente. Algunos tipos de problema son:
+Los problemas se caracterizan en tipos con base en la estructura de la salida esperada. Un mismo problema de la vida real se puede modelar de varias formas, que pueden corresponder a diferentes tipos. Algunos tipos son:
 \begin{itemize}
   \item \concept{Enumeración}: la salida son todas las soluciones válidas.
   \item \concept{Conteo}: la salida es el número de soluciones válidas.
   \item \concept{Optimización}: la salida es la mejor solución válida de acuerdo a algún criterio.
   \item \concept{Búsqueda}: la salida es alguna solución válida para el problema, si existe.
-  \item \concept{Decisión}\label{problema_decision}: la salida es un sí o un no.
+  \item \concept{Decisión}\label{problema_decision}: la salida es sí o no.
 \end{itemize}
-Estas categorías no son mutuamente excluyentes, muchas veces son distintas perspectivas del mismo problema. El problema de ordenamiento, por ejemplo, se puede abordar bajo cualquiera de las perspectivas anteriores:
+Esas categorías no son mutuamente excluyentes, frecuentemente son distintas perspectivas del mismo problema. E.g., el problema de ordenamiento se puede abordar bajo cualquiera de las perspectivas anteriores:
 \begin{itemize}
   \item Enumeración: dado un arreglo, listar todas las permutaciones ordenadas de sus elementos.
   \item Conteo: dado un arreglo, determinar cuántas permutaciones distintas de sus elementos están ordenadas.
@@ -35,4 +36,4 @@ Estas categorías no son mutuamente excluyentes, muchas veces son distintas pers
   \item Búsqueda: dado un arreglo, encontrar alguna permutación de sus elementos que esté ordenada.
   \item Decisión: dado un arreglo, ¿está ordenado?
 \end{itemize}
-Se pueden formular aún más problemas relacionados a ordenar elementos que encajen en cualquiera de estas categorías. 
+Se pueden formular aún más problemas relacionados a ordenar elementos que encajen en cualquiera de esas categorías. 
