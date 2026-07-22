@@ -2,9 +2,9 @@
 
 Una función (matemática o de programación) es \concept{recursiva} si está definida en términos de sí misma.
 
-En términos conceptuales, para resolver un problema utilizando recursión, el problema se debe poder dividir en subproblemas más pequeños con la misma estructura del original. Las soluciones a esos subproblemas se utilizan para solucionar el problema original. 
+Para resolver un problema utilizando recursión, el problema se debe poder dividir en subproblemas más pequeños con la misma estructura del original. Las soluciones a esos subproblemas se utilizan para solucionar el problema original. 
 
-En términos de implementación, una función recursiva se debe invocar a sí misma. Por ende, dada una función \(F\), la entrada \(X\) de la invocación original \(F(X)\) debe poderse dividir en pedazos con su misma estructura, \(x_1 \in X, x_2 \in X, \dots, x_n \in X\), que son usados como argumentos de los llamados recursivos: \(F(x_1), F(x_2), \ldots, F(x_n)\). Cada uno de esos llamados representa la solución a un subproblema.
+Para implementar eso, una función recursiva se debe invocar a sí misma. Por ende, dada una función \(F\), la entrada \(X\) de la invocación original \(F(X)\) debe poderse dividir en pedazos \(x_1, x_2, \ldots, x_n\) cada uno con su misma estructura, que son usados como argumentos de los llamados recursivos: \(F(x_1), F(x_2), \ldots, F(x_n)\). Cada uno de esos llamados representa la solución a un subproblema.
 
 Toda función recursiva consta de dos elementos:
 \begin{itemize}
@@ -20,7 +20,7 @@ Toda función recursiva consta de dos elementos:
 
 \subsection{Sucesión de Fibonacci}
 
-Se presenta la sucesión de Fibonacci como ejemplo clásico de recursión. La sucesión comienza con 0 y 1, y cada número posterior es la suma de los dos anteriores. Formalmente:
+La sucesión de Fibonacci es un ejemplo clásico de recursión. La sucesión comienza con 0 y 1, y cada número posterior es la suma de los dos anteriores:
 \begin{align*}
     F(0) &= 0 \\
     F(1) &= 1 \\
