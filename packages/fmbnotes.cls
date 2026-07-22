@@ -165,7 +165,6 @@
 \renewcommand*\thesubsection{\arabic{section}.\arabic{subsection}}% Subsection counter.
 \renewcommand*\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}  % Subsubsection counter.
 
-	
 %% Customization of section
 
 % Section box

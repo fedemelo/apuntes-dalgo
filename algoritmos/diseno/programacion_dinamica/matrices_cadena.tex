@@ -5,7 +5,7 @@ La multiplicación de matrices en cadena es un ejemplo clásico de optimización
 \subsubsection{Costo computacional}
 
 \begin{tip}
-  Si no recuerda las peculiaridades de la multiplicación de matrices, lea antes el \ref{apx:multiplicacion_matricial}.
+  Si no recuerda las peculiaridades de la multiplicación de matrices, lea antes el apéndice \ref{apx:multiplicacion_matricial}.
 \end{tip}
 
 Primero, miremos cuántas operaciones se necesitan para multiplicar dos matrices. Para \(\bmat{A}_{p\times q} \bmat{B}_{q \times r}\), el resultado será de tamaño \(p\times r\), donde cada uno de los \(pr\) elementos se computa mediante un producto punto entre vectores de tamaño \(q\). En cada producto punto se realizan entonces \(q\) multiplicaciones entre escalares, para un total de \(pqr\) productos entre escalares.
@@ -26,7 +26,7 @@ A pesar de que el análisis anterior es útil para dimensionar por qué es impor
   \item \((\bmat{A} \bmat{B}) (\bmat{C} \bmat{D})\), equivalente a \(\bmat{A} \bmat{B} (\bmat{C} \bmat{D})\)
   \item \(\bmat{A} (\bmat{B} (\bmat{C} \bmat{D}))\)
 \end{enumerate}
-En general, para \(n\) matrices hay \(\frac{2n!}{(n+1)!n!}\) posibles agrupaciones completas. Ese cálculo corresponde a la sucesión de números de Catalán, cuya deducción es poco trivial, por lo que se desglosa en el \ref{apx:numeros_catalan}. El caso es que, enfrentados a la imposibilidad de elegir la mejor agrupación empleando solo álgebra, es hora de diseñar algoritmos.
+En general, para \(n\) matrices hay \(\frac{2n!}{(n+1)!n!}\) posibles agrupaciones completas. Ese cálculo corresponde a la sucesión de números de Catalán, cuya deducción es poco trivial, por lo que se desglosa en el apéndice \ref{apx:numeros_catalan}. El caso es que, enfrentados a la imposibilidad de elegir la mejor agrupación empleando solo álgebra, es hora de diseñar algoritmos.
 
 \subsubsection{Subestructura óptima}
 
