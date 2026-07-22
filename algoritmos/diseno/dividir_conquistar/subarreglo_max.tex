@@ -1,20 +1,20 @@
 \subsection{Subarreglo máximo}
 
-Dado un arreglo de números, a un subarreglo contiguo no vacío cuya suma (de sus elementos) es mayor que la de cualquier otro subarreglo contiguo se le denomina un \concept{subarreglo máximo}. El problema de encontrar un subarreglo máximo se define como:
+Un \concept{subarreglo máximo} es un pedazo contiguo no vacío de un arreglo de números cuya suma (la suma de sus elementos) es mayor que la de cualquier otro subarreglo contiguo. El problema de encontrar un subarreglo máximo se define como:
 \begin{itemize}
   \item \textbf{Entrada}: arreglo con \(n\) números: \([a_1, a_2,\ldots,a_n]\).
   \item \textbf{Salida}: subarreglo contiguo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.
 \end{itemize}
 \say{es máxima} se puede formalizar en una expresión matemática que básicamente dice que esa sumatoria es mayor que cualquier otra sumatoria de elementos contiguos que se pueda formular. Nótese que podría haber más de un subarreglo máximo: podrían haber varios cuya suma sea igual. Basta con hallar cualquiera que sea máximo.
-% TODO: Vale la pena escribir la expresión?
 
-Hay dos tipos de instancias de este problema que son muy fáciles:
+Hay dos familias de instancias de este problema que son muy fáciles:
 \begin{itemize}
   \item Cuando todos los valores del arreglo son positivos, la respuesta es todo el arreglo, porque todos los valores aportan a una mayor suma.
   \item Cuando todos los valores son negativos, se quiere que la suma sea lo menos negativa, por lo que se forma el subarreglo con un solo elemento, el menos negativo.
 \end{itemize}
+Vale la pena entonces pensar en instancias con valores tanto positivos como negativos, que son menos triviales.
 
-Para facilitar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
+Antes de iniciar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
 \begin{itemize}
   \item \textbf{Entrada}: arreglo con \(n\) números: \([a_0, a_2,\ldots,a_{n-1}]\).
   \item \textbf{Salida}: índices \(i\), \(j\) del arreglo, donde \(0 \leq i \leq j < n\) tales que la suma \(\sum_{k=i}^j a_k\) es máxima.
@@ -43,15 +43,18 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
 \end{pseudocode}
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
 
+% TODO: La anotación que toca añadir aquí es que una lectura como incauta del algoritmo puede pensar que no se evaluan todos los subarreglos, sino solo los quevan hasta el ultimo indice. Pero si se eveluan todos pq en cada iteracion de j se mira si el total parcial es mejor que el mejor hasta ahora (y si sí, se reemplaza). Eso toca ponerlo bien explicado en una o dos anotaciones sobre el código.
+
 \subsubsection{Solución por dividir y conquistar}
-Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema es hallar un subarreglo máximo en el respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, podríamos tener el infortunio de partirlo justo donde estaba el subarreglo máximo, entonces en el paso de combinar las soluciones, tenemos que asegurarnos de contemplar esa posibilidad. Con eso, las etapas son:
+
+Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema consiste en hallar un subarreglo máximo dentro del respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, puede pasar que se partió justo donde estaba el subarreglo máximo. Debemos cerciorarnos de contemplar esa posibilidad en el paso de combinar las soluciones. Con eso, las etapas son:
 \begin{enumerate}
     \item Dividir el arreglo en dos mitades.
     \item Conquistar: Para cada mitad, hallar un subarreglo máximo recursivamente.
     \item Combinar: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por donde se dividió el arreglo.
 \end{enumerate}
 
-Si encapsulamos la última parte del paso de combinar en \inline{subarr_max_transversal}, de forma que aplazamos un poco ese problema, podemos escribir el seudocódigo para las primeras dos etapas:
+Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el combinar encapsulándolo en una función \inline{max_crossing_subarray}. Podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
 def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int, int, int]:
     if i == j: return i, j, nums[i]
@@ -70,32 +73,31 @@ def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int
 
     return cross_i, cross_j, cross_sum
 \end{pseudocode}
+% TODO: Acá vale la pena anotar: el cálculo de la mitad; los llamados (sucinto, solo señalar mitad izq, mitad der. Cross todavía no, lo estamos aplazando; y sobretodo la [ultima parte que es lo m[as largo pero lo más simple: si left es la mejor, retornar esos índices. Si right es la mejor, esos. Si cross es la mejor, esos.
 
-Ahora sí, pensemos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la derecha y maximizar la de la izquierda. En este caso, usar un algoritmo exhaustivo no es ingenuo:
+Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[int, int, int]:
-    right_sum = 0
     left_sum = 0
-
-    largest_right = |\(-\infty\)|
-    largest_left = |\(-\infty\)|
-
-    for r=k to j:
-        right_sum += nums[r]
-        if right_sum > largest_right:
-            largest_right = right_sum
-            best_r = r
-
+    largest_sum_left = |\(-\infty\)|
     for l=k-1 downto i:
         left_sum += nums[l]
-        if left_sum > largest_left:
-            largest_left = left_sum
+        if left_sum > largest_sum_left:
+            largest_sum_left = left_sum
             best_l = l
 
-    return best_l, best_r, largest_left + largest_right
-\end{pseudocode}
+    right_sum = 0
+    largest_sum_right = |\(-\infty\)|
+    for r=k to j:
+        right_sum += nums[r]
+        if right_sum > largest_sum_right:
+            largest_sum_right = right_sum
+            best_r = r
 
-% TODO: Anotar algoritmo
+    return best_l, best_r, largest_sum_left + largest_sum_right
+\end{pseudocode}
+% TODO: Acá vale la pena anotar que: 1. se hace lo mismo pa der que pa izq. Y que no tiene ciencia o sea en solo izq anotar que se recorre de la mitad al principio )hacia la izq) y que se va acumulando y en cada paso se mira si es el mejor y si sí se guarda el índice. Luego der es lo mismo pero de mitad hacia adelante (ie hacia der)
+
 % TODO: Análisis de complejidad así sea light
 
 \practicar[leetcode]{Maximum Subarray}{https://leetcode.com/problems/maximum-subarray/}
