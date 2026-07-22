@@ -29,6 +29,7 @@ def merge_sort(nums: arreglo[int], i: int, j: int):
 \begin{annotations}
     \codebrace[width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
 \end{annotations}
+
 Los índices como parámetros son necesarios porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo: \inline{merge_sort(números, 0, números.longitud-1)}. Nótese que el arreglo realmente no se divide en cada llamado recursivo, sino que se delimitan distintas regiones mediante índices. Eso permite que el algoritmo sea \concept{\textit{in-place}}, i.e., modifique directamente el arreglo original en lugar de retornar uno nuevo.
 
 En cada llamado recursivo ocurre lo siguiente:
