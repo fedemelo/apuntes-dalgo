@@ -4,7 +4,9 @@ A pesar de que algunos problemas se expresan más naturalmente mediante recursi�
 
 \subsubsection{De iteración a recursión}
 
-Primero, para no contemplar todos los tipos de ciclos, recuérdese que todos se pueden generalizar mediante la instrucción \inline{while}, como se muestra en el \ref{apx:iteracion}. A medida que el ciclo ejecuta, puede modificar el \concept{estado del programa}, denotado por \(\sigma\): el conjunto de valores de todas las variables cuyo contenido puede afectar la ejecución del algoritmo. El estado determina si la condición booleana del \inline{while} es verdadera, por lo que dicha condición se denota en función del estado como \(B(\sigma)\). Con eso en mente, la forma general de cualquier \inline{while} (y por ende de cualquier ciclo) se puede escribir como:
+Recuérdese que todos los tipos de ciclos se pueden generalizar mediante la instrucción \inline{while}, como se muestra en el \ref{apx:iteracion}.
+
+A medida que el ciclo \inline{while} ejecuta, puede modificar el \concept{estado del programa}, denotado por \(\sigma\): el conjunto de valores de las variables cuyo contenido puede afectar la ejecución del algoritmo. El estado determina si la condición booleana del \inline{while} es verdadera, por lo que dicha condición se denota en función del estado como \(B(\sigma)\). Con eso en mente, la forma general de cualquier \inline{while} (y por ende de cualquier ciclo) se puede escribir como:
 \begin{pseudocode}
 while |\(B(\sigma)\)|:
     |\(\sigma\)| = |\(T(\sigma)\)|
@@ -21,5 +23,7 @@ En ambos programas el estado evoluciona sucesivamente según la transformación 
 
 \subsubsection{De recursión a iteración}
 
-La transformación consiste en reemplazar la \hyperref[sec:pila_de_llamados]{pila de llamados} de la máquina por una pila explícita en el código, administrada por el propio algoritmo. En lugar de invocar recursivamente una función, el algoritmo iterativo inserta en esa pila la información necesaria para ejecutar cada una de las llamadas recursivas que habría realizado. Luego, mientras existan ejecuciones pendientes en la pila, toma esa información y ejecuta la parte del código correspondiente a lo que habría ejecutado la función recursiva. Si durante esa ejecución surgen nuevas llamadas recursivas, inserta en la pila la información necesaria para ejecutarlas más adelante. Como la pila explícita mantiene exactamente las mismas ejecuciones pendientes que la pila de llamados de la máquina, ambas realizan las mismas operaciones en el mismo orden y producen el mismo resultado.
+La transformación consiste en reemplazar la \hyperref[sec:pila_de_llamados]{pila de llamados} de la máquina por una pila explícita en el código, administrada por el algoritmo. 
+
+Es decir, en lugar de invocar recursivamente una función, el algoritmo iterativo inserta en esa pila la información necesaria para ejecutar cada una de las llamadas recursivas que habría realizado. Luego, mientras existan ejecuciones pendientes en la pila, toma esa información y ejecuta la parte del código correspondiente a lo que habría ejecutado la función recursiva. Si durante esa ejecución surgen nuevas llamadas recursivas, inserta en la pila la información necesaria para ejecutarlas más adelante. Como la pila explícita mantiene exactamente las mismas ejecuciones pendientes que la pila de llamados de la máquina, ambas realizan las mismas operaciones y producen el mismo resultado.
 
