@@ -1,4 +1,13 @@
 \section{Decremento y conquista}
 
+El paradigma de \concept{decremento y conquista} aprovecha la relación entre el problema y una versión más pequeña del problema. La versión más pequeña se obtiene reduciendo el problema en cada iteración del algoritmo, a distintas tasas:
+\begin{itemize}
+    \item \concept{Decremento por una constante}: se reduce el tamaño del problema en una cantidad fija en cada iteración del algoritmo, usualmente en uno.
+    \item \concept{Decremento por un factor constante}: se reduce en una proporción fija en cada iteración, usualmente a la mitad.
+    \item \concept{Decremento de tamaño variable}: se reduce el tamaño en distinta cantidad en cada iteración.
+\end{itemize}
+
+Se presentan tres algoritmos para concretar esta idea, cada uno ejemplificando una variante distinta.
+
 \setinputbase{diseno/decremento_conquista}
-\inputlist{insertion_sort, algoritmo_euclides}
+\inputlist{insertion_sort, busqueda_binaria, algoritmo_euclides}
