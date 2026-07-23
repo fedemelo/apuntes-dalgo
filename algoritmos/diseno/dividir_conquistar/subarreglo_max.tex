@@ -33,17 +33,19 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
 
     for i=0 to len(nums)-1:
         total = 0
-        for j=i to len(nums)-1:
-            total += nums[j]
-            if total > largest:
+        |\br{sumi}|for j=i to len(nums)-1:
+            total += nums[j]|\br{sumf}|
+            |\br{cmpi}|if total > largest:
                 largest = total
                 best_i = i
-                best_j = j
+                best_j = j|\br{cmpf}|
     return best_i, best_j, largest
 \end{pseudocode}
-Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
+\begin{annotations}
+    \codebrace[xshift=1.5cm,width=8cm]{cmpi}{cmpf}{Cada subarreglo de \(i\) hasta \(j\) se compara contra el mejor visto hasta el momento; no se espera a que termine el ciclo interno para comparar}
+\end{annotations}
 
-% TODO: La anotación que toca añadir aquí es que una lectura como incauta del algoritmo puede pensar que no se evaluan todos los subarreglos, sino solo los quevan hasta el ultimo indice. Pero si se eveluan todos pq en cada iteracion de j se mira si el total parcial es mejor que el mejor hasta ahora (y si sí, se reemplaza). Eso toca ponerlo bien explicado en una o dos anotaciones sobre el código.
+Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
 
 \subsubsection{Solución por dividir y conquistar}
 
@@ -59,44 +61,50 @@ Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamo
 def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int, int, int]:
     if i == j: return i, j, nums[i]
 
-    k = i + (j - i) // 2
+    |\bxl{mid}|k = (j - i) // 2 + i|\bxr{mid}| 
 
-    left_i, left_j, left_sum = max_subarray_divide_conquer(nums, i, k)
+    |\br{calli}|left_i, left_j, left_sum = max_subarray_divide_conquer(nums, i, k)
     right_i, right_j, right_sum = max_subarray_divide_conquer(nums, k+1, j)
-    cross_i, cross_j, cross_sum = max_crossing_subarray(nums, i, k, j)
+    cross_i, cross_j, cross_sum = max_crossing_subarray(nums, i, k, j)|\br{callf}|
 
-    if left_sum >= right_sum and left_sum >= cross_sum:
+    |\br{reti}|if left_sum >= right_sum and left_sum >= cross_sum:
         return left_i, left_j, left_sum
 
     if right_sum > cross_sum:
         return right_i, right_j, right_sum
 
-    return cross_i, cross_j, cross_sum
+    return cross_i, cross_j, cross_sum|\br{retf}|
 \end{pseudocode}
-% TODO: Acá vale la pena anotar: el cálculo de la mitad; los llamados (sucinto, solo señalar mitad izq, mitad der. Cross todavía no, lo estamos aplazando; y sobretodo la [ultima parte que es lo m[as largo pero lo más simple: si left es la mejor, retornar esos índices. Si right es la mejor, esos. Si cross es la mejor, esos.
+\begin{annotations}
+    \codebox[xshift=2cm,width=8cm]{mid}{Índice de la mitad del segmento: \inline{j-i} es la longitud del segmento, \inline{//2} da su mitad, que debe ubicarse desde \inline{i} donde inicia el segmento.}
+    \codebrace[xshift=3cm,width=6cm]{reti}{retf}{Se comparan las soluciones y se retornan los índices correspondientes a la mejor entre la mitad izquierda, derecha y el cruce de la mitad}
+\end{annotations}
 
 Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[int, int, int]:
-    left_sum = 0
+    |\br{lefti}|left_sum = 0
     largest_sum_left = |\(-\infty\)|
     for l=k-1 downto i:
         left_sum += nums[l]
         if left_sum > largest_sum_left:
             largest_sum_left = left_sum
-            best_l = l
+            best_l = l|\br{leftf}|
 
-    right_sum = 0
+    |\br{righti}|right_sum = 0
     largest_sum_right = |\(-\infty\)|
     for r=k to j:
         right_sum += nums[r]
         if right_sum > largest_sum_right:
             largest_sum_right = right_sum
-            best_r = r
+            best_r = r|\br{rightf}|
 
     return best_l, best_r, largest_sum_left + largest_sum_right
 \end{pseudocode}
-% TODO: Acá vale la pena anotar que: 1. se hace lo mismo pa der que pa izq. Y que no tiene ciencia o sea en solo izq anotar que se recorre de la mitad al principio )hacia la izq) y que se va acumulando y en cada paso se mira si es el mejor y si sí se guarda el índice. Luego der es lo mismo pero de mitad hacia adelante (ie hacia der)
+\begin{annotations}
+    \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{k-1}) hacia el inicio (\inline{i}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
+    \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde la mitad (\inline{k}) hacia el final (\inline{j})}
+\end{annotations}
 
 % TODO: Análisis de complejidad así sea light
 
