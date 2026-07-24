@@ -44,6 +44,7 @@ clean:  # Remove all temporary files
 		-name "*.lot" -o \
 		-name "*.run.xml" -o \
 		-name "*.listing" \
+		-name "*.bcf" \
 	\) \
 	-exec rm {} +
 
