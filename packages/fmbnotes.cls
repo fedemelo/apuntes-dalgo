@@ -10,6 +10,8 @@
 %% Required packages
 \RequirePackage{fmbdalgo}
 
+\RequirePackage[backend=biber, style=authoryear]{biblatex}  % Citations.
+
 \RequirePackage{enumitem}  % Customize enumerate, itemize and description environments.
 \RequirePackage{epigraph}  % Inspirational quotes at the beggining of chapters.
 \RequirePackage{fancyhdr}  % Headers, footers and page numbers.
