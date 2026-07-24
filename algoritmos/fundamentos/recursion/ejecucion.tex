@@ -108,3 +108,28 @@ Como cada llamado recursivo necesita apilar un nuevo marco de pila en la pila de
 
 Si se realizan tantos llamados recursivos que no queda suficiente espacio en la pila de llamados para un nuevo marco de pila, se produce un error por \concept{desbordamiento de pila} (\textit{stack overflow}) que interrumpe la ejecución.
 
+\subsubsection{Optimización de recursión de cola}
+\label{sec:optimizacion_recursion_cola}
+
+Es posible eludir el sobrecosto espacial de la recursión utilizando \concept{recursión de cola} (\textit{tail recursion}), en donde todos los llamados recursivos de una función son la última operación realizada por la función antes de retornar. 
+
+Si la recursión siempre es la última operación, después del llamado recursivo ya no queda nada por hacer y por ende no es necesario mantener el marco de pila de la función que hace el llamado recursivo. Así pues, en vez de apilar un nuevo marco de pila para el llamado recursivo, el entorno de ejecución puede reemplazar el marco actual por el nuevo, reutilizando su espacio. Esa es la \concept{optimización de recursión de cola} (\textit{tail call optimization}) que mantiene la profundidad de la pila constante independientemente del número de llamados recursivos.
+
+Para que en efecto los llamados recursivos sean de cola (\text{tail call}), se debe retornar directamente el llamado recursivo, sin realizar ninguna operación sobre él (pues, en ese caso, la recursión no es la última operación). En el siguiente algoritmo, que calcula el factorial de \(n\):
+\begin{pseudocode}
+def factorial(n: int) -> int:
+    if n <= 1:
+        return 1
+
+    return n * factorial(n-1)
+\end{pseudocode}
+El llamado a \inline{factorial(n-1)} no es una llamada de cola porque su resultado debe multiplicarse por \inline{n} antes de retornar. El algoritmo se puede reescribir para que sí lo sea, acumulando el resultado parcial en un parámetro adicional:
+\begin{pseudocode}
+def factorial(n: int, acumulado: int = 1) -> int:
+    if n <= 1:
+        return acumulado
+
+    return factorial(n-1, n * acumulado)
+\end{pseudocode}
+
+Al implementar recursión de cola, para que la optimización de recursión de cola efectivamente funcione el lenguaje de programación debe implementarla explícitamente, pues el lenguaje tiene que reconocer que puede reemplazar el marco de pila en lugar de apilar el nuevo. La mayoría de lenguajes funcionales, como Scheme o Haskell, la garantizan como parte de su especificación, pero muchos lenguajes procedimentales, notablemente Python, Java y el estándar de C, deliberadamente \emph{no} soportan optimización de recursión de cola porque priorizan que la pila de llamados esté completa para facilitar la revisión de errores.
