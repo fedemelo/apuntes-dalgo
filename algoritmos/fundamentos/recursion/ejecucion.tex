@@ -130,4 +130,4 @@ def factorial(n: int, acumulado: int = 1) -> int:
     return factorial(n-1, n * acumulado)
 \end{pseudocode}
 
-La optimización de recursión de cola solo funciona en ciertos lenguajes de programación. El lenguaje de programación tiene que reconocer que puede reemplazar el marco de pila en lugar de apilar el nuevo. La mayoría de lenguajes funcionales, como Scheme o Haskell, la implementan, pero muchos lenguajes procedimentales, notablemente Python, Java y el estándar de C, deliberadamente \emph{no} soportan optimización de recursión de cola porque priorizan que la pila de llamados esté completa para facilitar la revisión de errores.
+La optimización de recursión de cola solo funciona en ciertos lenguajes de programación. El lenguaje de programación tiene que reconocer que puede reemplazar el marco de pila en lugar de apilar el nuevo. La mayoría de lenguajes funcionales, como Scheme o Haskell, la implementan, pero muchos lenguajes procedimentales, notablemente Python y Java, deliberadamente \emph{no} soportan optimización de recursión de cola. En \cite{guido_tail_recursion} se explica por qué no se incluyó en Python.
