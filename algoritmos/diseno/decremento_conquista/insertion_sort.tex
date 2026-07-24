@@ -1,8 +1,10 @@
 \subsection{Insertion sort}
 
-Insertion sort resuelve el problema de ordenamiento, definido en la sección \ref{subsec:problema}. Es quizás el algoritmo de ordenamiento más intuitivo. 
+\textit{Insertion sort} resuelve el problema de ordenamiento, definido en la sección \ref{subsec:problema}.
 
-Se recorren los elementos del arreglo. Para cada elemento, se revisa si está ubicado correctamente respecto a los anteriores: si no lo está, se mueve hacia atrás hasta que lo esté; una vez lo está, se continúa con el siguiente elemento.
+Si el problema es ordenar todo el arreglo, una versión más pequeña es ordenar un pedazo del arreglo. Siguiendo el paradigma, imaginemos que ese problema más pequeño ya está resuelto: que todos los elementos del arreglo menos el último ya están ordenados. El paso que falta es obvio: tomar ese último elemento e insertarlo en la posición correcta, comparando hacia atrás.
+
+Esa es la idea que da origen a \concept{insertion sort}: para cada elemento del arreglo, se revisa si está ubicado correctamente respecto a los anteriores: si no lo está, se mueve hacia atrás hasta que lo esté; una vez lo está, se continúa con el siguiente elemento.
 
 \begin{pseudocode}
 def insertion_sort(nums: arreglo):
@@ -24,9 +26,13 @@ def insertion_sort(nums: arreglo):
   \codebox[width=10cm]{in}{Se inserta \inline{elem} en la posición que quedó libre tras mover los elementos más grandes que él hacia adelante. Es \inline{j+1} y no \inline{j} porque la última iteración del ciclo termina con \inline{j -= 1}.}
 \end{annotations}
 
-El algoritmo presenta un ciclo anidado dentro de otro. El ciclo externo siempre recorre el arreglo completo, pero la cantidad de veces que ejecuta el cuerpo del ciclo interno depende de qué tanto haya que retroceder cada elemento, es decir, de qué tan ordenado esté el arreglo.
+En cada iteración se acomoda un elemento, reduciendo el problema en una constante: uno.
 
-El mejor caso es cuando el arreglo está ordenado, pues no hay que retroceder ningún elemento y el cuerpo del ciclo interno nunca ejecuta. En ese caso el costo computacional está dado solo por el ciclo externo, que indefectiblemente revisa todos los elementos. Sea \(T_\text{mejor}\) la función para ese costo computacional, \(T_\text{mejor} \in \Theta(n)\).
+\subsubsection{Complejidad}
+
+El algoritmo presenta un ciclo anidado dentro de otro. El ciclo externo siempre recorre el arreglo completo, pero la cantidad de veces que ejecuta el cuerpo del ciclo interno depende de qué tanto haya que retroceder cada elemento, es decir, de qué tan ordenado esté el arreglo original.
+
+Si el arreglo está ordenado, no hay que retroceder ningún elemento y el cuerpo del ciclo interno nunca ejecuta. Ese es el mejor caso: el costo computacional está dado solo por el ciclo externo, que revisa todos los elementos. Sea \(T_\text{mejor}\) la función para ese costo computacional, \(T_\text{mejor} \in \Theta(n)\).
 
 El peor caso es cuando el ciclo interno tiene que retroceder cada elemento hasta el principio, es decir, cuando el arreglo está en orden inverso. En ese caso, para cada elemento \(i\), el ciclo interno debe retrocederlo \(i-1\) veces; la cantidad de operaciones es entonces:
 \[\sum_{i=2}^n (i-1) = 1+2+\cdots+(n-1) = \frac{n^2-n}{2}.\]
