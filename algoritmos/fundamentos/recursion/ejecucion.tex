@@ -118,16 +118,14 @@ Si la recursión siempre es la última operación, después del llamado recursiv
 Para que en efecto los llamados recursivos sean de cola (\text{tail call}), se debe retornar directamente el llamado recursivo, sin realizar ninguna operación sobre él (pues, en ese caso, la recursión no es la última operación). En el siguiente algoritmo, que calcula el factorial de \(n\):
 \begin{pseudocode}
 def factorial(n: int) -> int:
-    if n <= 1:
-        return 1
+    if n <= 1: return 1
 
     return n * factorial(n-1)
 \end{pseudocode}
 El llamado a \inline{factorial(n-1)} no es una llamada de cola porque su resultado debe multiplicarse por \inline{n} antes de retornar. El algoritmo se puede reescribir para que sí lo sea, acumulando el resultado parcial en un parámetro adicional:
 \begin{pseudocode}
 def factorial(n: int, acumulado: int = 1) -> int:
-    if n <= 1:
-        return acumulado
+    if n <= 1: return acumulado
 
     return factorial(n-1, n * acumulado)
 \end{pseudocode}
