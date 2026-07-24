@@ -32,7 +32,7 @@ Hay en esencia dos formas de diseñar algoritmos de programación dinámica:
     \end{itemize}
 \end{itemize}
 
-Como ambos métodos aprovechan la propiedad de subproblemas superpuestos, sus complejidades asintóticas suelen ser iguales. Sin embargo, cuando \textit{todos} los subproblemas posibles se tienen que resolver al menos una vez, el algoritmo bottom-up suele ser más eficiente que el top-down por un factor constante, porque el algoritmo top-down tiene el sobrecosto de la recursión (véase el apéndice \ref{apx:recursion_iteracion}).
+Como ambos métodos aprovechan la propiedad de subproblemas superpuestos, sus complejidades asintóticas suelen ser iguales. Sin embargo, cuando \textit{todos} los subproblemas posibles se tienen que resolver al menos una vez, el algoritmo bottom-up suele ser más eficiente que el top-down por un factor constante, porque el algoritmo top-down tiene el sobrecosto de la recursión (véase la sección \ref{sec:sobrecosto_recursion}).
 
 Ocasionalmente, no es necesario resolver todos los subproblemas del espacio; en ese caso, la solución bottom-up puede ser peor porque requiere resolver los subproblemas pequeños primero para completar la tabulación, mientras que la solución top-down solo memoiza los subproblemas que sí se tienen que resolver.
 
