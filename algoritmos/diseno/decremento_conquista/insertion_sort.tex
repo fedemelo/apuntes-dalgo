@@ -2,7 +2,7 @@
 
 \textit{Insertion sort} resuelve el problema de ordenamiento, definido en la sección \ref{subsec:problema}.
 
-Si el problema es ordenar todo el arreglo, una versión más pequeña es ordenar un pedazo del arreglo. Siguiendo el paradigma, imaginemos que ese problema más pequeño ya está resuelto: que todos los elementos del arreglo menos el último ya están ordenados. El paso que falta es obvio: tomar ese último elemento e insertarlo en la posición correcta, comparando hacia atrás.
+Si el problema es ordenar el arreglo, un subproblema es ordenar un pedazo del arreglo. Siguiendo el paradigma, imaginemos que ese subproblema ya está resuelto: que todos los elementos del arreglo menos el último ya están ordenados. El paso que falta es obvio: tomar ese último elemento e insertarlo en la posición correcta, comparando hacia atrás.
 
 Esa es la idea que da origen a \concept{insertion sort}: para cada elemento del arreglo, se revisa si está ubicado correctamente respecto a los anteriores: si no lo está, se mueve hacia atrás hasta que lo esté; una vez lo está, se continúa con el siguiente elemento.
 
@@ -26,7 +26,7 @@ def insertion_sort(nums: arreglo):
   \codebox[width=10cm]{in}{Se inserta \inline{elem} en la posición que quedó libre tras mover los elementos más grandes que él hacia adelante. Es \inline{j+1} y no \inline{j} porque la última iteración del ciclo termina con \inline{j -= 1}.}
 \end{annotations}
 
-En cada iteración se acomoda un elemento, reduciendo el problema en una constante: uno.
+En cada iteración se acomoda un elemento, reduciendo el problema en una constante: uno. Es por eso que insertion sort es un ejemplo clásico de decremento por una constante.
 
 \subsubsection{Complejidad}
 
