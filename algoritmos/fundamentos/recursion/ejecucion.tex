@@ -111,9 +111,9 @@ Si se realizan tantos llamados recursivos que no queda suficiente espacio en la 
 \subsubsection{Optimización de recursión de cola}
 \label{sec:optimizacion_recursion_cola}
 
-En ocasiones es posible eludir el sobrecosto espacial de la recursión utilizando \concept{recursión de cola} (\textit{tail recursion}), en donde todos los llamados recursivos de una función son la última operación realizada por la función antes de retornar. 
+En ocasiones es posible eludir el sobrecosto espacial de la recursión utilizando \concept{recursión de cola} (\textit{tail recursion}), en donde todos los llamados recursivos de la función son la última operación antes de retornar.
 
-Si la recursión siempre es la última operación, después del llamado recursivo ya no queda nada por hacer y por ende no es necesario mantener el marco de pila de la función que hizo el llamado. Así pues, en vez de apilar un nuevo marco de pila para el llamado recursivo, el entorno de ejecución puede reemplazar el marco actual por el nuevo, reutilizando su espacio. Esa es la \concept{optimización de recursión de cola} (\textit{tail call optimization}). La profundidad de la pila se mantiene entonces constante independientemente del número de llamados recursivos.
+Si la recursión siempre es la última operación, después del llamado recursivo ya no queda nada por hacer y por ende no es necesario mantener el marco de pila de la función que hizo el llamado. Así pues, en vez de apilar un nuevo marco de pila para el llamado recursivo, el entorno de ejecución puede reemplazar el marco actual por el nuevo, reutilizando su espacio. Esa es la \concept{optimización de recursión de cola} (\textit{tail call optimization}). Con eso, la profundidad de la pila se mantiene constante independientemente del número de llamados recursivos.
 
 Para que en efecto los llamados recursivos sean de cola (\text{tail call}), se debe retornar directamente el llamado recursivo, sin realizar ninguna operación sobre él (pues, en ese caso, la recursión no es la última operación). En el siguiente algoritmo, que calcula el factorial de \(n\):
 \begin{pseudocode}
