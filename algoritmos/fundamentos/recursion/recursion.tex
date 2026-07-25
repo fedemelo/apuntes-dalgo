@@ -29,8 +29,7 @@ La sucesión de Fibonacci es un ejemplo clásico de recursión. La sucesión com
 Allí, los casos base son las primeras dos expresiones y la relación de recurrencia es la tercera expresión. Se puede traducir esa definición a una implementación recursiva directamente:
 \begin{pseudocode}
 def fibonacci(n: int) -> int:
-    if n <= 1: 
-        return n
+    if n <= 1: return n
 
     return fibonacci(n-1) + fibonacci(n-2)
 \end{pseudocode}
