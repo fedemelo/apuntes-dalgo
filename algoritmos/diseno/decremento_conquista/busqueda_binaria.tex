@@ -1,39 +1,55 @@
 \subsection{Búsqueda binaria}
 
-La búsqueda binaria es un algoritmo para buscar si un elemento específico existe en una secuencia ordenada. El problema que resuelve es entonces:
+La búsqueda binaria intenta encontrar un valor específico, el \emph{objetivo}, en una secuencia ordenada. El problema que resuelve es entonces:
 \begin{itemize}
-  \item Entrada: arreglo no vacío ordenado de enteros y número entero \(k\)
-  \item Salida: índice de \(k\) en el arreglo o -1 si no está
+  \item Entrada: arreglo no vacío ordenado de enteros y un número entero: el objetivo
+  \item Salida: índice del objetivo en el arreglo o -1 si no está
 \end{itemize}
+
+Para aplicar el paradigma, evidentemente el subproblema es buscar el objetivo en un segmento del arreglo. Imaginar que ese subproblema está resuelto equivale a saber que el objetivo está en ese segmento, o sea saber en qué segmento buscar (no a saber exactamente dónde está, porque entonces estaría resuelto el problema completo).
+
+Implementar esa idea no es difícil: como el arreglo está ordenado, se puede comparar el objetivo con algún elemento del arreglo: si es mayor, necesariamente tendrá que estar a la derecha y entonces solo hace falta buscar en ese segmento; si es menor, tendrá que estar a la izquierda (y si es igual, ya no hace falta buscar más).
+
+Lo más sensato es iniciar comparando con el elemento de la mitad, para que los dos posibles segmentos en los que tocaría buscar sean del mismo tamaño. Eso reduce el espacio de búsqueda a la mitad. Luego, se repite: una vez se sabe en qué segmento buscar, se aplica la idea para nuevamente reducir ese espacio a la mitad, hasta que se encuentra el elemento o se determina que no está.
 
 \subsubsection{Solución recursiva}
 
-El algoritmo es muy simple: se revisa el elemento del medio del arreglo. Si es \(k\), encontramos lo que buscábamos y la salida es el índice del medio; si es menor, solo es sensato seguir buscando en la mitad derecha; si es mayor, solo en la mitad izquierda.
+La implementación más natural es recursiva, porque permite representar muy naturalmente esa idea de buscar solo en una mitad del segmento cada vez. No hace falta modificar el arreglo como tal para segmentarlo, basta con tener los índices del extremo izquierdo y derecho del segmento:
 
 \begin{pseudocode}
-def binary_search(nums: arreglo[int], target: int) -> int:
-    return binary_search_rec(nums, target, 0, len(nums) - 1)
-
-def binary_search_rec(nums: arreglo[int], target: int, i: int, j: int) -> int:
-    |\br{mi}|if j < i:
+def binary_search_rec(nums: arreglo[int], objetivo: int, izq: int, der: int) -> int:
+    |\br{mi}|if der < izq:
         return -1|\br{mf}|
 
-    k = |\bxl{over}|i + (j - i) // 2|\bxr{over}|
-    if target < nums[k]:
-        return binary_search_rec(nums, target, i, k - 1)
-    if target > nums[k]:
-        return binary_search_rec(nums, target, k + 1, j)
+    med = |\bxl{over}|(der - izq) // 2 + izq|\bxr{over}|
 
-    return k
+    |\br{gtb}|if objetivo > nums[med]:
+        return binary_search_rec(nums, objetivo, med+1, der)|\br{gtf}|
+    |\br{ltb}|if objetivo < nums[med]:
+        return binary_search_rec(nums, objetivo, izq, med-1)|\br{ltf}|
+
+    |\bxl{eq}|return med|\bxr{eq}|
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[width=6cm]{mi}{mf}{Si \inline{j} está a la izquierda de \inline{i}, los índices se cruzaron, lo que indica que el elemento no está.}
-  \codebox[xshift=0.5cm, width=7.5cm]{over}{Una alternativa para calcular la mitad es \inline{(i+j) // 2}, pero arriesga un overflow (en lenguajes de bajo nivel) si la suma es muy grande.}
+  \codebrace[width=11cm]{mi}{mf}{Si \inline{der} está a la izquierda de \inline{izq}, los índices se cruzaron, lo que indica que el elemento no está.}
+  \codebox[xshift=0.5cm, width=6cm]{over}{\annMitadSinOverflow{izq}{der}}
+  \codebrace[xshift=0.5cm, width=5cm, yshift=-0.2cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
+  \codebox[xshift=0.5cm, width=12cm]{eq}{Si no es ni mayor ni menor, es igual: el objetivo está en el índice del medio.}
 \end{annotations}
 
-Nótese que en los llamados recursivos se toma desde el índice de la mitad, \inline{k}, \textit{más uno} (o menos uno). Eso cumple dos funciones: primero, que no se vuelva a revisar la mitad; pero más importante aún, permite que a medida que el número no se encuentra y el segmento del arreglo que se contempla es cada vez más pequeño, de forma que el índice de la mitad se acerca más y más al extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con el extremo y la recursión no terminaría. Y no se puede detener cuando son iguales, porque ese caso de un único elemento sí se quiere revisar.
+En los llamados recursivos se toma desde el índice de la mitad \emph{más uno} o \emph{menos uno}. Eso cumple dos funciones: primero, que no se vuelva a comparar con la mitad; pero sobre todo, permite que a medida que el número no se encuentra y el segmento del arreglo que se contempla es cada vez más pequeño, tal que el índice de la mitad se acerca más y más a algún extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con algún extremo y la recursión no terminaría.
 
-Como cada vez que se parte el problema se reduce a la mitad, para determinar la complejidad se quiere saber cuántas veces se debe dividir la entrada de tamaño \(n\) entre \(2\) hasta que se llega a un problema de tamaño 1. Para conocer esa \(x\) cantidad de veces, se formula:
+Como la función recibe, además del arreglo y el objetivo, los índices, técnicamente no recibe las entradas del problema propuesto. Envolverla en una función que sí las reciba es trivial:
+\begin{pseudocode}
+def binary_search(nums: arreglo[int], objetivo: int) -> int:
+    return binary_search_rec(nums, objetivo, 0, len(nums) - 1)
+\end{pseudocode}
+
+\subsubsection{Complejidad}
+
+El mejor caso para búsqueda binaria es que el objetivo exista y esté en el centro del arreglo. En ese caso la ejecución es constante: \(T_\text{mejor} \in \Theta(1)\).
+
+El peor caso es que el elemento no esté y se deba realizar el máximo número de pasos. Cada vez que se parte el problema se reduce a la mitad, por lo que se quiere saber cuántas veces se debe dividir la entrada de tamaño \(n\) entre \(2\) hasta que se llega a un problema de tamaño 1. Para conocer esa \(x\) cantidad de veces, se formula:
 
 \begin{gather*}
   n \underbrace{{} \cdot \frac{1}{2} \cdot \frac{1}{2} \cdots \frac{1}{2}}_{x \ \text{veces}} = 1 \\
@@ -46,29 +62,33 @@ Despejando,
   2^x = n \\
   x = \log_2(n)
 \end{gather*}
-Es decir, el número de divisiones, que es el número de pasos, crece logarítmicamente con respecto al tamaño de la entrada.
+Es decir, el número de veces que se divide el problema crece logarítmicamente con respecto al tamaño de la entrada. Por ende, \(T_\text{peor} \in \Theta(\log n)\). 
+
+Resulta que esa es también la complejidad del caso promedio. No se realiza el desglose matemático, pero la intuición es que los pasos de la búsqueda binaria se pueden diagramar como un árbol binario, y en todo árbol binario la mayoría de los nodos están cerca de las hojas. Por ende, en la mayoría de los casos, el algoritmo tendrá que ejecutar cerca a la máxima cantidad de pasos.
 
 \subsubsection{Solución iterativa}
 
-En este algoritmo, solo se realizan las etapas de dividir y conquistar; no es necesario combinar las soluciones. Eso facilita realizar una implementación iterativa de búsqueda binaria:
+También se puede realizar una implementación iterativa de búsqueda binaria, en donde la forma de segmentar el arreglo es desplazar el índice de algún extremo hacia la mitad:
 \begin{pseudocode}
-def binary_search_iter(nums: arreglo[int], target: int) -> int:
-    i = 0
-    j = len(nums) - 1
-    
-    idx = -1
+def binary_search_iter(nums: arreglo[int], objetivo: int) -> int:
+    izq = 0
+    der = len(nums) - 1
 
-    while i <= j and idx == -1:
-        k = i + (j-i) // 2
-        if target < nums[k]:
-            j = k - 1
-        elif target > nums[k]:
-            i = k + 1
-        else:
-            idx = k
-        
-    return idx
+    while izq <= der:
+        med = (der - izq) // 2 + izq
+        if objetivo == nums[med]:
+            return med
+        |\br{ib}|elif objetivo < nums[med]:
+            der = med - 1|\br{if}|
+        |\br{db}|else:
+            izq = med + 1|\br{df}|
+
+    return -1
 \end{pseudocode}
+\begin{annotations}
+  \codebrace[xshift=2cm, width=8.5cm]{ib}{if}{El objetivo es menor que el valor del medio: debe estar a la izquierda. Se mueve el extremo derecho a justo antes de la mitad.}
+\end{annotations}
 
+La complejidad es la misma que antes, bajo el mismo racicionio: \(O(\log n)\), con \(\Theta(1)\) para el mejor caso y \(\Theta(\log n)\) para el promedio y el peor.
 
 \practicar[leetcode]{Binary Search}{https://leetcode.com/problems/binary-search/}
