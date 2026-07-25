@@ -1,8 +1,10 @@
 \subsection*{Notas de la sección}
 
-Se utiliza la clasificación del paradigma de decremento y conquista en tres tipos propuesta por \textcite{levitin} \S 4.
+Se clasifica el paradigma de decremento y conquista en tres tipos como se propone en \textcite{levitin} \S 4.
 
-La intuición para insertion sort se basa en la de \textcite{levitin} \S 4.1. La implementación es la estándar, salvo el uso de doble \inline{while}, que considero más claro, en lugar del \inline{for} externo y \inline{while} interno empleado en \textcite{cormen} \S 2.1, \textcite{levitin} \S 4.1 y \textcite{cardoso} \S 2.1.2.
+La intuición para insertion sort se basa en la de \textcite{levitin} \S 4.1. La implementación es la estándar, salvo el uso de doble \inline{while}, por considerarlo más claro que el \inline{for} externo y \inline{while} interno empleados en \textcite{cormen} \S 2.1, \textcite{levitin} \S 4.1 y \textcite{cardoso} \S 2.1.2.
 
-En cuanto a búsqueda binaria: la implementación recursiva es similar a \textcite{skiena} \S 4.9 y la iterativa a \textcite{levitin} \S 4.4. Difieren en el cálculo del índice de la mitad: yo evito overflow, ellos no.
+En cuanto a búsqueda binaria: la implementación recursiva es similar a \textcite{skiena} \S 4.9 y la iterativa a \textcite{levitin} \S 4.4; difieren en el cálculo del índice de la mitad: en estas notas se evita un posible overflow, en esas fuentes no. La explicación de la complejidad es propia, al igual que la intuición: se llega al algoritmo empleando el paradigma, a diferencia de en \textcite{levitin}.
+
+
 
