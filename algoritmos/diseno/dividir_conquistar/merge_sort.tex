@@ -1,6 +1,6 @@
 \subsection{Merge sort}
 
-Merge sort resuelve el \hyperref[subsec:problema]{problema de ordenamiento}. La idea es:
+Merge sort resuelve el \hyperref[sec:problema]{problema de ordenamiento}. La idea es:
 \begin{enumerate}
     \item Dividir el arreglo en dos mitades.
     \item Conquistar: Ordenar cada mitad recursivamente (i.e., dividir cada mitad otra vez en la mitad, hasta que queden segmentos de un elemento, que entonces ya están ordenados)
@@ -19,7 +19,7 @@ def merge_sort(nums: arreglo[int], i: int, j: int):
     |\br{gi}|if i >= j:
         return|\br{gf}|
 
-    k = (i + j) // 2
+    |\bxl{mid}|k = (j - i) // 2 + i|\bxr{mid}|
 
     merge_sort(nums, i, k)
     merge_sort(nums, k + 1, j)
@@ -27,6 +27,7 @@ def merge_sort(nums: arreglo[int], i: int, j: int):
     merge(nums, i, k, j)
 \end{pseudocode}
 \begin{annotations}
+    \codebox[xshift=2cm,width=7cm]{mid}{\annMitadSinOverflow{i}{j}}
     \codebrace[width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
 \end{annotations}
 
