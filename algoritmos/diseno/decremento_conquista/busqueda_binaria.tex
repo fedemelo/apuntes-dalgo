@@ -13,6 +13,7 @@ Implementar esa idea no es difícil: como el arreglo está ordenado, se puede co
 Lo más sensato es iniciar comparando con el elemento de la mitad, para que los dos posibles segmentos en los que tocaría buscar sean del mismo tamaño. Eso reduce el espacio de búsqueda a la mitad. Luego, se repite: una vez se sabe en qué segmento buscar, nuevamente se aplica la idea para reducir ese espacio a la mitad, hasta que se encuentra el elemento o se determina que no está.
 
 \subsubsection{Solución recursiva}
+\label{sec:busqueda_binaria_recursiva}
 
 La implementación más natural es recursiva, porque permite representar muy naturalmente esa idea de buscar en solo una mitad del segmento cada vez. No hace falta modificar el arreglo para segmentarlo, basta con tener los índices del extremo izquierdo y derecho del segmento que se está tomando:
 
@@ -69,6 +70,7 @@ Aunque ese peor caso ocurre cuando el objetivo no se encuentra, la complejidad p
 Como \(T_\text{mejor} \in \Theta(1)\) y \(T_\text{promedio}, T_\text{peor} \in \Theta(\log n)\), búsqueda binaria es \(O(\log n)\).
 
 \subsubsection{Solución iterativa}
+\label{sec:busqueda_binaria_iterativa}
 
 También se puede realizar una implementación iterativa de búsqueda binaria, en donde la forma de segmentar el arreglo consiste en desplazar el índice de algún extremo hacia la mitad:
 \begin{pseudocode}

@@ -28,6 +28,7 @@ El conteo anterior no contempla que algunas combinaciones están repetidas, porq
 \end{itemize}
 
 \subsubsection{Solución recursiva}
+\label{sec:corte_vara_recursiva}
 
 Para diseñar una solución recursiva, lo primero que hay que pensar es cómo dividir este problema en subproblemas. En este caso es relativamente fácil, porque dada una vara de longitud \(n\), se querría evaluar:
 \begin{itemize}
@@ -52,6 +53,7 @@ El raciocinio que usamos para esta implementación deja claro que el problema cu
 % TODO Por qué presenta problemas superpuestos? Árbol de recursión? O: explicar el ciclo, quizás eso es más fácil
 
 \subsubsection{Solución top-down}
+\label{sec:corte_vara_top_down}
 
 Para eliminar la redundancia que introducen los problemas superpuestos, se implementa un algoritmo top-down. Se añade una función principal que crea un arreglo donde la función auxiliar recursiva memoiza el cálculo del mejor precio para cada longitud.
 \begin{pseudocode}
@@ -83,6 +85,7 @@ def rod_cut_memo(n: int, prices: arreglo[int], optimal_revs: arreglo[int]) -> in
 \end{annotations}
 
 \subsubsection{Solución bottom-up}
+\label{sec:corte_vara_bottom_up}
 
 Para diseñar el algoritmo bottom-up se debe reemplazar la recursión del algoritmo top-down por un ciclo. 
 

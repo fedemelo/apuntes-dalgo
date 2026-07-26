@@ -22,6 +22,7 @@ Antes de iniciar la implementación, se transforman levemente las especificacion
 Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
 
 \subsubsection{Solución por fuerza bruta}
+\label{sec:subarreglo_max_fuerza_bruta}
 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
 \begin{pseudocode}
@@ -48,6 +49,7 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
 
 \subsubsection{Solución por dividir y conquistar}
+\label{sec:subarreglo_max_divide_conquer}
 
 Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema consiste en hallar un subarreglo máximo dentro del respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, puede pasar que se partió justo donde estaba el subarreglo máximo. Debemos cerciorarnos de contemplar esa posibilidad en el paso de combinar las soluciones. Con eso, las etapas son:
 \begin{enumerate}
