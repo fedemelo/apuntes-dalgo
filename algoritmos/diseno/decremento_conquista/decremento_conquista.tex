@@ -2,16 +2,21 @@
 
 El paradigma de \concept{decremento y conquista} aprovecha la relación entre el problema y una versión más pequeña del problema, que llamamos \concept{subproblema}. La idea es imaginar que ya se conoce la solución a ese subproblema y aprovechar eso para terminar de resolver el problema.
 
-El subproblema se obtiene reduciendo el problema a distintas tasas:
+Una forma de obtener el subproblema es reducir el problema original. Eso se hace repetidamente, es decir, luego se reduce el subproblema a un subsubproblema, para así abordar algo cada vez más simple. A esa forma de hacerlo se le denomina \concept{top-down} (de arriba a abajo, o más bien, de grande a pequeño) y usualmente se implementa recursivamente.
+
+La otra forma de hacerlo es la inversa, \concept{bottom-up} (desde el fondo hacia arriba, o sea, de pequeño a grande), que se le conoce como el \concept{enfoque incremental} y normalmente se implementa iterativamente.
+
+Realmente ambas formas son dos maneras de pensar la misma cosa. (Recuérdese que existe \hyperref[sec:recursion_iteracion]{equivalencia entre recursión e iteración}).
+
+Se distingue entre tres tipos de decremento y conquista dependiendo de a qué ritmo se reduce el tamaño del problema:
 \begin{itemize}
-    \item \concept{Decremento por una constante}: se reduce el tamaño del problema en una cantidad fija en cada iteración del algoritmo, usualmente en uno.
-    \item \concept{Decremento por un factor constante}: se reduce el problema en una proporción fija en cada iteración, usualmente a la mitad.
-    \item \concept{Decremento de tamaño variable}: se reduce el tamaño en distinta cantidad en cada iteración.
+    \item \concept{Decremento por un valor constante}: se reduce en una cantidad fija en cada vez, usualmente en uno.
+    \item \concept{Decremento por un factor constante}: se reduce en una \emph{proporción} fija cada vez, usualmente en dos (o sea, se parte el problema a la mitad).
+    \item \concept{Decremento de tamaño variable}: se reduce cada vez en distinta cantidad.
 \end{itemize}
+Si se realiza el enfoque incremental, hay incremento en lugar de decremento.
 
-Se presentan dos algoritmos para concretar esta idea, correspondientes a los dos primeros tipos.
-
-Deliberadamente se omite un ejemplo de decremento de tamaño variable. Uno clásico es el Algoritmo de Euclides, que calcula el máximo común divisor de dos enteros, pero su estudio requiere de varias nociones de teoría de números.
+Se presentan dos algoritmos para concretar esta idea: insertion sort como ejemplo de incremento por un valor constante y búsqueda binaria como ejemplo de decremento por un factor constante.
 
 \setinputbase{diseno/decremento_conquista}
 \inputlist{insertion_sort, busqueda_binaria, refs}
