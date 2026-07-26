@@ -1,6 +1,6 @@
 \section{Decremento y conquista}
 
-El paradigma de \concept{decremento y conquista} aprovecha la relación entre el problema y una versión más pequeña del problema, que le llamamos \concept{subproblema}. La idea es imaginar que ya se conoce la solución a ese subproblema y aprovechar eso para terminar de resolver el problema.
+El paradigma de \concept{decremento y conquista} aprovecha la relación entre el problema y una versión más pequeña del problema, que llamamos \concept{subproblema}. La idea es imaginar que ya se conoce la solución a ese subproblema y aprovechar eso para terminar de resolver el problema.
 
 El subproblema se obtiene reduciendo el problema a distintas tasas:
 \begin{itemize}
@@ -9,7 +9,9 @@ El subproblema se obtiene reduciendo el problema a distintas tasas:
     \item \concept{Decremento de tamaño variable}: se reduce el tamaño en distinta cantidad en cada iteración.
 \end{itemize}
 
-Se presentan dos algoritmos para concretar esta idea, correspondientes a los dos primeros tipos. Deliberadamente de omite un ejemplo que reduzca el problema en valores variables; uno clásico es el Algoritmo de Euclides, que calcula el máximo común divisor de dos enteros, pero su estudio requiere de varias nociones de teoría de números.
+Se presentan dos algoritmos para concretar esta idea, correspondientes a los dos primeros tipos.
+
+Deliberadamente se omite un ejemplo de decremento de tamaño variable. Uno clásico es el Algoritmo de Euclides, que calcula el máximo común divisor de dos enteros, pero su estudio requiere de varias nociones de teoría de números.
 
 \setinputbase{diseno/decremento_conquista}
 \inputlist{insertion_sort, busqueda_binaria, refs}
