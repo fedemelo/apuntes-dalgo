@@ -2,7 +2,7 @@
 
 La búsqueda binaria intenta encontrar un valor específico, el \emph{objetivo}, en una secuencia ordenada. El problema que resuelve es entonces:
 \begin{itemize}
-  \item Entrada: arreglo no vacío ordenado de enteros y un número entero: el objetivo
+  \item Entrada: arreglo ordenado de enteros y un número entero: el objetivo
   \item Salida: índice del objetivo en el arreglo o -1 si no está
 \end{itemize}
 
@@ -64,7 +64,7 @@ Despejando \(x\) para saber la cantidad de divisiones que se hace:
 \end{gather*}
 Es decir, el número de veces que se divide el problema crece logarítmicamente con respecto al tamaño de la entrada. El resto de operaciones en el algoritmo son de tiempo constante, \(T_\text{peor} \in \Theta(\log n)\). 
 
-Ese peor caso ocurre cuando el objetivo no se encuentra, pero resulta que también ocurre en el caso promedio: \(T_\text{promedio} \in \Theta(\log n)\). Se omite la demostración matemática, pero la intuición es que los pasos de la búsqueda binaria se pueden diagramar como un árbol binario, y en todo árbol binario la mayoría de los nodos están cerca de las hojas. Por ende, en la mayoría de los casos, el algoritmo tendrá que ejecutar la máxima o cerca a la máxima cantidad de pasos.
+Aunque ese peor caso ocurre cuando el objetivo no se encuentra, la complejidad para el caso promedio es la misma: \(T_\text{promedio} \in \Theta(\log n)\). Se omite la demostración matemática, pero la intuición es que los pasos de la búsqueda binaria se pueden diagramar como un árbol binario balanceado, y en todo árbol binario balanceado la mayoría de los nodos están cerca de las hojas (la parte de abajo es más gruesa). Por ende, en la mayoría de los casos, el algoritmo tendrá que ejecutar la máxima o cerca a la máxima cantidad de pasos.
 
 Como \(T_\text{mejor} \in \Theta(1)\) y \(T_\text{promedio}, T_\text{peor} \in \Theta(\log n)\), búsqueda binaria es \(O(\log n)\).
 
