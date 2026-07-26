@@ -32,6 +32,7 @@ clean:  # Remove all temporary files
 		-name "*.pyg" -o \
 		-name "*.bak0" -o \
 		-name "*.bbl" -o \
+		-name "*.bbl-*" -o \
 		-name "*.blg" -o \
 		-name "*.glg" -o \
 		-name "*.glo" -o \
@@ -45,6 +46,7 @@ clean:  # Remove all temporary files
 		-name "*.run.xml" -o \
 		-name "*.listing" \
 		-name "*.bcf" \
+		-name "*.bcf-*" \
 	\) \
 	-exec rm {} +
 
