@@ -35,7 +35,10 @@ _minted-*
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
+# E.g., .bbl-SAVE-ERROR
+*.bbl-*
 *.bcf
+*.bcf-*
 *.blg
 *-blx.aux
 *-blx.bib
@@ -315,6 +318,7 @@ TSWLatexianTemp*
 #*Notes.bib
 
 ignore/
+.preview/
 
 *.pyc
 
