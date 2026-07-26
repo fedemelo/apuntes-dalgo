@@ -33,7 +33,9 @@ El peor caso es cuando el ciclo interno tiene que retroceder cada elemento hasta
 \[\sum_{i=2}^n (i-1) = 1+2+\cdots+(n-1) = \frac{n^2-n}{2}.\]
 Eso, aunado a las operaciones del ciclo externo, da la siguiente función para el costo computacional, donde \(c\) denota el tiempo que demoran las operaciones constantes:
 \[T_\text{peor}(n) = cn + c\frac{n^2-n}{2}\]
-Ergo, \(T_\text{peor} \in \Theta(n^2)\). Convencionalmente, se dice que insertion sort es \(\Theta(n^2)\), entendiendo que se hace referencia específicamente al peor caso.
+Ergo, \(T_\text{peor} \in \Theta(n^2)\). 
+
+Como \(T_\text{mejor} \in \Theta(n)\) y \(T_\text{peor} \in \Theta(n^2)\), insertion sort es \(O(n^2)\).
 
 \begin{tip}
 Para resolver la sumatoria se empleó la fórmula de Gauss, cuyo argumento subyacente es bastante simple y se expone en el apéndice \ref{apx:sumatorias}.
