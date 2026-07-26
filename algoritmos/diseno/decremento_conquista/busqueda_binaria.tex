@@ -34,7 +34,7 @@ def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
 \begin{annotations}
   \codebrace[width=11cm]{mi}{mf}{Si \inline{hi} está a la izquierda de \inline{lo}, los índices se cruzaron, lo que indica que el elemento no está.}
   \codebox[xshift=0.5cm, width=6cm]{over}{\annMitadSinOverflow{lo}{hi}}
-  \codebrace[xshift=0.5cm, width=5cm, yshift=-0.2cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
+  \codebrace[xshift=0.3cm, width=5cm, yshift=-0.1cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
   \codebox[xshift=0.5cm, width=12cm]{eq}{Si no es ni mayor ni menor, es igual: el objetivo está en el índice del medio.}
 \end{annotations}
 
