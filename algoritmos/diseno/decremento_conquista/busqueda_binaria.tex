@@ -18,22 +18,22 @@ Lo más sensato es iniciar comparando con el elemento de la mitad, para que los 
 La implementación más natural es recursiva, porque permite representar muy naturalmente esa idea de buscar en solo una mitad del segmento cada vez. No hace falta modificar el arreglo para segmentarlo, basta con tener los índices del extremo izquierdo y derecho del segmento que se está tomando:
 
 \begin{pseudocode}
-def binary_search_rec(nums: arreglo[int], objetivo: int, izq: int, der: int) -> int:
-    |\br{mi}|if der < izq:
+def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
+    |\br{mi}|if hi < lo:
         return -1|\br{mf}|
 
-    med = |\bxl{over}|(der - izq) // 2 + izq|\bxr{over}|
+    mid = |\bxl{over}|(hi - lo) // 2 + lo|\bxr{over}|
 
-    |\br{gtb}|if objetivo > nums[med]:
-        return binary_search_rec(nums, objetivo, med+1, der)|\br{gtf}|
-    |\br{ltb}|if objetivo < nums[med]:
-        return binary_search_rec(nums, objetivo, izq, med-1)|\br{ltf}|
+    |\br{gtb}|if target > nums[mid]:
+        return binary_search_rec(nums, target, mid+1, hi)|\br{gtf}|
+    |\br{ltb}|if target < nums[mid]:
+        return binary_search_rec(nums, target, lo, mid-1)|\br{ltf}|
 
-    |\bxl{eq}|return med|\bxr{eq}|
+    |\bxl{eq}|return mid|\bxr{eq}|
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[width=11cm]{mi}{mf}{Si \inline{der} está a la izquierda de \inline{izq}, los índices se cruzaron, lo que indica que el elemento no está.}
-  \codebox[xshift=0.5cm, width=6cm]{over}{\annMitadSinOverflow{izq}{der}}
+  \codebrace[width=11cm]{mi}{mf}{Si \inline{hi} está a la izquierda de \inline{lo}, los índices se cruzaron, lo que indica que el elemento no está.}
+  \codebox[xshift=0.5cm, width=6cm]{over}{\annMitadSinOverflow{lo}{hi}}
   \codebrace[xshift=0.5cm, width=5cm, yshift=-0.2cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
   \codebox[xshift=0.5cm, width=12cm]{eq}{Si no es ni mayor ni menor, es igual: el objetivo está en el índice del medio.}
 \end{annotations}
@@ -42,8 +42,8 @@ En los llamados recursivos se toma desde el índice de la mitad \emph{más uno} 
 
 Por último, la función recibe, además del arreglo y el objetivo, los índices. Así que técnicamente no recibe las entradas del problema propuesto. Envolverla en una función que sí las reciba es trivial:
 \begin{pseudocode}
-def binary_search(nums: arreglo[int], objetivo: int) -> int:
-    return binary_search_rec(nums, objetivo, 0, len(nums) - 1)
+def binary_search(nums: arreglo[int], target: int) -> int:
+    return binary_search_rec(nums, target, 0, len(nums) - 1)
 \end{pseudocode}
 
 \subsubsection{Complejidad}
@@ -74,18 +74,18 @@ Como \(T_\text{mejor} \in \Theta(1)\) y \(T_\text{promedio}, T_\text{peor} \in \
 
 También se puede realizar una implementación iterativa de búsqueda binaria, en donde la forma de segmentar el arreglo consiste en desplazar el índice de algún extremo hacia la mitad:
 \begin{pseudocode}
-def binary_search_iter(nums: arreglo[int], objetivo: int) -> int:
-    izq = 0
-    der = len(nums) - 1
+def binary_search_iter(nums: arreglo[int], target: int) -> int:
+    lo = 0
+    hi = len(nums) - 1
 
-    while izq <= der:
-        med = (der - izq) // 2 + izq
-        if objetivo == nums[med]:
-            return med
-        |\br{ib}|elif objetivo < nums[med]:
-            der = med - 1|\br{if}|
-        |\br{db}|else:
-            izq = med + 1|\br{df}|
+    while lo <= hi:
+        mid = (hi - lo) // 2 + lo
+        |\br{ib}|if target < nums[mid]:
+            hi = mid - 1|\br{if}|
+        elif target > nums[mid]:
+            lo = mid + 1
+        else:
+            return mid
 
     return -1
 \end{pseudocode}

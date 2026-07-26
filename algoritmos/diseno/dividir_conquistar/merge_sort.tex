@@ -10,25 +10,25 @@ Merge sort resuelve el \hyperref[sec:problema]{problema de ordenamiento}. La ide
 
 \subsubsection{Dividir y conquistar}
 
-Dividir no tiene ciencia: se calcula el índice de la mitad del arreglo para determinar los índices de inicio \inline{i} y fin \inline{j} de cada segmento.
+Dividir no tiene ciencia: se calcula el índice de la mitad del arreglo para determinar el índices de inicio \inline{lo} y fin \inline{hi} de cada segmento.
 
 Conquistar tampoco: se hace el llamado recursivo a cada mitad. Al partir en mitades eventualmente se obtienen subarreglos de longitud uno, ya ordenados.
 
 Por ahora no se piensa en cómo combinar, se encapsula ese paso en una función \inline{merge} que se implementará después. Con eso, este es el seudocódigo:
 \begin{pseudocode}
-def merge_sort(nums: arreglo[int], i: int, j: int):
-    |\br{gi}|if i >= j:
+def merge_sort(nums: arreglo[int], lo: int, hi: int):
+    |\br{gi}|if lo >= hi:
         return|\br{gf}|
 
-    |\bxl{mid}|k = (j - i) // 2 + i|\bxr{mid}|
+    |\bxl{mid}|mid = (hi - lo) // 2 + lo|\bxr{mid}|
 
-    merge_sort(nums, i, k)
-    merge_sort(nums, k + 1, j)
+    merge_sort(nums, lo, mid)
+    merge_sort(nums, mid + 1, hi)
 
-    merge(nums, i, k, j)
+    merge(nums, lo, mid, hi)
 \end{pseudocode}
 \begin{annotations}
-    \codebox[xshift=2cm,width=7cm]{mid}{\annMitadSinOverflow{i}{j}}
+    \codebox[xshift=2cm,width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
     \codebrace[width=7cm]{gi}{gf}{No se retorna nada porque el algoritmo es in-place; se usa el \texttt{return} para detener la función en el caso base de la recursión}
 \end{annotations}
 
@@ -40,7 +40,7 @@ En cada llamado recursivo ocurre lo siguiente:
     
     \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para cada una. El llamado a la mitad derecha empieza \emph{después} de que termina el llamado a la mitad izquierda.
     
-    \item Una vez ambos llamados retornan, se ejecuta \inline{merge}, que mezcla ambas mitades ordenadas in-place dentro del rango delimitado por \inline{i} y \inline{j}.
+    \item Una vez ambos llamados retornan, se ejecuta \inline{merge}, que mezcla ambas mitades ordenadas in-place dentro del rango delimitado por \inline{lo} y \inline{hi}.
 \end{enumerate}
 
 Para arreglos grandes, el caso base solo se alcanza después de muchos llamados recursivos, cuando el arreglo se ha dividido lo suficiente. Ergo, en las primeras invocaciones, siempre ocurre que el segmento se divide conceptualmente: se apilan llamados a \inline{merge_sort}, sin retornar ni combinar.
@@ -60,27 +60,27 @@ La idea es intuitiva: si cada mitad fuera una pila de cartas, el método natural
 
 El seudocódigo es el siguiente:
 \begin{pseudocode}
-def merge(nums: arreglo[int], i: int, k: int, j: int):
-    |\br{cpi}|left = |\textrm{copia de}| nums |\textrm{desde}| i |\textrm{hasta}| k
-    right = |\textrm{copia de}| nums |\textrm{desde}| k+1 |\textrm{hasta}| j|\br{cpf}|
+def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
+    |\br{cpi}|left = |\textrm{copia de}| nums |\textrm{desde}| lo |\textrm{hasta}| mid
+    right = |\textrm{copia de}| nums |\textrm{desde}| mid+1 |\textrm{hasta}| hi|\br{cpf}|
 
     l = 0
     |\bxl{ir}|r = 0|\bxr{ir}|
 
     |\br{ai}|while l < len(left) and r < len(right):
         if left[l] |\bxl{es}|<=|\bxr{es}| right[r]:
-            nums[i + l + r] = left[l]
+            nums[lo + l + r] = left[l]
             l += 1
         else:
-            nums[i + l + r] = right[r]
+            nums[lo + l + r] = right[r]
             r += 1|\br{af}|
 
     |\br{ii}|while l < len(left):
-        nums[i + l + r] = left[l]
+        nums[lo + l + r] = left[l]
         l += 1|\br{if}|
 
     |\br{di}|while r < len(right):
-        nums[i + l + r] = right[r]
+        nums[lo + l + r] = right[r]
         r += 1|\br{df}|
 \end{pseudocode}
 \begin{annotations}

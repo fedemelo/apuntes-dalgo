@@ -124,10 +124,10 @@ def factorial(n: int) -> int:
 \end{pseudocode}
 El llamado a \inline{factorial(n-1)} no es una llamada de cola porque su resultado debe multiplicarse por \inline{n} antes de retornar. El algoritmo se puede reescribir para que sí lo sea, acumulando el resultado parcial en un parámetro adicional:
 \begin{pseudocode}
-def factorial(n: int, acumulado: int = 1) -> int:
-    if n <= 1: return acumulado
+def factorial(n: int, acc: int = 1) -> int:
+    if n <= 1: return acc
 
-    return factorial(n-1, n * acumulado)
+    return factorial(n-1, n * acc)
 \end{pseudocode}
 
 La optimización de recursión de cola solo funciona en ciertos lenguajes de programación. El lenguaje de programación tiene que reconocer que puede reemplazar el marco de pila en lugar de apilar el nuevo. La mayoría de lenguajes funcionales, como Scheme o Haskell, la implementan, pero muchos lenguajes procedimentales, notablemente Python y Java, deliberadamente \emph{no} soportan optimización de recursión de cola. En \textcite{guido_tail_recursion} se explica por qué no se incluyó en Python.

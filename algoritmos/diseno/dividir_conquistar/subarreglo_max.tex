@@ -60,14 +60,14 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 
 Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el combinar encapsulándolo en una función \inline{max_crossing_subarray}. Podemos escribir el seudocódigo para las primeras dos etapas:
 \begin{pseudocode}
-def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int, int, int]:
-    if i == j: return i, j, nums[i]
+def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[int, int, int]:
+    if lo == hi: return lo, hi, nums[lo]
 
-    |\bxl{mid}|k = (j - i) // 2 + i|\bxr{mid}| 
+    |\bxl{mid}|mid = (hi - lo) // 2 + lo|\bxr{mid}|
 
-    |\br{calli}|left_i, left_j, left_sum = max_subarray_divide_conquer(nums, i, k)
-    right_i, right_j, right_sum = max_subarray_divide_conquer(nums, k+1, j)
-    cross_i, cross_j, cross_sum = max_crossing_subarray(nums, i, k, j)|\br{callf}|
+    |\br{calli}|left_i, left_j, left_sum = max_subarray_divide_conquer(nums, lo, mid)
+    right_i, right_j, right_sum = max_subarray_divide_conquer(nums, mid+1, hi)
+    cross_i, cross_j, cross_sum = max_crossing_subarray(nums, lo, mid, hi)|\br{callf}|
 
     |\br{reti}|if left_sum >= right_sum and left_sum >= cross_sum:
         return left_i, left_j, left_sum
@@ -78,16 +78,16 @@ def max_subarray_divide_conquer(nums: arreglo[int], i: int, j: int) -> tuple[int
     return cross_i, cross_j, cross_sum|\br{retf}|
 \end{pseudocode}
 \begin{annotations}
-    \codebox[xshift=2cm,width=8cm]{mid}{Índice de la mitad del segmento: \inline{j-i} es la longitud del segmento, \inline{//2} da su mitad, que debe ubicarse desde \inline{i} donde inicia el segmento.}
+    \codebox[xshift=0.5cm, width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
     \codebrace[xshift=3cm,width=6cm]{reti}{retf}{Se comparan las soluciones y se retornan los índices correspondientes a la mejor entre la mitad izquierda, derecha y el cruce de la mitad}
 \end{annotations}
 
 Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
 \begin{pseudocode}
-def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[int, int, int]:
+def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
     |\br{lefti}|left_sum = 0
     largest_sum_left = |\(-\infty\)|
-    for l=k-1 downto i:
+    for l=mid-1 downto lo:
         left_sum += nums[l]
         if left_sum > largest_sum_left:
             largest_sum_left = left_sum
@@ -95,7 +95,7 @@ def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[i
 
     |\br{righti}|right_sum = 0
     largest_sum_right = |\(-\infty\)|
-    for r=k to j:
+    for r=mid to hi:
         right_sum += nums[r]
         if right_sum > largest_sum_right:
             largest_sum_right = right_sum
@@ -104,8 +104,8 @@ def max_crossing_subarray(nums: arreglo[int], i: int, k: int, j: int) -> tuple[i
     return best_l, best_r, largest_sum_left + largest_sum_right
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{k-1}) hacia el inicio (\inline{i}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
-    \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde la mitad (\inline{k}) hacia el final (\inline{j})}
+    \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{mid-1}) hacia el inicio (\inline{lo}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
+    \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde la mitad (\inline{mid}) hacia el final (\inline{hi})}
 \end{annotations}
 
 % TODO: Análisis de complejidad así sea light

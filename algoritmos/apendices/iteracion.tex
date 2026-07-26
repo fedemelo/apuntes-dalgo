@@ -19,11 +19,11 @@ while i <= n:
     i = i + 1
 \end{pseudocode}
 
-Un ciclo \inline{for elemento in iterable}, popularizado por Python, es análogo, con la diferencia de que la variable de control \(i\) actúa como un índice que accede a cada elemento del iterable. Así pues, la transformación \(T'\) que se realiza sobre el estado puede incluir realizar cualquier operación sobre cada elemento del iterable:
+Un ciclo \inline{for}-\inline{each}, como \inline{for elem in iterable}, es análogo, con la diferencia de que la variable de control \(i\) actúa como un índice que accede a cada elemento del iterable. Así pues, la transformación \(T'\) que se realiza sobre el estado puede incluir realizar cualquier operación sobre cada elemento del iterable:
 \begin{pseudocode}
 i = 0
 while i < len(iterable):
-    elemento = iterable[i]
+    elem = iterable[i]
     |\(\sigma\)| = |\(T'(\sigma)\)|
     i = i + 1
 \end{pseudocode}
