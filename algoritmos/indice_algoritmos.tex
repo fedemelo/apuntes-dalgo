@@ -3,35 +3,34 @@
 \part*{Índice de algoritmos}
 
 \begingroup
+\hypersetup{linkbordercolor=white}
+\setlength{\parskip}{0pt}
 \makeatletter
-\renewcommand*{\l@section}[2]{%
-  \addpenalty\@secpenalty
-  \begingroup
-    \parindent\z@ \leavevmode\bfseries #1\par
-  \endgroup}
+\newcommand{\algoritmoIndice}[2]{\l@subsection{\hyperref[#2]{#1}}{\getpagerefnumber{#2}}}
+
 \l@section{Búsqueda binaria (\textit{Binary search})}{}
-\l@subsection{Recursiva}{\pageref{sec:busqueda_binaria_recursiva}}
-\l@subsection{Iterativa}{\pageref{sec:busqueda_binaria_iterativa}}
+\algoritmoIndice{Recursiva}{sec:busqueda_binaria_recursiva}
+\algoritmoIndice{Iterativa}{sec:busqueda_binaria_iterativa}
 
 \l@section{Corte de vara (\textit{Rod cutting})}{}
-\l@subsection{Recursiva}{\pageref{sec:corte_vara_recursiva}}
-\l@subsection{Top-down}{\pageref{sec:corte_vara_top_down}}
-\l@subsection{Bottom-up}{\pageref{sec:corte_vara_bottom_up}}
+\algoritmoIndice{Recursiva}{sec:corte_vara_recursiva}
+\algoritmoIndice{Top-down}{sec:corte_vara_top_down}
+\algoritmoIndice{Bottom-up}{sec:corte_vara_bottom_up}
 
 \l@section{Fibonacci}{}
-\l@subsection{Recursiva}{\pageref{sec:fibonacci_recursiva}}
-\l@subsection{Top-down}{\pageref{sec:fibonacci_top_down}}
-\l@subsection{Bottom-up}{\pageref{sec:fibonacci_bottom_up}}
+\algoritmoIndice{Recursiva}{sec:fibonacci_recursiva}
+\algoritmoIndice{Top-down}{sec:fibonacci_top_down}
+\algoritmoIndice{Bottom-up}{sec:fibonacci_bottom_up}
 
 \l@section{Ordenamiento (\textit{Sorting})}{}
-\l@subsection{Insertion sort}{\pageref{sec:insertion_sort}}
-\l@subsection{Merge sort}{\pageref{sec:merge_sort}}
+\algoritmoIndice{Insertion sort}{sec:insertion_sort}
+\algoritmoIndice{Merge sort}{sec:merge_sort}
 
 \l@section{Subarreglo máximo (\textit{Maximum subarray})}{}
-\l@subsection{Fuerza bruta}{\pageref{sec:subarreglo_max_fuerza_bruta}}
-\l@subsection{Dividir y conquistar}{\pageref{sec:subarreglo_max_divide_conquer}}
+\algoritmoIndice{Fuerza bruta}{sec:subarreglo_max_fuerza_bruta}
+\algoritmoIndice{Dividir y conquistar}{sec:subarreglo_max_divide_conquer}
 
 \l@section{Vertex-cover (\textit{Vertex cover})}{}
-\l@subsection{Algoritmo aproximado}{\pageref{sec:vertex_cover_aproximado}}
+\algoritmoIndice{Algoritmo aproximado}{sec:vertex_cover_aproximado}
 \makeatother
 \endgroup
