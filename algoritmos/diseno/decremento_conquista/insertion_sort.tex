@@ -8,9 +8,7 @@ Esa es la intuición detrás de \concept{insertion sort}: para cada elemento del
 
 \begin{pseudocode}
 def insertion_sort(nums: arreglo):
-    |\bxl{s}|i = 1|\bxr{s}|
-
-    while i < len(nums):
+    |\bxl{s}|for i=1 to len(nums)-1:|\bxr{s}|
         elem = nums[i] 
         j = i-1
         |\br{anti}|while j >= 0 and elem < nums[j]:
@@ -18,10 +16,9 @@ def insertion_sort(nums: arreglo):
             j -= 1|\br{antf}|
         
         |\bxl{in}|nums[j+1] = elem|\bxr{in}|
-        i += 1
 \end{pseudocode}
 \begin{annotations}
-  \codebox[xshift=4.5cm, width=10cm]{s}{Se inicia revisando el segundo elemento, para poder compararlo con algún anterior.}
+  \codebox[xshift=0.5cm, width=11cm]{s}{Se inicia revisando el segundo elemento, índice \inline{1}, para poder compararlo con algún anterior.}
   \codebrace[xshift=4cm, width=9cm]{anti}{antf}{Si \inline{elem} es menor que el anterior y debe moverse hacia atrás, se mueve el anterior una posición adelante para hacerle espacio. Se siguen corriendo los anteriores hasta que ya no deba moverse \inline{elem} hacia atrás (o ya no hayan anteriores).}
   \codebox[width=10cm]{in}{Se inserta \inline{elem} en la posición que quedó libre tras mover los elementos más grandes que él hacia adelante. Es \inline{j+1} y no \inline{j} porque la última iteración del ciclo termina con \inline{j -= 1}.}
 \end{annotations}
