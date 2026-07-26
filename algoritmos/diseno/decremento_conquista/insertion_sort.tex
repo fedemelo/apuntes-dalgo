@@ -19,7 +19,7 @@ def insertion_sort(nums: arreglo):
 \end{pseudocode}
 \begin{annotations}
   \codebox[xshift=0.5cm, width=11cm]{s}{Se inicia revisando el segundo elemento, índice \inline{1}, para poder compararlo con algún anterior.}
-  \codebrace[xshift=4cm, width=9cm]{anti}{antf}{Si \inline{elem} es menor que el anterior y debe moverse hacia atrás, se mueve el anterior una posición adelante para hacerle espacio. Se siguen corriendo los anteriores hasta que ya no deba moverse \inline{elem} hacia atrás (o ya no hayan anteriores).}
+  \codebrace[xshift=4cm, width=7.5cm]{anti}{antf}{Si \inline{elem} es menor que el anterior, debe moverse hacia atrás: se mueve el anterior una posición adelante para hacerle espacio. Se repite hasta que \inline{elem} esté en su puesto (o ya no hayan anteriores).}
   \codebox[width=10cm]{in}{Se inserta \inline{elem} en la posición que quedó libre tras mover los elementos más grandes que él hacia adelante. Es \inline{j+1} y no \inline{j} porque la última iteración del ciclo termina con \inline{j -= 1}.}
 \end{annotations}
 
