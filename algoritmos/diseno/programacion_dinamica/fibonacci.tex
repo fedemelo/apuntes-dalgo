@@ -163,6 +163,7 @@ Se obtiene un algoritmo cuya complejidad temporal es $\Theta(n)$.
 Para calcular el enésimo número de Fibonacci es necesario calcular todos los anteriores. Por ende, el algoritmo bottom-up es (ligeramente) más eficiente que el algoritmo top-down: ambos calculan todos los términos anteriores, pero el bottom-up evita el \hyperref[sec:sobrecosto_recursion]{sobrecosto de la recursión}.
 
 \subsubsection{Optimización en espacio}
+\label{sec:fibonacci_bottom_up_optimizada}
 
 Nótese que solo se necesitan las últimas dos soluciones para computar la próxima. La tabulación se puede realizar entonces empleando solo dos variables en lugar de un arreglo. 
 
