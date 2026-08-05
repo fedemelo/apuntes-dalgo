@@ -4,7 +4,7 @@ Este repositorio contiene el código en LaTeX y los PDFs correspondientes a dos 
 
 **Descargar PDFs:**
 - [Apuntes de algoritmos](https://raw.githubusercontent.com/fedemelo/apuntes-dalgo/main/algoritmos/algoritmos.pdf)
-- [Apuntes de grafos](https://raw.githubusercontent.com/fedemelo/apuntes-dalgo/main/grafos/grafos.pdf)
+<!-- - [Apuntes de grafos](https://raw.githubusercontent.com/fedemelo/apuntes-dalgo/main/grafos/grafos.pdf) -->
 
 Los dos documentos intersecan muy poco y se complementan bastante. Ambos apuntes fueron escritos por mí concurrentemente durante mi época como estudiante de pregrado, en particular mientras cursaba Diseño y Análisis de Algoritmos (2022-20), Teoría de Grafos (2023-20) y Análisis de Algoritmos (2023-20) en la Universidad de los Andes.
 
