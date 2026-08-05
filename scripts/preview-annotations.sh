@@ -68,12 +68,12 @@ END=${RANGE#* }
 WORKDIR=$(mktemp -d)
 trap 'rm -rf "$WORKDIR"' EXIT
 
-# Book-level shared annotation macros (e.g. algoritmos/annotations_comunes.tex),
+# Book-level shared annotation macros (e.g. algoritmos/shared_annotations.tex),
 # if the book this file belongs to has one.
 ABS_SRC_DIR=$(cd "$(dirname "$SRC")" && pwd)
 REL_SRC_DIR=${ABS_SRC_DIR#"$REPO_ROOT"/}
 BOOK_DIR=${REL_SRC_DIR%%/*}
-SHARED_ANNOTATIONS="$REPO_ROOT/$BOOK_DIR/annotations_comunes.tex"
+SHARED_ANNOTATIONS="$REPO_ROOT/$BOOK_DIR/shared_annotations.tex"
 
 {
     echo '\documentclass{article}'

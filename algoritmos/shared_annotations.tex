@@ -1,0 +1,14 @@
+% Reusable annotation texts for patterns that recur across pseudocode listings
+% in this book. Add an entry here (instead of writing the text inline) once an
+% explanation is needed a second time, so it can be phrased once and reused.
+%
+% Naming convention: \ann<Concepto>, parametrized by the variable names used in
+% the specific listing so the prose stays generic while reading naturally with
+% each algorithm's own variable names.
+
+% Overflow-safe midpoint index, e.g. `lo + (hi - lo) // 2`.
+% #1: start/left index variable name, #2: end/right index variable name.
+\newcommand{\annMitadSinOverflow}[2]{%
+  Índice de la mitad del segmento, calculado así en vez de \inline{(#1+#2) // 2}
+  para evitar un posible overflow.
+}

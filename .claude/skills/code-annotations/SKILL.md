@@ -162,13 +162,13 @@ Files with existing annotations, in increasing sophistication:
 - `algoritmos/diseno/programacion_dinamica/corte_de_vara.tex` — most sophisticated: uses
   `notepos={(cbox@id.east)+(...)}` with `curve=bend right=5` to route a note around other
   content.
-- `algoritmos/annotations_comunes.tex` — the shared reusable-annotation-text library itself.
+- `algoritmos/shared_annotations.tex` — the shared reusable-annotation-text library itself.
 
 ## Reusable annotation text
 
 Some explanations recur across listings — e.g. the overflow-safe midpoint pattern
 (`izq + (der - izq) // 2`, `i + (j - i) // 2`, ...) shows up in binary search, merge sort, and
-the max-subarray divide-and-conquer solution. These live in `algoritmos/annotations_comunes.tex`
+the max-subarray divide-and-conquer solution. These live in `algoritmos/shared_annotations.tex`
 (scoped to the `algoritmos` book — not `packages/`, which is shared infra for both books and
 has no business holding algorithm-specific prose), `\input` from `algoritmos/algoritmos.tex`'s
 preamble so every chapter can use them. Each is a `\newcommand{\ann<Concepto>}[N]{...}`,
@@ -178,7 +178,7 @@ parametrized by the variable names used in that listing, e.g.:
 \codebox[...]{mid}{\annMitadSinOverflow{i}{j}}          % merge_sort.tex
 ```
 one canonical phrasing, correct variable names per call site. Before writing new annotation
-prose, check `annotations_comunes.tex` for something close. **Promote text into it on the
+prose, check `shared_annotations.tex` for something close. **Promote text into it on the
 second occurrence** (or clear anticipated reuse) — don't pre-abstract on the first write. When
 editing an existing shared macro, re-preview every call site (`preview-annotations.sh`), not
 just the one you were working on — the point of centralizing is that wording changes ripple
@@ -189,7 +189,7 @@ everywhere, including collisions/width you didn't touch directly.
 The user will always tell you *what* to annotate and roughly *what it should say* — a draft,
 a comment, or a description of the point to make. Your job is:
 
-1. Check `algoritmos/annotations_comunes.tex` for an existing reusable macro covering this
+1. Check `algoritmos/shared_annotations.tex` for an existing reusable macro covering this
    point before writing fresh prose.
 2. Place `\br`/`\bxl`/`\bxr` marks at the right spot(s) in the pseudocode.
 3. Write (or lightly copyedit) the note text into proper prose for the `<text>` argument —
