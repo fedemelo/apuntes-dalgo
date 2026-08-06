@@ -3,6 +3,7 @@
 Aprovechamos la sucesión de Fibonacci para estudiar cómo ejecuta una función recursiva.
 
 \subsubsection{Árbol de ejecución}
+\label{sec:arbol_de_ejecucion}
 
 Cada vez que se invoca \inline{fibonacci}, durante su ejecución se invoca nuevamente \inline{fibonacci} 0 o 2 veces. Para visualizar ese mecanismo se utiliza un \concept{árbol de ejecución} en el que cada nodo representa un llamado a la función y sus hijos son los llamados recursivos que hace. Para \inline{fibonacci(4)}:
 \begin{center}
@@ -37,6 +38,7 @@ Nótese que, para toda función recursiva, el árbol de ejecución tiene las sig
   \item Los hijos de cada nodo representan las llamadas recursivas realizadas por esa invocación. 
   \begin{itemize}
     \item En el caso de \inline{fibonacci}, siempre se realizan 0 o 2 llamados, por lo cual cada nodo tiene 0 o 2 hijos. Eso resulta en un árbol binario.
+    \item Si una función recursiva realiza \(n\) llamados recursivos, su árbol de ejecución será un árbol \(n\)-ario.
   \end{itemize}
   \item Los hojas representan entonces llamados de la función en los que no se realizan llamados recursivos, es decir, en los que se alcanza el caso base.
 \end{itemize}

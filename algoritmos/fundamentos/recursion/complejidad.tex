@@ -3,5 +3,42 @@
 Al igual que el orden de ejecución de una función recursiva no es evidente a primera vista, la complejidad tampoco suele serlo.
 
 \subsubsection{Complejidad temporal}
+\label{sec:complejidad-temporal-fibonacci}
 
-% TODO: Completar #2
+El costo en tiempo de una recurrencia consiste del costo de los llamados recursivos y el de las operaciones no recursivas. La función de costo \(T\) se formula mediante una \concept{ecuación de recurrencia} basada en la definición recursiva del problema:
+\[
+T(n) =
+\begin{cases}
+  \text{costo del caso base} & \text{si \(n\) es caso base.} \\
+  \text{costo de operaciones no recursivas} + \text{costo de los llamados recursivos} & \text{si \(n\) no es caso base.}
+\end{cases}
+\]
+
+En \inline{fibonacci}:
+\begin{itemize}
+  \item El caso base retorna $n$ directamente, con costo constante.
+  \item En los demás casos, la única operación no recursiva es la suma los dos llamados recursivos, que es constante, y los llamados recursivos son \inline{fibonacci(n-1)} y \inline{fibonacci(n-2)}.
+\end{itemize}
+Por ende, se obtiene:
+\[
+T(n) =
+\begin{cases}
+  \Theta(1) & n \le 1. \\
+  \Theta(1) + T(n-1) + T(n-2) & n > 1.
+\end{cases}
+\]
+
+Existen métodos matemáticos para resolver ecuaciones de recurrencia como \(T(n) = \Theta(1) + T(n-1) + T(n-2)\) y obtener el orden de complejidad (véase el apéndice \ref{apx:ecuaciones_recursivas}). No obstante, en estos apuntes, se prefiere razonar sobre el costo utilizando el \hyperref[sec:arbol_de_ejecucion]{árbol de ejecución}, pues eso exhibe la intuición detrás de la complejidad. 
+
+Al razonar sobre el árbol de ejecución \(A\), se utiliza la siguiente fórmula: 
+\[\sum_{v \in A} c(v)\]
+donde \(c(v)\) es el costo de las operaciones no recursivas en el llamado que \(v\) representa. Esa fórmula tiene sentido porque el costo de las operaciones no recursivas se contempla explícitamente, y el costo de los llamados recursivos se contempla al considerar cada nodo, recordando que cada uno, salvo la raíz, representa precisamente un llamado recursivo. 
+
+Si todos los nodos tienen el mismo costo no recursivo, la fórmula se reduce a:
+\[|v| \cdot c(v).\]
+
+El caso de \inline{fibonacci} tiene la bondad de que el costo no recursivo de cada llamado es constante, por lo cual la complejidad es simplemente proporcional al número de nodos del árbol: \(|v|\). 
+
+Una primera estimación del número de nodos parte de que el árbol de ejecución de \inline{fibonacci} es un árbol binario. En un árbol binario completo con \(m\) niveles, la cantidad de nodos es de \(2^m - 1\); el árbol de ejecución de \inline{fibonacci(n)} no es completo, pero tiene \(n\) niveles, de forma que una cota superior (bastante holgada) para el número de nodos del árbol es \(2^n - 1\). Con eso, se puede decir que \(T(n) \in O(2^n)\). 
+
+Evidentemente existen formas de contar con más precisión el número de nodos, pero no son precisamente triviales, por lo que se delegan al apéndice \ref{apx:fibonacci}, donde se demuestra que \(T(n) \in \Theta(\phi^n)\).

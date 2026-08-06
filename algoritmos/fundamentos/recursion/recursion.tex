@@ -21,13 +21,20 @@ Toda función recursiva consta de dos elementos:
 \subsection{Sucesión de Fibonacci}
 \label{sec:fibonacci_recursiva}
 
-La sucesión de Fibonacci es un ejemplo clásico de recursión. La sucesión comienza con 0 y 1, y cada número posterior es la suma de los dos anteriores:
+La sucesión de Fibonacci es un ejemplo clásico de una sucesión definida recursivamente. La sucesión comienza con 0 y 1, y cada número posterior es la suma de los dos anteriores:
 \begin{align*}
     F(0) &= 0 \\
     F(1) &= 1 \\
-    F(n) &= F(n-1) + F(n-2) \quad \text{para } n > 1
+    F(n) &= F(n-1) + F(n-2) \quad \text{si } n > 1
 \end{align*}
-Allí, los casos base son las primeras dos expresiones y la relación de recurrencia es la tercera expresión. Se puede traducir esa definición a una implementación recursiva directamente:
+Allí, los casos base son las primeras dos expresiones y la relación de recurrencia es la tercera expresión. Con eso, la definición recursiva es la siguiente función:
+\[F(n) = \begin{cases}
+  n \quad \text{si } n \leq 1 \\
+  F(n-1) + F(n-2) \quad \text{si } n > 1
+\end{cases}\]
+Coloquialmente, a esa expresión que incluye tanto los casos base como la relación de recurrencia, se le denomina simplemente la recurrencia. 
+
+Se puede traducir esa definición recursiva directamente a una implementación recursiva:
 \begin{pseudocode}
 def fibonacci(n: int) -> int:
     if n <= 1: return n
