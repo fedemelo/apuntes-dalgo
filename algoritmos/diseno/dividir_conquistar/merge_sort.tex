@@ -92,7 +92,86 @@ def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
 Ese algoritmo es \concept{estable}: mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, se elige el elemento de la izquierda en caso de empate para que continúe ubicado antes que el de la derecha en la solución final.
 
 \subsubsection{Complejidad}
-% TODO: Análisis de complejidad? Así sea breve
-% Ojo: para poder decir que es logarítmico formalmente, necesito el teorema maestro... o no?
+\label{sec:merge_sort_complejidad}
+
+Una forma de razonar sobre la complejidad es analizando el \hyperref[sec:arbol_de_ejecucion]{árbol de ejecución}:
+\begin{center}
+\begin{forest}
+  for tree={
+    draw, rounded corners,
+    font=\ttfamily\small,
+    inner sep=4pt,
+    l sep=1.5em,
+    s sep=0.6em,
+    edge={-latex},
+  }
+  [{8}
+    [{4}
+      [{2}
+        [{1}]
+        [{1}]
+      ]
+      [{2}
+        [{1}]
+        [{1}]
+      ]
+    ]
+    [{4}
+      [{2}
+        [{1}]
+        [{1}]
+      ]
+      [{2}
+        [{1}]
+        [{1}]
+      ]
+    ]
+  ]
+\end{forest}
+\end{center}
+
+Cada nodo está etiquetado con el tamaño del segmento que procesa. Como cada llamado divide su segmento exactamente por la mitad, el árbol es balanceado y se puede razonar nivel por nivel en lugar de nodo por nodo:
+\begin{itemize}
+  \item En el nivel 0 (la raíz) hay un solo llamado, sobre un segmento de tamaño \(n\); su costo no recursivo, el costo de combinar, es \(\Theta(n)\).
+  \item En el nivel 1 hay dos llamados, cada uno sobre un segmento de tamaño \(n/2\). El costo de combinar cada uno es de \(\Theta(n/2)\), para un total de \(2 \cdot \Theta(n/2) = \Theta(n)\).
+  \item En general, en el nivel \(i\) hay \(2^i\) llamados, cada uno sobre un segmento de tamaño \(n/2^i\) cuyo costo de combinación es es \(\Theta(n/2^i)\), para un costo total de \(\Theta(n)\).
+\end{itemize}
+Es decir, la suma de los costos no recursivos para cada nivel es de \(\Theta(n)\), independientemente del nivel.
+
+Con eso, solo hace falta contar los niveles, la altura \(h\) del árbol, para saber cuántas veces se paga ese costo. Como la raíz representa un segmento de tamaño \(n\) que en cada nivel se divide a la mitad, solo hace falta saber cuántas veces se debe dividir \(n\) entre \(2\) hasta llegar a \(1\).
+\begin{gather*}
+  n \underbrace{{} \cdot \frac{1}{2} \cdot \frac{1}{2} \cdots \frac{1}{2}}_{h \ \text{veces}} = 1 \\
+  \frac{n}{2^h} = 1
+  2^h = n \\
+  h = \log_2(n)
+\end{gather*}
+Es decir, se paga un costo lineal por cada nivel y la cantidad de niveles es logarítmica en función de la entrada, por lo cual la complejidad temporal de merge sort es \(\Theta(n \log n)\).
+
+Otra forma de calcular la complejidad es mediante la \hyperref[sec:complejidad-temporal-recursion]{ecuación de recurrencia}: en el caso base el algoritmo simplemente retorna, con costo constante; en el otro caso, el costo no recursivo es el de combinar, \(\Theta(n)\), sumado a los dos llamados recursivos, cada uno sobre una mitad del arreglo de tamaño aproximadamente \(n/2\):
+\[
+T(n) =
+\begin{cases}
+  \Theta(1) & n \le 1. \\
+  \Theta(n) + 2\,T(n/2) & n > 1.
+\end{cases}
+\]
+Su solución es precisamente \(\Theta(n \log n)\) (véase el apéndice \ref{apx:ecuaciones_recursivas}).
+
+\subsubsection{Optimalidad}
+
+Merge sort es un \concept{algoritmo de ordenamiento basado en comparaciones}: la única forma en la que decide el orden relativo de dos elementos es comparándolos entre sí. Se dice que merge sort es \concept{asintóticamente óptimo} porque ningún algoritmo de ese tipo puede tener, en el peor caso, un costo menor a \(\Omega(n \log n)\).
+
+% Revisar de aquí para abajo
+Todo algoritmo de ordenamiento basado en comparaciones se puede representar mediante un \concept{árbol de decisión}: un árbol binario en el que cada nodo interno representa una comparación entre dos elementos, sus dos hijos representan los dos posibles resultados de esa comparación, y cada hoja representa una permutación de la entrada que el algoritmo podría retornar como resultado.
+
+El algoritmo debe funcionar correctamente sin importar cuál de las \(n!\) permutaciones posibles de tamaño \(n\) sea la entrada. Por ende, el árbol de decisión necesita al menos una hoja por cada una de esas \(n!\) permutaciones: si le faltara alguna, existiría una entrada para la cual el algoritmo jamás llegaría a la salida correcta.
+
+La altura del árbol es el número de comparaciones que hace el algoritmo en el peor caso, pues cada camino de la raíz a una hoja corresponde a una posible ejecución. Como el árbol es binario, uno de altura \(h\) tiene a lo sumo \(2^h\) hojas, así que:
+\[2^h \ge n! \implies h \ge \log_2(n!)\]
+Acotando ese logaritmo:
+\[
+\log_2(n!) = \sum_{k=1}^n \log_2 k \ge \sum_{k=n/2}^{n} \log_2 k \ge \frac{n}{2} \log_2 \frac{n}{2} \in \Omega(n \log n)
+\]
+Ergo, todo algoritmo de ordenamiento basado en comparaciones necesita, en el peor caso, \(\Omega(n \log n)\) comparaciones. Como \inline{merge_sort} logra \(O(n \log n)\), es asintóticamente óptimo.
 
 \practicar[leetcode]{Sort an Array}{https://leetcode.com/problems/sort-an-array/}
