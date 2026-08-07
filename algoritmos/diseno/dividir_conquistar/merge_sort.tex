@@ -141,7 +141,7 @@ Es decir, la suma de los costos no recursivos para cada nivel es de \(\Theta(n)\
 Con eso, solo hace falta contar los niveles, la altura \(h\) del árbol, para saber cuántas veces se paga ese costo. Como la raíz representa un segmento de tamaño \(n\) que en cada nivel se divide a la mitad, solo hace falta saber cuántas veces se debe dividir \(n\) entre \(2\) hasta llegar a \(1\).
 \begin{gather*}
   n \underbrace{{} \cdot \frac{1}{2} \cdot \frac{1}{2} \cdots \frac{1}{2}}_{h \ \text{veces}} = 1 \\
-  \frac{n}{2^h} = 1
+  \frac{n}{2^h} = 1 \\
   2^h = n \\
   h = \log_2(n)
 \end{gather*}
@@ -155,7 +155,7 @@ T(n) =
   \Theta(n) + 2\,T(n/2) & n > 1.
 \end{cases}
 \]
-Su solución es precisamente \(\Theta(n \log n)\) (véase el apéndice \ref{apx:ecuaciones_recursivas}).
+La solución de \(T(n) = \Theta(n) + 2\,T(n/2)\) es precisamente \(\Theta(n \log n)\) (véase el apéndice \ref{apx:ecuaciones_recursivas}).
 
 \subsubsection{Optimalidad}
 
