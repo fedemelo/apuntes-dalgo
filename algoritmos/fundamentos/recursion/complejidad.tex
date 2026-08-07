@@ -3,7 +3,7 @@
 Al igual que el orden de ejecución de una función recursiva no es evidente a primera vista, la complejidad tampoco suele serlo.
 
 \subsubsection{Complejidad temporal}
-\label{sec:complejidad-temporal-fibonacci}
+\label{sec:complejidad-temporal-recursion}
 
 El costo en tiempo de una recurrencia consiste del costo de los llamados recursivos y el de las operaciones no recursivas. La función de costo \(T\) se formula mediante una \concept{ecuación de recurrencia} basada en la definición recursiva del problema:
 \[
@@ -42,3 +42,8 @@ El caso de \inline{fibonacci} tiene la bondad de que el costo no recursivo de ca
 Una primera estimación del número de nodos parte de que el árbol de ejecución de \inline{fibonacci} es un árbol binario. En un árbol binario completo con \(m\) niveles, la cantidad de nodos es de \(2^m - 1\); el árbol de ejecución de \inline{fibonacci(n)} no es completo, pero tiene \(n\) niveles, de forma que una cota superior (bastante holgada) para el número de nodos del árbol es \(2^n - 1\). Con eso, se puede decir que \(T(n) \in O(2^n)\). 
 
 Evidentemente existen formas de contar con más precisión el número de nodos, pero no son precisamente triviales, por lo que se delegan al apéndice \ref{apx:fibonacci}, donde se demuestra que \(T(n) \in \Theta(\phi^n)\).
+
+\subsubsection{Complejidad espacial}
+\label{sec:complejidad-espacial-reecursion}
+
+% TODO: Complejidad espacial de la recursion.
