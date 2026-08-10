@@ -88,26 +88,26 @@ Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
     |\br{lefti}|left_sum = 0
-    largest_sum_left = |\(-\infty\)|
-    for l=mid-1 downto lo:
+    best_sum_left = |\(-\infty\)|
+    for l=mid downto lo:
         left_sum += nums[l]
-        if left_sum > largest_sum_left:
-            largest_sum_left = left_sum
+        if left_sum > best_sum_left:
+            best_sum_left = left_sum
             best_l = l|\br{leftf}|
 
     |\br{righti}|right_sum = 0
-    largest_sum_right = |\(-\infty\)|
-    for r=mid to hi:
+    best_sum_right = |\(-\infty\)|
+    for r=mid+1 to hi:
         right_sum += nums[r]
-        if right_sum > largest_sum_right:
-            largest_sum_right = right_sum
+        if right_sum > best_sum_right:
+            best_sum_right = right_sum
             best_r = r|\br{rightf}|
 
-    return best_l, best_r, largest_sum_left + largest_sum_right
+    return best_l, best_r, best_sum_left + best_sum_right
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{mid-1}) hacia el inicio (\inline{lo}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
-    \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde la mitad (\inline{mid}) hacia el final (\inline{hi})}
+    \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{mid}) hacia el inicio (\inline{lo}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
+    \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde justo después de la mitad (\inline{mid+1}) hacia el final (\inline{hi})}
 \end{annotations}
 
 % TODO: Análisis de complejidad así sea light
