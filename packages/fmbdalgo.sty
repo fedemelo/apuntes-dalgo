@@ -58,3 +58,13 @@
 \newcommand{\inline}[1]{%
   {\ttfamily\catcode`\_=12\relax\endlinechar=-1\relax\scantokens{#1}}%
 }
+
+% Entrada/Salida problem specification. Centralizes the "\item \textbf{Entrada}: ..." pattern
+% used throughout to formally state a problem, so its rendering can be changed in one place.
+\NewDocumentEnvironment{especificacion}{}{%
+  \begin{itemize}
+}{%
+  \end{itemize}
+}
+\NewDocumentCommand{\entrada}{O{Entrada} m}{\item \textbf{#1}: #2}
+\NewDocumentCommand{\salida}{O{Salida} m}{\item \textbf{#1}: #2}
