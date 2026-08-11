@@ -1,10 +1,10 @@
 \subsection{Subarreglo máximo}
 
 Un \concept{subarreglo máximo} es un pedazo contiguo no vacío de un arreglo de números cuya suma (la suma de sus elementos) es mayor que la de cualquier otro subarreglo contiguo. El problema de encontrar un subarreglo máximo se define como:
-\begin{itemize}
-  \item \textbf{Entrada}: arreglo con \(n\) números: \([a_1, a_2,\ldots,a_n]\).
-  \item \textbf{Salida}: subarreglo contiguo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.
-\end{itemize}
+\begin{especificacion}
+  \entrada{arreglo con \(n\) números: \([a_1, a_2,\ldots,a_n]\).}
+  \salida{subarreglo contiguo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.}
+\end{especificacion}
 \say{es máxima} se puede formalizar en una expresión matemática que básicamente dice que esa sumatoria es mayor que cualquier otra sumatoria de elementos contiguos que se pueda formular. Nótese que podría haber más de un subarreglo máximo: podrían haber varios cuya suma sea igual. Basta con hallar cualquiera que sea máximo.
 
 Hay dos familias de instancias de este problema que son muy fáciles:
@@ -15,10 +15,10 @@ Hay dos familias de instancias de este problema que son muy fáciles:
 Vale la pena entonces pensar en instancias con valores tanto positivos como negativos, que son menos triviales.
 
 Antes de iniciar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
-\begin{itemize}
-  \item \textbf{Entrada}: arreglo con \(n\) números: \([a_0, a_2,\ldots,a_{n-1}]\).
-  \item \textbf{Salida}: índices \(i\), \(j\) del arreglo, donde \(0 \leq i \leq j < n\) tales que la suma \(\sum_{k=i}^j a_k\) es máxima.
-\end{itemize}
+\begin{especificacion}
+  \entrada{arreglo con \(n\) números: \([a_0, a_2,\ldots,a_{n-1}]\).}
+  \salida{índices \(i\), \(j\) del arreglo, donde \(0 \leq i \leq j < n\) tales que la suma \(\sum_{k=i}^j a_k\) es máxima.}
+\end{especificacion}
 Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
 
 \subsubsection{Solución por fuerza bruta}
