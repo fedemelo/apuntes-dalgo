@@ -7,10 +7,10 @@ Descripción de la salida esperada para cada instancia en un conjunto de entrada
 \end{definicion}
 
 E.g., el \concept{problema de ordenamiento} (\textit{sorting problem}, muy famoso):
-\begin{itemize}
-  \item \textbf{Entrada}: secuencia de \(n\) números \(a_1, a_2,\ldots,a_n\).
-  \item \textbf{Salida}: permutación \(a_1', a_2',\ldots,a_n'\) tal que \(a_1' \leq a_2' \leq \ldots \leq a_n'\)
-\end{itemize}
+\begin{especificacion}
+  \entrada{secuencia de \(n\) números \(a_1, a_2,\ldots,a_n\).}
+  \salida{permutación \(a_1', a_2',\ldots,a_n'\) tal que \(a_1' \leq a_2' \leq \ldots \leq a_n'\)}
+\end{especificacion}
 Recuérdese que cada permutación de una secuencia es un posible orden de sus elementos. En este caso, la salida esperada es cualquier permutación en la que los números estén en orden no decreciente.
 
 Una \concept{instancia} de un problema es una entrada específica, e.g., \(1, 4, 2, 3, 2\) es una instancia del problema de ordenamiento, en cuyo caso la salida esperada es \(1, 2, 2, 3, 4\).
