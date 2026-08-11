@@ -1,10 +1,10 @@
 \subsection{Búsqueda binaria}
 
 La búsqueda binaria intenta encontrar un valor específico, el \emph{objetivo}, en una secuencia ordenada. El problema que resuelve es entonces:
-\begin{itemize}
-  \item Entrada: arreglo ordenado de enteros y un número entero: el objetivo
-  \item Salida: índice del objetivo en el arreglo o -1 si no está
-\end{itemize}
+\begin{especificacion}
+  \entrada{arreglo ordenado de enteros y un número entero: el objetivo}
+  \salida{índice del objetivo en el arreglo o -1 si no está}
+\end{especificacion}
 
 Aplicando el paradigma, evidentemente el subproblema es buscar el objetivo solo en un segmento del arreglo. Imaginar que ese subproblema está resuelto equivale a saber en cuál segmento buscar (no a saber exactamente dónde está, porque entonces estaría resuelto el problema completo).
 
