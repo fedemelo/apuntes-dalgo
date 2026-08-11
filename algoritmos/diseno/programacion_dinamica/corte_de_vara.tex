@@ -3,10 +3,10 @@
 El problema de corte de vara consiste en determinar cuál es la mejor forma de cortar una vara de longitud \(n\), si cada posible longitud entera se puede vender a un precio específico. El objetivo es maximizar los ingresos.
 
 Las entradas del problema son entonces una longitud entera \(n\) y una función \(p\) que determina el precio que tendría cada pedazo. Para facilidad computacional, usualmente el problema se establece como:
-\begin{itemize}
-  \item Entradas: Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).
-  \item Salida: Los ingresos máximos que se pueden obtener al cortar la vara.
-\end{itemize}
+\begin{especificacion}
+  \entrada[Entradas]{Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).}
+  \salida{Los ingresos máximos que se pueden obtener al cortar la vara.}
+\end{especificacion}
 En ese modelo, \(p[0] = 0\) porque una longitud de \(0\) representa la ausencia de vara (y por ende de venta).
 
 Considérese la instancia del problema con \(n=4\) y \(p = [0, 1, 5, 8, 9]\). En ese caso:
@@ -120,10 +120,10 @@ Esa solución cuenta con complejidad temporal de \(\Theta(n^2)\), por los dos ci
 \subsubsection{Obtener los tamaños de los cortes}
 
 Inicialmente, el problema de corte de vara se planteó como un problema de optimización, donde la respuesta esperada era el máximo ingreso posible. Sin embargo, el problema se podría plantear como un problema de búsqueda en el que se busca alguna configuración de cortes que maximiza el ingreso, en lugar del ingreso en sí.
-\begin{itemize}
-  \item Entradas: Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).
-  \item Salida: Una pila con las longitudes de las piezas que maximizan el precio de venta.
-\end{itemize}
+\begin{especificacion}
+  \entrada[Entradas]{Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).}
+  \salida{Una pila con las longitudes de las piezas que maximizan el precio de venta.}
+\end{especificacion}
 
 Para esto, al implementar el algoritmo de programación dinámica se debe no solo computar el valor óptimo sino también almacenar información para que, una vez se obtenga el valor óptimo, se pueda recuperar los pasos que se siguieron para obtenerlo. 
 
