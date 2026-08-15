@@ -9,6 +9,7 @@
 \definecolor{mygreen}{rgb}{0,0.4,0}
 \definecolor{mygray}{rgb}{0.2,0.2,0.2}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{derivedgray}{gray}{0.55}
 
 \lstset{
   backgroundcolor=\color{white},
@@ -42,19 +43,44 @@
   tabsize=4,
 }
 
-\newtcblisting{pseudocode}[1][]{%                                                                  
-  listing only,                                                                                    
-  listing engine=listings,                                                                         
-  listing options={#1},                                                                            
-  breakable=false,                                                                                 
-  enhanced,                                                                                                 
-  frame hidden,                                                                                             
-  interior hidden,                                                                                          
-  boxrule=0pt,                                                                                              
-  arc=0pt,                                                                                                  
-  boxsep=0pt,                                                                                               
-  left=0pt, right=0pt, top=0pt, bottom=0pt,                                                                 
-}  
+% `derived` listing style: use via \begin{pseudocode}[style=derived] on a
+% block that reproduces an already-seen algorithm verbatim except for a few
+% new/changed spans. Body text and keywords default to derivedgray; wrapping
+% a span in a pair of @ marks turns it (and any keywords inside it) black.
+%
+% This is a `moredelim=[is]` region, not an `escapeinside` escape: `\color`
+% is inherently scoped to the current TeX group, and escapeinside wraps each
+% |...| occurrence in its own group, so a bare \color set inside one escape
+% is undone the instant that escape ends — it can never survive to reach the
+% next escape, even the very next character. moredelim instead marks a real
+% delimited region within listings' own per-token styling pipeline, so the
+% style persists across the whole marked span (and combines with keyword
+% detection, hence "is" = inline style) without needing any of that.
+%
+% @ was chosen over a backslash-command tag (`\new`) because moredelim
+% matches literal characters in the raw listing text, not LaTeX commands —
+% a word like "new" would risk matching as a substring inside ordinary
+% identifiers, and `\`/`|` are already meaningful here (escapeinside trigger
+% and its delimiter).
+\lstdefinestyle{derived}{
+  basicstyle=\color{derivedgray}\footnotesize\ttfamily,
+  keywordstyle=\bfseries,
+  moredelim=[is][\color{black}]{@}{@},
+}
+
+\newtcblisting{pseudocode}[1][]{%
+  listing only,
+  listing engine=listings,
+  listing options={#1},
+  breakable=false,
+  enhanced,
+  frame hidden,
+  interior hidden,
+  boxrule=0pt,
+  arc=0pt,
+  boxsep=0pt,
+  left=0pt, right=0pt, top=0pt, bottom=0pt,
+}
 
 \newcommand{\inline}[1]{%
   {\ttfamily\catcode`\_=12\relax\endlinechar=-1\relax\scantokens{#1}}%
