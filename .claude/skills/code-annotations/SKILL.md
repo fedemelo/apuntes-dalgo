@@ -1,6 +1,6 @@
 ---
 name: code-annotations
-description: Adds brace/note annotations (the green side-notes with arrows/braces, optionally boxed) to pseudocode listings in this LaTeX repo, using the fmb-code-annotations package. Use whenever the user asks to annotate, explain inline, or add a note/brace/box to a \begin{pseudocode} block, or asks to adjust the position/width of an existing annotation.
+description: Adds brace/note annotations (the green side-notes with arrows/braces, optionally boxed) to pseudocode listings in this LaTeX repo, using the fmb-code-annotations package, and covers the separate `derived`/`@` mechanism for graying out reused code from an earlier algorithm. Use whenever the user asks to annotate, explain inline, or add a note/brace/box to a \begin{pseudocode} block, adjust the position/width of an existing annotation, or show new/changed code against an already-seen algorithm.
 ---
 
 # Code annotations for pseudocode listings
@@ -99,6 +99,50 @@ Options:
   note/arrow endpoints.
 - `arrstyle` (default `dotted`) — draw style of the arrow.
 - `width` (default `3cm`) — text width of the note.
+
+## Derived listings: showing new code against a reused algorithm
+
+Separate from the green annotation system above, `packages/fmbdalgo.sty` defines a `derived`
+listing style for a different situation: reproducing an already-seen algorithm verbatim except
+for a few new or changed spans, without forcing the reader to flip back and forth between the
+original and the new version. Reused code renders in muted gray (`derivedgray`, defined in
+`fmbdalgo.sty`); spans wrapped in a pair of `@` marks render in black, keywords included.
+
+```latex
+\begin{codeblock}
+\begin{pseudocode}[style=derived]
+def merge(nums: arreglo[int], lo: int, mid: int, hi: int)@-> int@:
+    left = ...
+    @inverted_pairs_count = 0@
+    ...
+    @return inverted_pairs_count@
+\end{pseudocode}
+\end{codeblock}
+```
+
+- `[style=derived]` goes on the `pseudocode` environment itself, same slot as any other
+  `listings` option.
+- `@...@` is not an `escapeinside` escape like `\br`/`\bxl`/`\bxr` — it's a `listings`
+  `moredelim=[is]` region (see `fmbdalgo.sty` for why: `\color` set inside an `|...|` escape is
+  undone the instant that escape's own group closes, so it can never persist to the next escape
+  — a bare open/close pair like `|\new|...|\new|` is fundamentally impossible, not just untried).
+  `@` was picked over a friendlier-looking tag because `moredelim` matches literal characters in
+  the raw listing text, not LaTeX commands, and a word like "new" risks matching as a substring
+  inside a real identifier.
+- One tag only — there's no separate "mark this as old" tag. Everything not between a pair of
+  `@`s is old/reused by default.
+- Single-line spans only (`@...@` can't span a newline in the middle of a region the way
+  `\br`/`\bxl`/`\bxr` can). For a new span that covers several lines, tag each line separately.
+- `\bxl`/`\bxr`/`\br` marks and `\codenote`/`\codebrace` annotations work exactly as normal
+  inside a `derived` listing (they're orthogonal — the green overlay doesn't care what color the
+  underlying text is), and can be nested inside or straddle an `@...@` region freely.
+- Still wrap the block in `\begin{codeblock}...\end{codeblock}` if it has an `annotations` block
+  after it, same as any other `pseudocode`+`annotations` pair.
+- To make the gray fainter or darker, there's exactly one place to change:
+  `\definecolor{derivedgray}{gray}{0.55}` in `fmbdalgo.sty` (second number, `0`=black to
+  `1`=white). It applies everywhere at once — body text and keywords both — since keywords in
+  the gray zone have no color of their own; they just inherit whatever's ambient.
+- Real example: `algoritmos/diseno/dividir_conquistar/pares_invertidos.tex`.
 
 ## Sizing heuristic (do this without compiling)
 
