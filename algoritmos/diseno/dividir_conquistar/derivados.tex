@@ -1,0 +1,51 @@
+\subsection{Algoritmos donde combinar es la magia}
+\label{sec:conquistar}
+
+Tanto merge sort como el algoritmo de máximo subarreglo propuesto por Shamos son ejemplos de algoritmos de dividir y conquistar donde los pasos de dividir y conquistar son relativamente triviales; el ingenio está en el paso de combinar. 
+
+Esa estructura de dividir y conquistar se puede extender a otros problemas similares, sin necesidad de diseñar un algoritmo de cero, sino prácticamente replicando en esas dos implementaciones.
+
+\subsubsection{Conteo de pares invertidos}
+
+Un \concept{par invertido} en una secuencia \(a_0, a_1, \ldots, a_{n-1}\) es un par de índices \((i, j)\) donde \(i < j\) pero \((a_i > a_j)\). El problema de contar los pares invertidos es:
+\begin{especificacion}
+  \entrada{arreglo de \(n\) números \([a_0, a_1, \ldots, a_{n-1}]\).}
+  \salida{la cantidad de pares invertidos.}
+\end{especificacion}
+Por ejemplo, en el arreglo \([3, 1, 4, 5, 2]\) hay cuatro pares invertidos: \((0, 1)\), pues \(a_0 = 3 > a_1 = 1\); \((0, 4)\); \((2, 4)\) y \((3, 4)\). 
+
+El conteo es una medida de qué tan lejos está un arreglo de estar ordenado: un arreglo ordenado no tiene pares invertidos, mientras que en un arreglo ordenado en reversa cada uno de los \(\binom{n}{2}\) pares posibles están invertidos.
+
+Se puede idear una solución eficiente con base en \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, revisar cuántos de la mitad derecha son menores que los de la mitad izquierda. Eso es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si un elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que faltan y cada uno es esos cuenta como un par invertido.
+
+Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios, descritos en la solución anterior, en negro:
+\begin{codeblock}
+\begin{pseudocode}[derived]
+def merge(nums: arreglo[int], lo: int, mid: int, hi: int)|\new|-> int|\new|:
+    left = |\textrm{copia de}| nums |\textrm{desde}| lo |\textrm{hasta}| mid
+    right = |\textrm{copia de}| nums |\textrm{desde}| mid+1 |\textrm{hasta}| hi
+
+    l = 0
+    r = 0
+    |\new|\inverted_pairs_count = 0|\new|
+
+    while l < len(left) and r < len(right):
+        if left[l] <= right[r]:
+            nums[lo + l + r] = left[l]
+            l += 1
+        else:
+            nums[lo + l + r] = right[r]
+            |\new|inverted_pairs_count += len(left) - l|\new|
+            r += 1
+
+    while l < len(left):
+        nums[lo + l + r] = left[l]
+        l += 1
+
+    while r < len(right):
+        nums[lo + l + r] = right[r]
+        r += 1
+
+    |\new|return inverted_pairs_count|\new|
+\end{pseudocode}
+\end{codeblock}
