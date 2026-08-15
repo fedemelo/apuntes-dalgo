@@ -1,6 +1,6 @@
 ---
 name: code-annotations
-description: Adds braces/box annotations (the green side-notes with arrows/braces) to pseudocode listings in this LaTeX repo, using the fmb-code-annotations package. Use whenever the user asks to annotate, explain inline, or add a note/brace/box to a \begin{pseudocode} block, or asks to adjust the position/width of an existing annotation.
+description: Adds brace/note annotations (the green side-notes with arrows/braces, optionally boxed) to pseudocode listings in this LaTeX repo, using the fmb-code-annotations package. Use whenever the user asks to annotate, explain inline, or add a note/brace/box to a \begin{pseudocode} block, or asks to adjust the position/width of an existing annotation.
 ---
 
 # Code annotations for pseudocode listings
@@ -14,7 +14,7 @@ changed on purpose, update this file to match as part of that change.
 
 1. Inside the `pseudocode` listing, mark the code span(s) you want to annotate using
    `\br{id}` (a single point, for a brace) or `\bxl{id}` ... `\bxr{id}` (a start/end pair
-   around a token, for a box). These rely on `escapeinside={|}{|}` from `listings`, so marks
+   around a span, for a note). These rely on `escapeinside={|}{|}` from `listings`, so marks
    must be wrapped in `|...|` inline in the code, e.g.:
    ```
    |\br{memoi}|if optimal_revs[n] >= 0:
@@ -24,10 +24,10 @@ changed on purpose, update this file to match as part of that change.
    ```
    |\bxl{ir}|r = 0|\bxr{ir}|
    ```
-   for a box around a single token.
+   for a note pointing at a single line/token.
 2. Immediately after `\end{pseudocode}`, open `\begin{annotations}...\end{annotations}`
    (this environment just wraps a `tikzpicture` in overlay mode) and call `\codebrace` or
-   `\codebox` once per annotation, referencing the ids from step 1.
+   `\codenote` once per annotation, referencing the ids from step 1.
 3. Wrap the whole `pseudocode` + `annotations` pair in `\begin{codeblock}...\end{codeblock}`:
    ```latex
    \begin{codeblock}
@@ -69,20 +69,29 @@ Options (all optional, pgfkeys):
 - `yshift` (default `0pt`) — vertical offset of the note relative to the brace midpoint.
 - `amplitude` (default `3pt`) — how "deep"/curved the brace is.
 
-### `\codebox[<options>]{<id>}{<text>}`
+### `\codenote[<options>]{<id>}{<text>}`
 
-A rounded box around the single token bracketed by `\bxl{<id>}`/`\bxr{<id>}`, plus a floating
-note with a dotted arrow to it. Use it for annotating one specific token/expression rather
-than a whole block.
+A floating note with a dotted arrow pointing at the span bracketed by `\bxl{<id>}`/`\bxr{<id>}`.
+Use it for annotating a single line, token, or expression rather than a multi-line block
+(use `\codebrace` for that).
+
+By default it draws **no box** around the marked span — just the arrow, which already points
+unambiguously at it. Pass `box=true` to draw a rounded box too; reserve that for when the
+marked span is a token/sub-expression *inside* a longer line (so the reader needs the box to
+see exactly which part is meant). If the marked span is the whole line, skip the box — a
+border around an entire line adds nothing the arrow doesn't already say.
 
 Options:
-- `xshift` (default `1.5cm`) — how far right of the box the note starts (controls arrow
+- `box` (default `false`) — draw a rounded box around the marked span.
+- `xshift` (default `1.5cm`) — how far right of the span the note starts (controls arrow
   length). Ignored if `notepos` is given.
+- `yshift` (default `0pt`) — vertical offset of the note from its default position. Ignored
+  if `notepos` is given.
 - `notepos=<calc expr>` — explicit position for the note, written as a TikZ `calc` expression
   *without* the surrounding `$ $`, e.g. `notepos={(cbox@id.east)+(2cm,1cm)}`. Use this instead
-  of `xshift` when the token is mid-line (not near the right edge) so the note doesn't have
-  to travel in a straight horizontal line, or when several boxes are close together and
-  their notes would otherwise collide.
+  of `xshift`/`yshift` when the token is mid-line (not near the right edge) so the note
+  doesn't have to travel in a straight horizontal line, or when several notes are close
+  together and would otherwise collide.
 - `curve=<to-path options>` — shape of the connecting arrow, e.g. `bend left=25`,
   `bend right=5`. Common when `notepos` places the note somewhere the straight arrow would
   cross the code.
@@ -97,7 +106,7 @@ The listing uses `\footnotesize\ttfamily` monospace text (see `packages/fmbdalgo
 character width is fairly predictable. To size an annotation:
 
 1. Find the longest line within the marked span (for a brace) or the line containing the
-   marked token (for a box), measured in characters *from the mark's column to the end of
+   marked token (for a note), measured in characters *from the mark's column to the end of
    that line's meaningful content*.
 2. `xshift` needs to clear that length. As a rough rule of thumb drawn from existing
    annotations in this repo: short remainders (under ~20 chars) only need the default/no
@@ -172,13 +181,15 @@ region — full pages render fine too, just larger).
 ## Real examples to imitate
 
 Files with existing annotations, in increasing sophistication:
-- `algoritmos/diseno/pre/insertion_sort.tex` — one brace, two boxes, simple.
-- `algoritmos/diseno/decremento_conquista/busqueda_binaria.tex` — several braces/boxes
-  staggered with `yshift` to avoid collisions, one using the shared `\annMitadSinOverflow`.
-- `algoritmos/diseno/programacion_dinamica/fibonacci.tex` — several braces/boxes together,
+- `algoritmos/diseno/pre/insertion_sort.tex` — one brace, two notes, simple.
+- `algoritmos/diseno/decremento_conquista/busqueda_binaria.tex` — several braces/notes
+  staggered with `yshift` to avoid collisions, one using the shared `\annMitadSinOverflow`,
+  one with `box=true` on a mid-line token.
+- `algoritmos/diseno/programacion_dinamica/fibonacci.tex` — several braces/notes together,
   no notepos overrides needed.
-- `algoritmos/diseno/dividir_conquistar/merge_sort.tex` — mixes braces and boxes, one with
-  `notepos` + `curve=bend left=25` for a mid-line token, one using `\annMitadSinOverflow`.
+- `algoritmos/diseno/dividir_conquistar/merge_sort.tex` — mixes braces and notes, one with
+  `box=true` + `notepos` + `curve=bend left=25` for a mid-line token, one using
+  `\annMitadSinOverflow`.
 - `algoritmos/diseno/programacion_dinamica/corte_de_vara.tex` — most sophisticated: uses
   `notepos={(cbox@id.east)+(...)}` with `curve=bend right=5` to route a note around other
   content.
@@ -194,8 +205,8 @@ has no business holding algorithm-specific prose), `\input` from `algoritmos/alg
 preamble so every chapter can use them. Each is a `\newcommand{\ann<Concepto>}[N]{...}`,
 parametrized by the variable names used in that listing, e.g.:
 ```latex
-\codebox[...]{over}{\annMitadSinOverflow{izq}{der}}   % busqueda_binaria.tex
-\codebox[...]{mid}{\annMitadSinOverflow{i}{j}}          % merge_sort.tex
+\codenote[...]{over}{\annMitadSinOverflow{izq}{der}}   % busqueda_binaria.tex
+\codenote[...]{mid}{\annMitadSinOverflow{i}{j}}          % merge_sort.tex
 ```
 one canonical phrasing, correct variable names per call site. Before writing new annotation
 prose, check `shared_annotations.tex` for something close. **Promote text into it on the
@@ -214,8 +225,9 @@ a comment, or a description of the point to make. Your job is:
 2. Place `\br`/`\bxl`/`\bxr` marks at the right spot(s) in the pseudocode.
 3. Write (or lightly copyedit) the note text into proper prose for the `<text>` argument —
    tighten wording, fix grammar, but don't invent content the user didn't ask for.
-4. Choose `\codebrace` vs `\codebox` (span vs single token) and pick reasonable option values
-   using the heuristic above.
+4. Choose `\codebrace` vs `\codenote` (multi-line span vs single line/token), decide whether
+   `box=true` is warranted (only for a token/sub-expression inside a longer line — skip it for
+   a whole-line span), and pick reasonable option values using the heuristic above.
 5. Never fabricate the *content* of an annotation — if the user hasn't indicated what a note
    should say, ask, don't guess.
 
