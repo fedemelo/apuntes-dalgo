@@ -18,7 +18,7 @@ Vale la pena entonces pensar en instancias con valores tanto positivos como nega
 
 Antes de iniciar la implementación, se transforman levemente las especificaciones del problema por unas equivalentes:
 \begin{especificacion}
-  \entrada{arreglo con \(n\) números: \([a_0, a_2,\ldots,a_{n-1}]\).}
+  \entrada{arreglo con \(n\) números: \([a_0, a_1,\ldots,a_{n-1}]\).}
   \salida{índices \(i\), \(j\) del arreglo, donde \(0 \leq i \leq j < n\) tales que la suma \(\sum_{k=i}^j a_k\) es máxima.}
 \end{especificacion}
 Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
@@ -121,7 +121,7 @@ def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[i
 \end{annotations}
 \end{codeblock}
 
-Ahora sí, se contemplan todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
+Ahora sí, se contemplan todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el máximo segmento desde la mitad hacia la izquierda, el máximo desde la mitad hacia la derecha, y se juntan:
 \begin{codeblock}
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
