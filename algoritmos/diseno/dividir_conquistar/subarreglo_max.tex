@@ -1,16 +1,18 @@
 \subsection{Subarreglo máximo}
 
-Un \concept{subarreglo máximo} es un pedazo contiguo no vacío de un arreglo de números cuya suma (la suma de sus elementos) es mayor que la de cualquier otro subarreglo contiguo. El problema de encontrar un subarreglo máximo se define como:
+Un \concept{subarreglo} es un segmento contiguo de un arreglo. Un \concept{subarreglo máximo} es un subarreglo no vacío cuya suma (la suma de sus elementos) es mayor que la de cualquier otro subarreglo.
+
+El problema de encontrar un subarreglo máximo se define como:
 \begin{especificacion}
   \entrada{arreglo con \(n\) números: \([a_1, a_2,\ldots,a_n]\).}
-  \salida{subarreglo contiguo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.}
+  \salida{subarreglo \([a_i, a_{i+1},\ldots,a_j]\) no vacío tal que la suma \(\sum_{k=i}^j a_k\) es máxima.}
 \end{especificacion}
 \say{es máxima} se puede formalizar en una expresión matemática que básicamente dice que esa sumatoria es mayor que cualquier otra sumatoria de elementos contiguos que se pueda formular. Nótese que podría haber más de un subarreglo máximo: podrían haber varios cuya suma sea igual. Basta con hallar cualquiera que sea máximo.
 
 Hay dos familias de instancias de este problema que son muy fáciles:
 \begin{itemize}
-  \item Cuando todos los valores del arreglo son positivos, la respuesta es todo el arreglo, porque todos los valores aportan a una mayor suma.
-  \item Cuando todos los valores son negativos, se quiere que la suma sea lo menos negativa, por lo que se forma el subarreglo con un solo elemento, el menos negativo.
+  \item Cuando todos los valores del arreglo son positivos: la respuesta es todo el arreglo, porque todos los valores aportan a una mayor suma.
+  \item Cuando todos los valores son negativos: se quiere que la suma sea lo menos negativa, por lo que se forma el subarreglo con un solo elemento, el menos negativo.
 \end{itemize}
 Vale la pena entonces pensar en instancias con valores tanto positivos como negativos, que son menos triviales.
 
@@ -21,22 +23,51 @@ Antes de iniciar la implementación, se transforman levemente las especificacion
 \end{especificacion}
 Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo (menos usual en notación matemática, pero más compatible con lenguajes de programación) y segundo, ahora se buscan los índices que delimitan el máximo subarreglo, en lugar del subarreglo como tal.
 
-\subsubsection{Solución por fuerza bruta}
+\subsubsection{Soluciones por fuerza bruta}
 \label{sec:subarreglo_max_fuerza_bruta}
 
-Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
+La solución obvia a este problema se consigue simplemente comparando todas las posibles sumas de subarreglos y eligiendo la mejor:
 \begin{codeblock}
 \begin{pseudocode}
 def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
     best_sum = |\(-\infty\)|
+    best_lo = 0
+    best_hi = 0
 
+    for lo=0 to len(nums)-1:
+        for hi=lo to len(nums)-1:
+        sub_sum = 0
+        |\br{sumi}|for i=lo to hi:
+            sub_sum = sub_sum + nums[i]|\br{sumf}|
+        if sub_sum > best_sum:
+            best_sum = sub_sum
+            best_lo = lo
+            best_hi = hi
+    
+    return best_lo, best_hi, best_sum
+\end{pseudocode}
+\begin{annotations}
+    \codebrace[xshift=0.5cm,width=12cm]{sumi}{sumf}{Se suman los elementos en el segmento de \inline{lo} a \inline{hi}.}
+\end{annotations}
+\end{codeblock}
+
+Ese fue el primer algoritmo que desarrolló Grenander%
+\footnote{Ulf Grenander fue un investigador prolífico de la Universidad de Brown. Se encontró con el problema en 1977, trabajando en teoría de patrones en imágenes. Originalmente el problema era bidimensional; lo redujo a una dimensión para abordarlo. (\cite{bentley})
+}%
+, quien se topó por primera vez con el problema. Tiene tres ciclos \inline{for}, de forma que su costo es de \(\Theta(n^3)\). 
+
+El algoritmo era demasiado lento para el caso de uso de Grenander, quien entonces se percató de que el tercer ciclo no es necesario:
+\begin{codeblock}
+\begin{pseudocode}
+def max_subarray_brute_force_2(nums: arreglo[int]) -> tuple[int, int, int]:
+    best_sum = |\(-\infty\)|
     best_lo = 0
     best_hi = 0
 
     for lo=0 to len(nums)-1:
         sub_sum = 0
-        |\br{sumi}|for hi=lo to len(nums)-1:
-            sub_sum += nums[hi]|\br{sumf}|
+        for hi=lo to len(nums)-1:
+            sub_sum += nums[hi]
             |\br{cmpi}|if sub_sum > best_sum:
                 best_sum = sub_sum
                 best_lo = lo
@@ -44,25 +75,27 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
     return best_lo, best_hi, best_sum
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=1.5cm,width=8cm]{cmpi}{cmpf}{Cada subarreglo de \(lo\) hasta \(hi\) se compara contra el mejor visto hasta el momento; no se espera a que termine el ciclo interno para comparar}
+    \codebrace[xshift=1.5cm,width=8cm]{cmpi}{cmpf}{Cada subarreglo de \inline{lo} hasta \inline{hi} se compara contra el mejor visto hasta el momento; no se espera a que termine el ciclo interno para comparar}
 \end{annotations}
 \end{codeblock}
 
 La forma en la que se contemplan todas las posibilidades de subarreglo es que en cada iteración del ciclo externo, \inline{lo} se queda quieto mientras \inline{hi} se mueve a la derecha contemplando cada segmento y acumulando la suma. Entonces, en la primera iteración del ciclo externo, se contemplan todos los subarreglos que comienzan en \inline{lo} igual a cero, de pequeño (\inline{lo} = \inline{0} a \inline{hi} = \inline{0}) a grande (\inline{lo} = \inline{0} a \inline{hi} = \inline{len(nums)-1}). Luego, en la segunda iteración del ciclo externo, se contemplan todos los subarreglos que comienzan en \inline{lo} igual a uno, desde \inline{lo} = \inline{1} a \inline{hi} = \inline{1} hasta \inline{lo} = \inline{1} a \inline{hi} = \inline{len(nums)-1}. Y así hasta que en la última iteración del ciclo externo solo se contempla el elemento que está al final del arreglo.
 
-Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que intuitivamente su complejidad temporal es \(O(n^2)\).
+Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que su complejidad temporal es \(\Theta(n^2)\). 
+
+No obstante, seguía siendo demasiado lento. Grenander le comentó el problema a Shamos, quien se tomó una noche para diseñar el algoritmo que se estudia en la siguiente sección. (\cite{bentley})
 
 \subsubsection{Solución por dividir y conquistar}
 \label{sec:subarreglo_max_divide_conquer}
 
-Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo. Con eso, cada subproblema consiste en hallar un subarreglo máximo dentro del respectivo pedazo. El cuidado que hay que tener con esa solución es que, al partir el arreglo, puede pasar que se partió justo donde estaba el subarreglo máximo. Debemos cerciorarnos de contemplar esa posibilidad en el paso de combinar las soluciones. Con eso, las etapas son:
+Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencional es partir el arreglo en dos mitades. Con eso, cada subproblema consiste en hallar un subarreglo máximo dentro del respectivo segmento. El cuidado que hay que tener con esa solución es que, al partir el arreglo, puede pasar que se parta justo por donde cruzaba el subarreglo máximo. Debemos cerciorarnos de contemplar esa posibilidad en el paso de combinar las soluciones.
 \begin{enumerate}
     \item Dividir el arreglo en dos mitades.
     \item Conquistar: Para cada mitad, hallar un subarreglo máximo recursivamente.
-    \item Combinar: Comparar los subarreglos máximos de cada mitad para elegir el mayor y también compararlos con los subarreglos que pasan por donde se dividió el arreglo.
+    \item Combinar: Comparar los subarreglos máximos de cada mitad para elegir el mayor. Además, compararlos con los subarreglos que cruzan por donde se dividió el arreglo.
 \end{enumerate}
 
-Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el combinar encapsulándolo en una función \inline{max_crossing_subarray}. Podemos escribir el seudocódigo para las primeras dos etapas:
+Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el paso de combinar encapsulándolo en una función \inline{max_crossing_subarray}:
 \begin{codeblock}
 \begin{pseudocode}
 def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[int, int, int]:
@@ -83,12 +116,12 @@ def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[i
     return cross_i, cross_j, cross_sum|\br{retf}|
 \end{pseudocode}
 \begin{annotations}
-    \codebox[xshift=0.5cm, width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
+    \codenote[xshift=0.5cm, width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
     \codebrace[xshift=3cm,width=6cm]{reti}{retf}{Se comparan las soluciones y se retornan los índices correspondientes a la mejor entre la mitad izquierda, derecha y el cruce de la mitad}
 \end{annotations}
 \end{codeblock}
 
-Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
+Ahora sí, se contemplan todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
 \begin{codeblock}
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
@@ -116,6 +149,6 @@ def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tup
 \end{annotations}
 \end{codeblock}
 
-% TODO: Análisis de complejidad así sea light
+La complejidad del algoritmo de dividir y conquistar sigue la misma lógica que la de merge sort: el algoritmo tiene un costo no recursivo de \(\Theta(n)\) en cada uno de los \(\Theta(\log n)\) niveles de recursión, para una complejidad de \(Theta(n \log n)\).
 
 \practicar[leetcode]{Maximum Subarray}{https://leetcode.com/problems/maximum-subarray/}
