@@ -57,6 +57,7 @@ Ese fue el primer algoritmo que desarrolló Grenander%
 , quien se topó por primera vez con el problema. Tiene tres ciclos \inline{for}, de forma que su costo es de \(\Theta(n^3)\). 
 
 El algoritmo era demasiado lento para el caso de uso de Grenander, quien entonces se percató de que el tercer ciclo no es necesario:
+\label{sec:subarreglo_max_fuerza_bruta_2}
 \begin{codeblock}
 \begin{pseudocode}
 def max_subarray_brute_force_2(nums: arreglo[int]) -> tuple[int, int, int]:
@@ -83,7 +84,10 @@ La forma en la que se contemplan todas las posibilidades de subarreglo es que en
 
 Ese algoritmo cuenta con dos ciclos anidados que recorren el arreglo, por lo que su complejidad temporal es \(\Theta(n^2)\). 
 
-No obstante, seguía siendo demasiado lento. Grenander le comentó el problema a Shamos, quien se tomó una noche para diseñar el algoritmo que se estudia en la siguiente sección. (\cite{bentley})
+No obstante, seguía siendo demasiado lento. Grenander le comentó el problema a Shamos%
+\footnote{Michael Shamos era profesor en Carnegie Mellon. No era un cualquiera: se reconoce como el pionero de la geometría computacional. (\cite{shamos_cmu})
+}%
+, quien según \textcite{bentley} se tomó \emph{una noche} para diseñar el algoritmo que se estudia en la siguiente sección.
 
 \subsubsection{Solución por dividir y conquistar}
 \label{sec:subarreglo_max_divide_conquer}
