@@ -190,7 +190,7 @@
 %   notepos=<calc expression>
 %       Where to place the note, written as a TikZ
 %       calc expression without the outer ($ ... $).
-%       E.g.: (cbox@id.east)+(2cm,1cm)
+%       E.g.: (cn@id.east)+(2cm,1cm)
 %             (current page.east)+(-8.5cm,-0.5cm)
 %       Overrides xshift/yshift when set.
 %
@@ -267,21 +267,21 @@
 \NewDocumentCommand{\codenote}{O{} m m}{%
     \pgfkeys{/codenote, default, #1}%
     \ifcodenotebox
-        \node[box, fit=(#2s)(#2e)] (cbox@#2) {};%
+        \node[box, fit=(#2s)(#2e)] (cn@#2) {};%
     \else
-        \node[box, draw=none, fit=(#2s)(#2e)] (cbox@#2) {};%
+        \node[box, draw=none, fit=(#2s)(#2e)] (cn@#2) {};%
     \fi
     \def\codenote@auto{auto}%
     \ifx\codenotenotepos\codenote@auto
         \node[note, anchor=\codenotenoteanchor, text width=\codenotewidth]
-            (cnote@#2) at ([xshift=\codenotenotexshift, yshift=\codenotenoteyshift] cbox@#2.east) {#3};%
+            (cnote@#2) at ([xshift=\codenotenotexshift, yshift=\codenotenoteyshift] cn@#2.east) {#3};%
     \else
         \edef\codenote@pos{($ \codenotenotepos $)}%
         \node[note, anchor=\codenotenoteanchor, text width=\codenotewidth]
             (cnote@#2) at \codenote@pos {#3};%
     \fi
     \draw[arr, \codenotearrstyle]
-        (cbox@#2.\codenotefrom) to[codenote@curve@style] (cnote@#2.\codenoteto);%
+        (cn@#2.\codenotefrom) to[codenote@curve@style] (cnote@#2.\codenoteto);%
 }
 
 \NewDocumentEnvironment{annotations}{}{%

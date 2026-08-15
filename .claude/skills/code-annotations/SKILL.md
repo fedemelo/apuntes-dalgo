@@ -88,7 +88,7 @@ Options:
 - `yshift` (default `0pt`) — vertical offset of the note from its default position. Ignored
   if `notepos` is given.
 - `notepos=<calc expr>` — explicit position for the note, written as a TikZ `calc` expression
-  *without* the surrounding `$ $`, e.g. `notepos={(cbox@id.east)+(2cm,1cm)}`. Use this instead
+  *without* the surrounding `$ $`, e.g. `notepos={(cn@id.east)+(2cm,1cm)}`. Use this instead
   of `xshift`/`yshift` when the token is mid-line (not near the right edge) so the note
   doesn't have to travel in a straight horizontal line, or when several notes are close
   together and would otherwise collide.
@@ -191,7 +191,7 @@ Files with existing annotations, in increasing sophistication:
   `box=true` + `notepos` + `curve=bend left=25` for a mid-line token, one using
   `\annMitadSinOverflow`.
 - `algoritmos/diseno/programacion_dinamica/corte_de_vara.tex` — most sophisticated: uses
-  `notepos={(cbox@id.east)+(...)}` with `curve=bend right=5` to route a note around other
+  `notepos={(cn@id.east)+(...)}` with `curve=bend right=5` to route a note around other
   content.
 - `algoritmos/shared_annotations.tex` — the shared reusable-annotation-text library itself.
 

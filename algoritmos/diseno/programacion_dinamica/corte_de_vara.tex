@@ -160,7 +160,7 @@ def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
     return segments
 \end{pseudocode}
 \begin{annotations}
-    \codebox[notepos={(cbox@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
+    \codebox[notepos={(cn@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
     \codebox[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud \(\ell\), el primer corte es \inline{cortes_optimos[\(\ell\)]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{\(\ell - \)cortes_optimos[\(\ell\)]}}
     \codebrace[xshift=2.5cm, width=8.5cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
 \end{annotations}

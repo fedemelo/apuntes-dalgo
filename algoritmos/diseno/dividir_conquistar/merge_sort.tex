@@ -90,7 +90,7 @@ def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
 \begin{annotations}
     \codebrace[width=5.5cm]{cpi}{cpf}{Se crean arreglos nuevos con cada mitad. La complejidad espacial es entonces \(\Theta(n)\).}
     \codenote[xshift=0.5cm]{ir}{\inline{l} recorre  \inline{left}}
-    \codenote[box=true, notepos={(cbox@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=10cm]{es}{\texttt{<=} en lugar de \texttt{<} al comparar los elementos de cada mitad para que haya estabilidad.}
+    \codenote[box=true, notepos={(cn@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=10cm]{es}{\texttt{<=} en lugar de \texttt{<} al comparar los elementos de cada mitad para que haya estabilidad.}
     \codebrace[xshift=4.5cm, width=6cm]{ai}{af}{Lógica principal, cuando ambos subarreglos tienen elementos: se toma el menor y se añade a \inline{nums}. \vspace{0.1cm}\newline \inline{lo+l+r} es el índice de \inline{nums} en el que se está: \inline{lo} donde inicia el segmento, \inline{l} los elementos de \inline{left} que se han agregado y \inline{r} los de \inline{right}}
     \codebrace[xshift=3.7cm, width=7.5cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \inline{nums}.}
     \codebrace[xshift=3.7cm, width=6.5cm]{di}{df}{Se añade el excedente de la derecha a \inline{nums}. Si este while corre, es porque el anterior no corrió y viceversa.}
