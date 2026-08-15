@@ -7,6 +7,7 @@ Si el problema es ordenar el arreglo, un subproblema es ordenar un pedazo del ar
 
 Esa es la intuición detrás de \concept{insertion sort}: para cada elemento del arreglo, se revisa si está ubicado correctamente respecto a los anteriores: si no lo está, se mueve hacia atrás hasta que lo esté; una vez lo está, se continúa con el siguiente elemento.
 
+\begin{codeblock}
 \begin{pseudocode}
 def insertion_sort(nums: arreglo):
     |\bxl{s}|for i=1 to len(nums)-1:|\bxr{s}|
@@ -23,6 +24,7 @@ def insertion_sort(nums: arreglo):
   \codebrace[xshift=3.5cm, width=7.5cm]{anti}{antf}{Si \inline{elem} es menor que el anterior, debe moverse hacia atrás: se mueve el anterior una posición adelante para hacerle espacio. Se repite hasta que \inline{elem} esté en su puesto (o ya no hayan anteriores).}
   \codenote[xshift=0.5cm, width=10cm]{in}{Se inserta \inline{elem} en la posición que quedó libre tras mover los elementos más grandes que él hacia adelante. Es \inline{j+1} y no \inline{j} porque la última iteración del ciclo termina con \inline{j -= 1}.}
 \end{annotations}
+\end{codeblock}
 
 \subsubsection{Complejidad}
 

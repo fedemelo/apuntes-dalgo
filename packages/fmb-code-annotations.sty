@@ -289,3 +289,39 @@
 }{%
     \end{tikzpicture}
 }
+
+% Wrap a \pseudocode listing and its \annotations block together in this
+% environment to keep them on the same page:
+%
+%   \begin{codeblock}
+%     \begin{pseudocode} ... \end{pseudocode}
+%     \begin{annotations} ... \end{annotations}
+%   \end{codeblock}
+%
+% Why this is needed: an \annotations tikzpicture is `overlay`, so by design
+% it has zero size as far as TeX's page-breaking is concerned — its marks and
+% drawing only exist through absolute page coordinates recorded via
+% `remember picture`. That means TeX's page builder treats the listing and
+% its annotations as two independent, unrelated-height items in the vertical
+% list, so a listing that lands exactly at the bottom of a page can be
+% followed by a page break that pushes the (seemingly weightless) annotations
+% block alone onto the next page. The marks it draws from were recorded on
+% the previous page, but the drawing itself happens on the new page, so it
+% silently renders in the wrong place. A `\nopagebreak` between the two
+% environments does NOT fix this: the page builder can already have committed
+% to breaking right after the listing by the time that penalty is seen.
+%
+% The fix is to make the pair atomic: capture both inside a single \vbox, so
+% they become one item in the vertical list with no legal breakpoint between
+% them. TeX still measures that combined box using only the listing's height
+% (the overlay content is still invisible to it), but that's fine — what
+% matters is that the box can no longer be split, so it's forced to land
+% wholly on one page, taking its annotations with it.
+\newbox\codeblock@box
+\NewDocumentEnvironment{codeblock}{}{%
+    \par
+    \setbox\codeblock@box=\vbox\bgroup
+}{%
+    \egroup
+    \noindent\box\codeblock@box
+}

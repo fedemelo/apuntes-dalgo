@@ -28,6 +28,26 @@ changed on purpose, update this file to match as part of that change.
 2. Immediately after `\end{pseudocode}`, open `\begin{annotations}...\end{annotations}`
    (this environment just wraps a `tikzpicture` in overlay mode) and call `\codebrace` or
    `\codebox` once per annotation, referencing the ids from step 1.
+3. Wrap the whole `pseudocode` + `annotations` pair in `\begin{codeblock}...\end{codeblock}`:
+   ```latex
+   \begin{codeblock}
+   \begin{pseudocode}
+   ...
+   \end{pseudocode}
+   \begin{annotations}
+   ...
+   \end{annotations}
+   \end{codeblock}
+   ```
+   This is required whenever a `pseudocode` block has an `annotations` block after it (skip it
+   for a bare `pseudocode` block with no annotations). Without it, a listing that happens to
+   land exactly at the bottom of a page can get separated from its annotations by a page break
+   — the `annotations` tikzpicture is `overlay`, so it has zero size as far as TeX's page
+   builder is concerned, and `\nopagebreak` doesn't help (the builder can already have
+   committed to breaking right after the listing before the penalty is seen). `codeblock`
+   captures both inside one `\vbox`, making them a single atomic item in the vertical list so
+   they're always kept on the same page — which matters because the `remember picture`
+   coordinates the annotations draw from are only valid on the page the marks landed on.
 
 ### `\codebrace[<options>]{<top-id>}{<bottom-id>}{<text>}`
 

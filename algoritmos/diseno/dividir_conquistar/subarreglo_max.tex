@@ -25,6 +25,7 @@ Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo 
 \label{sec:subarreglo_max_fuerza_bruta}
 
 Una primera solución a este problema se consigue simplemente comparando todas las posibilidades de subarreglos y eligiendo el que tiene la mayor suma:
+\begin{codeblock}
 \begin{pseudocode}
 def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
     best_sum = |\(-\infty\)|
@@ -45,6 +46,7 @@ def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
 \begin{annotations}
     \codebrace[xshift=1.5cm,width=8cm]{cmpi}{cmpf}{Cada subarreglo de \(lo\) hasta \(hi\) se compara contra el mejor visto hasta el momento; no se espera a que termine el ciclo interno para comparar}
 \end{annotations}
+\end{codeblock}
 
 La forma en la que se contemplan todas las posibilidades de subarreglo es que en cada iteración del ciclo externo, \inline{lo} se queda quieto mientras \inline{hi} se mueve a la derecha contemplando cada segmento y acumulando la suma. Entonces, en la primera iteración del ciclo externo, se contemplan todos los subarreglos que comienzan en \inline{lo} igual a cero, de pequeño (\inline{lo} = \inline{0} a \inline{hi} = \inline{0}) a grande (\inline{lo} = \inline{0} a \inline{hi} = \inline{len(nums)-1}). Luego, en la segunda iteración del ciclo externo, se contemplan todos los subarreglos que comienzan en \inline{lo} igual a uno, desde \inline{lo} = \inline{1} a \inline{hi} = \inline{1} hasta \inline{lo} = \inline{1} a \inline{hi} = \inline{len(nums)-1}. Y así hasta que en la última iteración del ciclo externo solo se contempla el elemento que está al final del arreglo.
 
@@ -61,6 +63,7 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 \end{enumerate}
 
 Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el combinar encapsulándolo en una función \inline{max_crossing_subarray}. Podemos escribir el seudocódigo para las primeras dos etapas:
+\begin{codeblock}
 \begin{pseudocode}
 def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[int, int, int]:
     if lo == hi: return lo, hi, nums[lo]
@@ -83,8 +86,10 @@ def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[i
     \codebox[xshift=0.5cm, width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
     \codebrace[xshift=3cm,width=6cm]{reti}{retf}{Se comparan las soluciones y se retornan los índices correspondientes a la mejor entre la mitad izquierda, derecha y el cruce de la mitad}
 \end{annotations}
+\end{codeblock}
 
 Ahora sí, contemplemos todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el subarreglo máximo de la izquierda, el máximo de la derecha, y se juntan:
+\begin{codeblock}
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
     |\br{lefti}|left_sum = 0
@@ -109,6 +114,7 @@ def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tup
     \codebrace[xshift=3.5cm,width=8cm]{lefti}{leftf}{Se recorre hacia la izquierda, desde la mitad (\inline{mid}) hacia el inicio (\inline{lo}), acumulando la suma en \inline{left_sum}. En cada paso se compara con el mejor valor visto hasta ahora y, si es mejor, se guarda el índice \inline{l}}
     \codebrace[xshift=3.5cm,width=8cm]{righti}{rightf}{Se hace lo mismo hacia la derecha, desde justo después de la mitad (\inline{mid+1}) hacia el final (\inline{hi})}
 \end{annotations}
+\end{codeblock}
 
 % TODO: Análisis de complejidad así sea light
 

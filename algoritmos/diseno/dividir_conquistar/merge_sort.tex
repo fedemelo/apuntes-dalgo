@@ -14,6 +14,7 @@ Hay dos formas de dividir el arreglo en mitades: una toma el arreglo y lo divide
 
 Para realizar la división conceptual, la función recursiva recibe, además del arreglo, índices inicial y final que indican el segmento del arreglo que se está procesando. La función calcula el índice de la mitad de ese rango, y usa los tres índices para definir dos segmentos: la mitad izquierda y la derecha. Con eso, realiza un llamado recursivo para cada mitad:
 
+\begin{codeblock}
 \begin{pseudocode}
 def merge_sort(nums: arreglo[int], lo: int, hi: int):
     |\bxl{base}|if lo < hi:|\bxr{base}|
@@ -30,6 +31,7 @@ def merge_sort(nums: arreglo[int], lo: int, hi: int):
     \codebrace[xshift=0.3cm,width=5.5cm]{cds}{cde}{División conceptual en dos mitades.}
     \codenote[xshift=0.5cm,width=12cm]{com}{Paso de combinar, encapsulado.}
 \end{annotations}
+\end{codeblock}
 
 La última instrucción de la función es el paso de combinar los subarreglos ordenados. Por ahora se procrastina: se encapsula en una función \inline{merge} que se implementará después.
 
@@ -60,6 +62,7 @@ def sort(nums: arreglo[int]):
 La idea para combinar las mitades es intuitiva: si cada mitad fuera una pila de cartas, el método natural sería comparar las cartas en el tope de cada pila y tomar la menor cada vez. Eso solo funciona porque cada mitad está ordenada, entonces las cartas que se van tomando van quedando ordenadas.
 
 El seudocódigo es el siguiente:
+\begin{codeblock}
 \begin{pseudocode}
 def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
     |\br{cpi}|left = |\textrm{copia de}| nums |\textrm{desde}| lo |\textrm{hasta}| mid
@@ -92,6 +95,7 @@ def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
     \codebrace[xshift=3.7cm, width=7.5cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \inline{nums}.}
     \codebrace[xshift=3.7cm, width=6.5cm]{di}{df}{Se añade el excedente de la derecha a \inline{nums}. Si este while corre, es porque el anterior no corrió y viceversa.}
 \end{annotations}
+\end{codeblock}
 
 Ese algoritmo es \concept{estable}: mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, en caso de empate se elige el elemento de la izquierda para que continúe ubicado antes que el de la derecha en la solución final.
 

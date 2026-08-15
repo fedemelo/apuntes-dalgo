@@ -82,6 +82,7 @@ Una primera optimización es utilizar programación dinámica top-down.
 Se crea un arreglo donde se memoizarán las respuestas. La enésima posición corresponde al cálculo del enésimo número de Fibonacci. Inicialmente se llena con $-1$ para indicar que no se ha computado ningún número.
 
 La función principal pasa el arreglo a la función auxiliar, que es la misma función recursiva anterior, con dos diferencias: memoiza el cálculo si aún no está en el arreglo y retorna la solución memoizada.
+\begin{codeblock}
 \begin{pseudocode}
 def fibonacci_top_down(n: int) -> int:
     memo = |\textrm{arreglo de enteros de tamaño }$n+1$|
@@ -108,6 +109,7 @@ def _fibonacci_memo(n: int, memo: arreglo[int]) -> int:
     \codebox[width=10cm]{memo}{La estructura aún no contiene la solución para este valor, entonces, se memoiza}
     \codebox[width=6.5cm]{rmemo}{Se retorna siempre el valor memoizado (que puede que se haya calculado en ese llamado recursivo o en uno anterior)}
 \end{annotations}
+\end{codeblock}
 
 Con esa implementación, cada valor solo se calcula la primera vez que se necesita; toda llamada posterior retorna inmediatamente la respuesta ya memoizada. El árbol de ejecución se reduce al siguiente:
 \begin{center}
