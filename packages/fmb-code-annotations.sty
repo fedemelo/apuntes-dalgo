@@ -136,17 +136,18 @@
         {#4};
 }
 
-% Box around a code token, a floating note, and an arrow connecting them.
+% A floating note pointing at a code token/span via an arrow, with an
+% optional box drawn around the marked span.
 %
 % -------------------------------------------------
 %
-%   \codebox[<options>]{<id>}{<text>}
+%   \codenote[<options>]{<id>}{<text>}
 %
 % -------------------------------------------------
 % Marks in the listing
 % -------------------------------------------------
 %
-%   Place |\bxl{id}| before the token and |\bxr{id}| after it.
+%   Place |\bxl{id}| before the span and |\bxr{id}| after it.
 %
 % Mandatory arguments
 % -------------------------------------------------
@@ -161,23 +162,40 @@
 % Optional key-value options
 % -------------------------------------------------
 %
+%   box=<boolean>
+%       Whether to draw a rounded box around the marked span.
+%       Turn this on for a token/sub-expression inside a longer
+%       line; leave it off (default) when the span is the whole
+%       line, where the arrow alone already points unambiguously
+%       and a box around the full line adds nothing.
+%
+%       Default:
+%           false
+%
 %   xshift=<dimension>
-%       Horizontal distance from the box to the note.
+%       Horizontal distance from the span to the note.
 %       Controls the arrow length in the default layout.
 %       Ignored when notepos is set explicitly.
 %
 %       Default:
 %           1.5cm
 %
+%   yshift=<dimension>
+%       Vertical displacement of the note from its default position.
+%       Ignored when notepos is set explicitly.
+%
+%       Default:
+%           0pt
+%
 %   notepos=<calc expression>
 %       Where to place the note, written as a TikZ
 %       calc expression without the outer ($ ... $).
 %       E.g.: (cbox@id.east)+(2cm,1cm)
 %             (current page.east)+(-8.5cm,-0.5cm)
-%       Overrides xshift when set.
+%       Overrides xshift/yshift when set.
 %
 %       Default:
-%           auto (xshift to the right of the box)
+%           auto (xshift/yshift to the right of the span)
 %
 %   noteanchor=<anchor>
 %       Anchor of the note node used for positioning.
@@ -186,7 +204,7 @@
 %           west
 %
 %   from=<anchor>
-%       Box anchor where the arrow starts.
+%       Span anchor where the arrow starts.
 %
 %       Default:
 %           east
@@ -218,42 +236,52 @@
 %           3cm
 
 \pgfkeys{
-    /codebox/.is family,
-    /codebox,
+    /codenote/.is family,
+    /codenote,
     default/.style = {
+        box        = false,
         notepos    = auto,
         noteanchor = west,
         xshift     = 1.5cm,
+        yshift     = 0pt,
         from       = east,
         to         = west,
         curve      = {},
         arrstyle   = dotted,
         width      = 3cm,
     },
-    notepos/.store     in = \codeboxnotepos,
-    noteanchor/.estore in = \codeboxnoteanchor,
-    xshift/.estore     in = \codeboxnotexshift,
-    from/.estore       in = \codeboxfrom,
-    to/.estore         in = \codeboxto,
-    curve/.code           = {\tikzset{codebox@curve@style/.style={#1}}},
-    arrstyle/.estore   in = \codeboxarrstyle,
-    width/.estore      in = \codeboxwidth,
+    box/.is if      = codenotebox,
+    notepos/.store     in = \codenotenotepos,
+    noteanchor/.estore in = \codenotenoteanchor,
+    xshift/.estore     in = \codenotenotexshift,
+    yshift/.estore     in = \codenotenoteyshift,
+    from/.estore       in = \codenotefrom,
+    to/.estore         in = \codenoteto,
+    curve/.code           = {\tikzset{codenote@curve@style/.style={#1}}},
+    arrstyle/.estore   in = \codenotearrstyle,
+    width/.estore      in = \codenotewidth,
 }
 
-\NewDocumentCommand{\codebox}{O{} m m}{%
-    \pgfkeys{/codebox, default, #1}%
-    \node[box, fit=(#2s)(#2e)] (cbox@#2) {};%
-    \def\codebox@auto{auto}%
-    \ifx\codeboxnotepos\codebox@auto
-        \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
-            (cnote@#2) at ([xshift=\codeboxnotexshift] cbox@#2.east) {#3};%
+\newif\ifcodenotebox
+
+\NewDocumentCommand{\codenote}{O{} m m}{%
+    \pgfkeys{/codenote, default, #1}%
+    \ifcodenotebox
+        \node[box, fit=(#2s)(#2e)] (cbox@#2) {};%
     \else
-        \edef\codebox@pos{($ \codeboxnotepos $)}%
-        \node[note, anchor=\codeboxnoteanchor, text width=\codeboxwidth]
-            (cnote@#2) at \codebox@pos {#3};%
+        \node[box, draw=none, fit=(#2s)(#2e)] (cbox@#2) {};%
     \fi
-    \draw[arr, \codeboxarrstyle]
-        (cbox@#2.\codeboxfrom) to[codebox@curve@style] (cnote@#2.\codeboxto);%
+    \def\codenote@auto{auto}%
+    \ifx\codenotenotepos\codenote@auto
+        \node[note, anchor=\codenotenoteanchor, text width=\codenotewidth]
+            (cnote@#2) at ([xshift=\codenotenotexshift, yshift=\codenotenoteyshift] cbox@#2.east) {#3};%
+    \else
+        \edef\codenote@pos{($ \codenotenotepos $)}%
+        \node[note, anchor=\codenotenoteanchor, text width=\codenotewidth]
+            (cnote@#2) at \codenote@pos {#3};%
+    \fi
+    \draw[arr, \codenotearrstyle]
+        (cbox@#2.\codenotefrom) to[codenote@curve@style] (cnote@#2.\codenoteto);%
 }
 
 \NewDocumentEnvironment{annotations}{}{%
