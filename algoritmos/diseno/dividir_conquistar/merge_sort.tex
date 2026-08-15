@@ -10,33 +10,33 @@ Merge sort resuelve el \hyperref[sec:problema]{problema de ordenamiento}. La ide
 
 \subsubsection{Dividir y conquistar}
 
-Dividir no tiene ciencia: se calcula el índice de la mitad del arreglo para determinar el índices de inicio y fin de cada segmento.
+Hay dos formas de dividir el arreglo en mitades: una toma el arreglo y lo divide en dos arreglos distintos, uno para cada mitad; la otra es conceptual: usa índices para delimitar las mitades. La segunda es más eficiente: evita crear arreglos adicionales en memoria y no retorna un arreglo aparte, ordena en el arreglo mismo.
 
-Conquistar tampoco: se hace el llamado recursivo a cada mitad. Al partir en mitades eventualmente se obtienen subarreglos de longitud uno, ya ordenados.
+Para realizar la división conceptual, la función recursiva recibe, además del arreglo, índices inicial y final que indican el segmento del arreglo que se está procesando. La función calcula el índice de la mitad de ese rango, y usa los tres índices para definir dos segmentos: la mitad izquierda y la derecha. Con eso, realiza un llamado recursivo para cada mitad:
 
-Por ahora no se piensa en cómo combinar, se encapsula ese paso en una función \inline{merge} que se implementará después. Con eso, este es el seudocódigo:
 \begin{pseudocode}
 def merge_sort(nums: arreglo[int], lo: int, hi: int):
-    if lo < hi:
+    |\bxl{base}|if lo < hi:|\bxr{base}|
         |\bxl{mid}|mid = (hi - lo) // 2 + lo|\bxr{mid}|
 
-        merge_sort(nums, lo, mid)
-        merge_sort(nums, mid + 1, hi)
+        |\br{cds}|merge_sort(nums, lo, mid)
+        merge_sort(nums, mid + 1, hi)|\br{cde}|
 
-        merge(nums, lo, mid, hi)
+        |\bxl{com}|merge(nums, lo, mid, hi)|\bxr{com}|
 \end{pseudocode}
 \begin{annotations}
-    \codebox[xshift=0.5cm,width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
+    \codenote[xshift=2.5cm,width=12cm]{base}{Caso base: si \inline{lo} no es menor que \inline{hi} la función termina. Alternativa: \inline{if lo >= hi: return}.}
+    \codenote[xshift=0.5cm,width=12cm]{mid}{\annMitadSinOverflow{lo}{hi}}
+    \codebrace[xshift=0.3cm,width=5.5cm]{cds}{cde}{División conceptual en dos mitades.}
+    \codenote[xshift=0.5cm,width=12cm]{com}{Paso de combinar, encapsulado.}
 \end{annotations}
 
-Los índices \inline{lo} y \inline{hi} como parámetros son necesarios porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo: \inline{merge_sort(nums, 0, len(nums)-1)}. Nótese que el arreglo realmente no se divide en cada llamado recursivo, sino que se delimitan segmentos mediante índices. Eso permite que el algoritmo sea \concept{\textit{in-place}}: modifique directamente el arreglo original en lugar de retornar uno nuevo.
+La última instrucción de la función es el paso de combinar los subarreglos ordenados. Por ahora se procrastina: se encapsula en una función \inline{merge} que se implementará después.
 
 En cada llamado recursivo ocurre lo siguiente:
 \begin{enumerate}
     \item Si el segmento tiene longitud uno (o cero), se alcanza el caso base: \inline{lo} no es menor que \inline{hi} y la función termina.
-    
     \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para cada una. El llamado a la mitad derecha empieza \emph{después} de que termina el llamado a la mitad izquierda (que a su vez solo termina tras todos sus hijos).
-    
     \item Una vez ambos llamados retornan, se ejecuta \inline{merge}, que mezcla ambas mitades ordenadas in-place dentro del rango delimitado por \inline{lo} y \inline{hi}.
 \end{enumerate}
 
@@ -49,11 +49,15 @@ Cuando algún llamado alcanza el caso base, vuelve a la función que la invocó 
 \end{itemize}
 Después de combinar, la función termina y retorna a quien la había invocado. Así, los llamados a \inline{merge_sort} que se habían acumulado empiezan a terminar, uno tras otro: la recursión comienza a \concept{desenrollarse}.
 
+Nótese que como \inline{merge_sort(nums, i, j)} ordena el segmento de \(i\) a \(j\) en \inline{nums}, entonces la invocación inicial, que resuelve el problema completo, debe usar los índices extremos del arreglo: 
+\begin{pseudocode}
+def sort(nums: arreglo[int]):
+    merge_sort(nums, 0, len(nums)-1)
+\end{pseudocode}
+
 \subsubsection{Combinar las mitades}
 
-Ahora sí: cómo combinar las mitades.
-
-La idea es intuitiva: si cada mitad fuera una pila de cartas, el método natural sería comparar las cartas en el tope de cada pila y tomar la menor cada vez. Eso solo funciona porque cada mitad está ordenada, entonces las cartas que se van tomando van quedando ordenadas.
+La idea para combinar las mitades es intuitiva: si cada mitad fuera una pila de cartas, el método natural sería comparar las cartas en el tope de cada pila y tomar la menor cada vez. Eso solo funciona porque cada mitad está ordenada, entonces las cartas que se van tomando van quedando ordenadas.
 
 El seudocódigo es el siguiente:
 \begin{pseudocode}
@@ -82,14 +86,14 @@ def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
 \end{pseudocode}
 \begin{annotations}
     \codebrace[width=5.5cm]{cpi}{cpf}{Se crean arreglos nuevos con cada mitad. La complejidad espacial es entonces \(\Theta(n)\).}
-    \codebox[xshift=0.5cm]{ir}{\inline{l} recorre  \inline{left}}
-    \codebox[notepos={(cbox@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=10cm]{es}{\texttt{<=} en lugar de \texttt{<} al comparar los elementos de cada mitad para que haya estabilidad.}
+    \codenote[xshift=0.5cm]{ir}{\inline{l} recorre  \inline{left}}
+    \codenote[box=true, notepos={(cbox@es.east)+(2cm,0.8cm)}, curve={bend left=25}, width=10cm]{es}{\texttt{<=} en lugar de \texttt{<} al comparar los elementos de cada mitad para que haya estabilidad.}
     \codebrace[xshift=4.5cm, width=6cm]{ai}{af}{Lógica principal, cuando ambos subarreglos tienen elementos: se toma el menor y se añade a \inline{nums}. \vspace{0.1cm}\newline \inline{lo+l+r} es el índice de \inline{nums} en el que se está: \inline{lo} donde inicia el segmento, \inline{l} los elementos de \inline{left} que se han agregado y \inline{r} los de \inline{right}}
     \codebrace[xshift=3.7cm, width=7.5cm]{ii}{if}{Si quedan elementos en el arreglo de la izquierda, ya no quedan en el de la derecha. Se añade el excedente de la izquierda a \inline{nums}.}
     \codebrace[xshift=3.7cm, width=6.5cm]{di}{df}{Se añade el excedente de la derecha a \inline{nums}. Si este while corre, es porque el anterior no corrió y viceversa.}
 \end{annotations}
 
-Ese algoritmo es \concept{estable}: mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, se elige el elemento de la izquierda en caso de empate para que continúe ubicado antes que el de la derecha en la solución final.
+Ese algoritmo es \concept{estable}: mantiene el orden relativo de los elementos iguales. O sea, en caso de empate, deja primero al que estaba primero en el arreglo original. En la línea del comentario sobre estabilidad, en caso de empate se elige el elemento de la izquierda para que continúe ubicado antes que el de la derecha en la solución final.
 
 \subsubsection{Complejidad}
 \label{sec:merge_sort_complejidad}
