@@ -29,20 +29,20 @@ def merge_sort(nums: arreglo[int], lo: int, hi: int):
     \codebox[xshift=0.5cm,width=7cm]{mid}{\annMitadSinOverflow{lo}{hi}}
 \end{annotations}
 
-Los índices \inline{lo} y \inline{hi} como parámetros son necesarios porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo: \inline{merge_sort(nums, 0, len(nums)-1)}. Nótese que el arreglo realmente no se divide en cada llamado recursivo, sino que se delimitan distintas regiones mediante índices. Eso permite que el algoritmo sea \concept{\textit{in-place}}, es decir, modifique directamente el arreglo original en lugar de retornar uno nuevo.
+Los índices \inline{lo} y \inline{hi} como parámetros son necesarios porque indican qué segmento del arreglo se está procesando. La invocación inicial, que resuelve el problema completo, usa los índices extremos del arreglo: \inline{merge_sort(nums, 0, len(nums)-1)}. Nótese que el arreglo realmente no se divide en cada llamado recursivo, sino que se delimitan segmentos mediante índices. Eso permite que el algoritmo sea \concept{\textit{in-place}}: modifique directamente el arreglo original en lugar de retornar uno nuevo.
 
 En cada llamado recursivo ocurre lo siguiente:
 \begin{enumerate}
-    \item Si el segmento tiene longitud 1 (o 0), se alcanza el caso base: \inline{lo} no es menor que \inline{hi} y la función termina.
+    \item Si el segmento tiene longitud uno (o cero), se alcanza el caso base: \inline{lo} no es menor que \inline{hi} y la función termina.
     
-    \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para cada una. El llamado a la mitad derecha empieza \emph{después} de que termina el llamado a la mitad izquierda.
+    \item Si no, el segmento se divide conceptualmente en dos mitades y se realizan llamados recursivos para cada una. El llamado a la mitad derecha empieza \emph{después} de que termina el llamado a la mitad izquierda (que a su vez solo termina tras todos sus hijos).
     
     \item Una vez ambos llamados retornan, se ejecuta \inline{merge}, que mezcla ambas mitades ordenadas in-place dentro del rango delimitado por \inline{lo} y \inline{hi}.
 \end{enumerate}
 
 Para arreglos grandes, el caso base solo se alcanza después de muchos llamados recursivos, cuando el arreglo se ha dividido lo suficiente. Ergo, en las primeras invocaciones, siempre ocurre que el segmento se divide conceptualmente: se apilan llamados a \inline{merge_sort}, sin retornar ni combinar.
 
-Cuando algún llamado alcanza el caso base, vuelva a la función que la invocó justo después de donde la invocó (al final de la línea 5 o de la línea 6) y pasa una de dos cosas:
+Cuando algún llamado alcanza el caso base, vuelve a la función que la invocó justo después de donde la invocó (al final de la línea 5 o de la línea 6) y pasa una de dos cosas:
 \begin{itemize}
     \item Se realiza otro llamado recursivo (que pronto alcanzará el caso base, porque ya el segmento es muy pequeño)
     \item Se ejecuta por primera vez el paso de combinar, mezclando esos dos segmentos (que son pequeños, porque hace poco se llegó al caso base)
