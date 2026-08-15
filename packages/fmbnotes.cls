@@ -218,7 +218,7 @@
 			[0.1cm]
 			{\large \href{mailto:f.melo@uniandes.edu.co}{f.melo@uniandes.edu.co}}\\
 			[5cm] 	
-			{\noindent \Large Copyright \copyright\mbox{ }2022, 2026 Federico Melo Barrero.}\\
+			{\noindent \Large Copyright \textcopyright\mbox{ }2022, 2026 Federico Melo Barrero.}\\
 			[1cm]
 			{\small Todos los derechos reservados.}\\
 			{\small Ninguna parte de este documento, incluyendo el diseño de la portada, figuras e imágenes, puede ser reproducida, registrada, almacenada o transmitida en manera alguna ni por ningún medio, ya sea electrónico, eléctrico, fotoquímico, mecánico, electroóptico, magnético, de grabación, de fotocopia o cualquier otro sin permiso previo y por escrito del autor. }
