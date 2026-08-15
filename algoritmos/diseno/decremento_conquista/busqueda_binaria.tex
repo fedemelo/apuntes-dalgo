@@ -22,7 +22,7 @@ def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
     |\br{mi}|if hi < lo:
         return -1|\br{mf}|
 
-    mid = |\bxl{over}|(hi - lo) // 2 + lo|\bxr{over}|
+    |\bxl{over}|mid = (hi - lo) // 2 + lo|\bxr{over}|
 
     |\br{gtb}|if target > nums[mid]:
         return binary_search_rec(nums, target, mid+1, hi)|\br{gtf}|
@@ -33,9 +33,9 @@ def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
 \end{pseudocode}
 \begin{annotations}
   \codebrace[width=11cm]{mi}{mf}{Si \inline{hi} está a la izquierda de \inline{lo}, los índices se cruzaron, lo que indica que el elemento no está.}
-  \codebox[xshift=0.5cm, width=6cm]{over}{\annMitadSinOverflow{lo}{hi}}
-  \codebrace[xshift=0.3cm, width=5cm, yshift=-0.1cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
-  \codebox[xshift=0.5cm, width=12cm]{eq}{Si no es ni mayor ni menor, es igual: el objetivo está en el índice del medio.}
+  \codenote[xshift=0.5cm, width=12cm]{over}{\annMitadSinOverflow{lo}{hi}}
+  \codebrace[xshift=0.3cm, width=7cm]{gtb}{gtf}{El objetivo es mayor: debe estar a la derecha. El llamado recursivo va desde después de la mitad hasta el final del segmento.}
+  \codenote[xshift=0.5cm, width=12cm]{eq}{Si no es ni mayor ni menor, es igual: el objetivo está en el índice del medio.}
 \end{annotations}
 
 En los llamados recursivos se toma desde el índice de la mitad \emph{más uno} o \emph{menos uno}. Eso cumple dos funciones: primero, que no se vuelva a comparar con la mitad; pero sobre todo, permite que a media que el segmento del arreglo que se contempla es cada vez más pequeño, tal que el índice de la mitad se acerca más y más a algún extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con algún extremo y la recursión no terminaría cuando el objetivo no se encuentra.
@@ -90,7 +90,7 @@ def binary_search_iter(nums: arreglo[int], target: int) -> int:
     return -1
 \end{pseudocode}
 \begin{annotations}
-  \codebrace[xshift=2cm, width=8.5cm]{ib}{if}{El objetivo es menor que el valor del medio: debe estar a la izquierda. Se mueve el extremo derecho a justo antes de la mitad.}
+  \codebrace[xshift=1.5cm, width=8.5cm]{ib}{if}{El objetivo es menor que el valor del medio: debe estar a la izquierda. Se mueve el extremo derecho a justo antes de la mitad.}
 \end{annotations}
 
 El análisis asintótico de complejidad es el mismo de antes, pues se puede aplicar el mismo raciocinio para el máximo número de pasos. No obstante, esta implementación es ligeramente más eficiente al evitar el \hyperref[sec:sobrecosto_recursion]{sobrecosto de la recursión}.
