@@ -9,7 +9,7 @@ Por ejemplo, en el arreglo \([3, 1, 4, 5, 2]\) hay cuatro pares invertidos: \((0
 
 La cantidad de pares invertidos es una medida de qué tan desordenado está un arreglo: un arreglo ordenado no tiene pares invertidos, mientras que en un arreglo inversamente ordenado cada uno de los \(\binom{n}{2}\) pares posibles están invertidos.
 
-No es difícil idear una solución eficiente con base en \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, revisar cuántos de la mitad derecha son menores que los de la mitad izquierda. Eso es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si un elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que faltan y cada uno es esos cuenta como un par invertido.
+No es difícil idear una solución eficiente con base en \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, contar cuántos de la mitad derecha son menores que alguno de la mitad izquierda, caso en el cual están invertidos. Ese conteo es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si un elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que le siguen y cada uno es esos cuenta como un par invertido.
 
 Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios descritos arriba en negro:
 \begin{codeblock}
@@ -46,7 +46,7 @@ def merge@_and_count@(nums: arreglo[int], lo: int, mid: int, hi: int)@-> int@:
 \end{annotations}
 \end{codeblock}
 
-Con eso resuelto, el resto del algoritmo es idéntico a merge sort, salvo que en cada llamado recursivo se debe recibir el conteo de pares invertidos de esa mitad y sumarlos a los que se cuentan en el paso de combinar de esa ejecución de la función:
+Con eso resuelto, el resto del algoritmo es muy similar a merge sort. La diferencia es que en cada llamado recursivo se debe recibir el conteo de pares invertidos de esa mitad y que esos conteos se deben sumar al conteo del paso de combinar:
 \begin{codeblock}
 \begin{pseudocode}[style=derived]
 def @count_inverted_pairs@(nums: arreglo[int], lo: int, hi: int)@ -> int@:
