@@ -1,7 +1,9 @@
 \subsection*{Notas de la sección}
 
-La explicación del paradigma está basada en \textcite{cormen}. 
+La explicación de las partes de dividir y conquistar como paradigma está basada en la de \textcite{cormen} \S 4, que es la misma de \textcite{cardoso} \S 4.1.
 
-En merge sort, la implementación de los pasos de dividir y conquistar es la de \textcite{cormen}, \textcite{skiena} y \textcite{cardoso}. El paso de combinar no es idéntico al de alguna fuente, es similar al de \textcite{cormen2022}, aunque allí usan una variable de más que le suma cuatro instrucciones al algoritmo y, a mi juicio, le resta claridad.
+En merge sort, la implementación de los pasos de dividir y conquistar es la de \textcite{cormen} \S 2.3.1, \textcite{skiena} \S 4.5 y \textcite{cardoso} \S 4.2. El paso de combinar no es idéntico al de alguna fuente; es similar al de \textcite{cormen2022} \S 2.3.1, pero allí se usa una variable de más que le suma cuatro instrucciones al algoritmo y, a mi juicio, le resta claridad.
 
-La sección de máximo subarreglo toma como fuente principal \textcite{bentley}, aunque usa la implementación de dividir y conquistar de \textcite{cormen} porque muestra el paradigma más explícitamente. El artículo original de Bentley es muy bueno e incluye también la solución por programación dinámica (que se expone en la siguiente sección).
+La sección de máximo subarreglo toma como fuente principal \textcite{bentley}, aunque usa la implementación de dividir y conquistar de \textcite{cormen} \S 4.1 porque muestra el paradigma más explícitamente. El artículo original de Bentley es muy bueno e incluye también la solución por programación dinámica (que se expone en la siguiente sección).
+
+Las implementaciones para los problemas de pares invertidos y de sumas de rangos son propias, basados en merge sort. El problema de pares invertidos es el ejercicio 2-4.d de \textcite{cormen} \S 2 y su implementación es una modificación inmediata de merge sort. El problema de conteo de sumas de rangos y la solución canónica de usar un arreglo de sumas acumuladas se encuentran en %TODO: Citation!
