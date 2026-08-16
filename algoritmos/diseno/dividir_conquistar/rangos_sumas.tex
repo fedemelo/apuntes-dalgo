@@ -1,0 +1,118 @@
+\subsubsection{Sumas de rangos}
+
+Dado un rango inclusivo de índices \([i, j]\), con \(i\leq j\), la suma de los elementos en ese rango se define como una \concept{suma de rango}. El problema de conteo de sumas de rangos contempla todas las sumas de rango cuyo valor está en el intervalo \([\ell, u]\):
+\begin{especificacion}
+  \entrada{arreglo \inline{nums} de \(n\) números y límites \inline{lower} y \inline{upper} del intervalo \([\ell, u]\)}
+  \salida{cantidad de sumas de rangos en el intervalo \([\ell, u]\).}
+\end{especificacion}
+Por ejemplo, en el arreglo \inline{[-3, -2, 4]} y el intervalo \([\ell, u] = [-2, 2]\), las sumas de rango en el intervalo son tres: \(-2\) del rango \([1, 1]\), \(2\) del rango \([1, 2]\) y \(-1\) del rango \([0, 2]\).
+
+% Transformación
+
+La particularidad de este problema y el ingenio adicional que requiere consiste en transformar el arreglo de entrada a uno de mayor utilidad, donde el iésimo elemento contiene la suma acumulada de los primeros $i$ elementos. 
+\begin{codeblock}
+\begin{pseudocode}
+def count_sum_ranges(nums: arreglo[int], lower: int, upper: int) -> int:
+    accum = |\textrm{arreglo de longitud }|len(nums)+1
+    |\bxl{i}|accum[0] = 0|\bxr{i}|
+    |\br{acs}|for i=0 to len(nums)-1:
+        accum[i+1] += nums[i]|\br{acf}|
+
+    return count_sum_ranges_aux(prefijos, 0, len(prefijos) - 1, lower, upper)
+\end{pseudocode}
+\begin{annotations}
+    \codenote[xshift=4cm, width=8cm]{i}{La suma acumulada de los primeros \(0\) elementos es \(0\).}
+    \codebrace[width=6cm]{acs}{acf}{\inline{accum[i]} contiene la suma acumulada desde \inline{nums[0]} hasta \inline{nums[i-1]}, que son los primeros $i$ elementos.}
+\end{annotations}
+\end{codeblock}
+
+Ese arreglo auxiliar tiene un costo lineal en tiempo y espacio, pero facilita enormemente el problema, pues ahora la suma de un rango \([i, j]\) está dada en tiempo constante por una resta:
+\[
+\underbrace{
+  \text{\inline{accum[j+1]}}
+}_{
+  \text{
+    suma de \inline{nums[0]} hasta \inline{nums[j]}
+  }
+} - \underbrace{
+  \text{\inline{accum[i]}}
+}_{
+  \text{
+    suma de \inline{nums[0]} hasta \inline{nums[i-1]}
+  }
+}
+\]
+Si esa resta está en el intervalo \([\ell, u]\), entonces la suma de rango lo está. Eso hace que el problema cambie por completo:
+\begin{especificacion}
+  \entrada{arreglo \inline{accum} de \(n\) números y límites \inline{lower} y \inline{upper} del intervalo \([\ell, u]\)}
+  \salida{cantidad de pares de índices \((i, j)\) con \(i \leq j\) tal que cuya \inline{accum[j] - accum[i]} está en el intervalo \([\ell, u]\).}
+\end{especificacion}
+Que es un problema mucho más similar al conteo pares invertidos.
+% Algoritmo D&C
+
+Con eso, se diseña el algoritmo de dividir y conquistar, siguiendo una idea es muy similar al de pares invertidos: se divide el arreglo (de sumas acumuladas) en dos mitades, para cada mitad se realiza el conteo de forma recursiva y luego se realiza el conteo de pares de índices que cruzan las dos mitades. Al igual que antes, el conteo en cada mitad es simplemente realizar el llamado recursivo; el conteo interesante es el de los índices que cruzan.
+
+% TODO: Revisar esta explicación que no me gusta y escribí de afán (#33)
+Para que los índices crucen, el inicial debe estar en la mitad izquierda y el final en la derecha. Si se fija un índice \inline{l} a la izquierda, para ese índice existe una suma de rango por cada elemento a la derecha: \inline{len(right)} posibilidades. Para evitar tener que contar manualmente cuántas de esas sumas de rango están en el intervalo (recordando que ese conteo es solo evaluar una resta, por la transformación de arriba) se aprovecha que ambas mitades están ordenadas. 
+
+La idea es la siguiente: si se toman dos índices en la mitad derecha, \inline{rl} (\textit{right lower}) y \inline{ru} tal que \(rl < ru\), el rango de \inline{l} a \inline{rl} tiene menor suma que el de \inline{l} a \inline{ru}, porque el arreglo de la derecha está en orden. Entonces si la suma de \inline{l} a \inline{rl} es al menos \(\ell\) y la suma de \inline{l} a \inline{ru} no rebasa \(u\), todos los rangos de sumas entre ellos, \inline{ru - rl} rangos, están dentro del intervalo \([\ell, u]\).
+% TODO: Hasta aquí (#33)
+
+Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios, en negro:
+\begin{pseudocode}[style=derived]
+def merge_and_count(prefijos: arreglo[int], lo: int, mid: int, hi: int, lower: int, upper: int)@ -> int@:
+    left = |\textrm{copia de}| prefijos |\textrm{desde}| lo |\textrm{hasta}| mid
+    right = |\textrm{copia de}| prefijos |\textrm{desde}| mid+1 |\textrm{hasta}| hi
+
+    @rl = 0
+    ru = 0
+    rango_count = 0
+
+    for l=0 to len(left)-1:
+        while right[rs] - left[l] < lower and rl < len(right):
+            rs += 1
+        while right[re] - left[l] <= upper and ru < len(right):
+            re += 1
+        rango_count += re - rs@
+
+    l = 0
+    r = 0
+
+    while l < len(left) and r < len(right):
+        if left[l] <= right[r]:
+            prefijos[lo + l + r] = left[l]
+            l += 1
+        else:
+            prefijos[lo + l + r] = right[r]
+            r += 1
+
+    while l < len(left):
+        prefijos[lo + l + r] = left[l]
+        l += 1
+
+    while r < len(right):
+        prefijos[lo + l + r] = right[r]
+        r += 1
+
+    @return rango_count@
+\end{pseudocode}
+
+Tras el paso de combinar, el resto del algoritmo es idéntico al de pares invertidos (en gris): cada llamado recursivo recibe el conteo de rangos de su mitad y se suman al del paso de combinar:
+\begin{codeblock}
+\begin{pseudocode}[style=derived]
+def count@_sum_ranges_aux@(@accum@: arreglo[int], lo: int, hi: int@, lower: int, upper: int@) -> int:
+    if lo >= hi: return 0
+
+    mid = (hi - lo) // 2 + lo
+      left_count = count_@sum_ranges_aux@(@accum@, lo, mid@, lower, upper@)
+    right_count = count_@sum_ranges_aux@(@accum@, mid + 1, hi@, lower, upper@)
+    merge_count = merge_and_count(@accum@, lo, mid, hi@, lower, upper@)
+
+    return left_count + right_count + merge_count
+\end{pseudocode}
+\end{codeblock}
+
+% TODO: Complejidad. Todo lo nuevo es constante, igual que la de merge sort (#33)
+
+\practicar[leetcode]{Count of Range Sum}{https://leetcode.com/problems/count-of-range-sum}
+
