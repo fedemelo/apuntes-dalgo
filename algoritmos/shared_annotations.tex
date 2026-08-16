@@ -9,6 +9,5 @@
 % Overflow-safe midpoint index, e.g. `lo + (hi - lo) // 2`.
 % #1: start/left index variable name, #2: end/right index variable name.
 \newcommand{\annMitadSinOverflow}[2]{%
-  Índice de la mitad del segmento, calculado así en vez de \inline{(#1+#2) // 2}
-  para evitar un posible overflow.
+  Índice de la mitad del segmento. Alternativa: \inline{(#1+#2) // 2}, pero la suma puede causar overflow.
 }
