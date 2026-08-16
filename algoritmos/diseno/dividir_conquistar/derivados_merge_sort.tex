@@ -1,0 +1,13 @@
+\subsection{Algoritmos derivados de merge sort}
+\label{sec:combinar}
+
+Tanto merge sort como el algoritmo de máximo subarreglo propuesto por Shamos son ejemplos de algoritmos de dividir y conquistar donde:
+\begin{itemize}
+  \item La estructura procesada es un arreglo.
+  \item Los pasos de dividir y conquistar son triviales; el ingenio está en el paso de combinar.
+\end{itemize}
+
+Existen infinidad de problemas que comparten esas características y se pueden solucionar usando dividir y conquistar. Para esos problemas, rara vez es necesario diseñar un algoritmo desde cero; generalmente se puede reutilizar gran parte de la implementación de merge sort o de máximo subarreglo.
+
+\setinputbase{diseno/dividir_conquistar}
+\inputlist{pares_invertidos, rangos_sumas}
