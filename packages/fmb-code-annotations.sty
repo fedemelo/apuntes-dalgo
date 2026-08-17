@@ -3,6 +3,11 @@
 
 \RequirePackage{tikz}
 \usetikzlibrary{arrows.meta,calc,positioning,fit,decorations.pathreplacing}
+\RequirePackage{caption}
+\RequirePackage{xparse}
+
+% Caption type for \codeblock listings, numbered independently of figures/tables.
+\DeclareCaptionType{implementacion}[Implementación]
 
 % Place a zero-size remembered node at the current position.
 \newcommand{\tikzmark}[1]{\tikz[remember picture,overlay] \node (#1) {};}
@@ -298,6 +303,13 @@
 %     \begin{annotations} ... \end{annotations}
 %   \end{codeblock}
 %
+% An optional caption (numbered as "Implementación N") and label can be
+% added, rendered below the listing once the page-break-safety box closes:
+%
+%   \begin{codeblock}[Conteo de pares invertidos.][impl:pares-invertidos]
+%     ...
+%   \end{codeblock}
+%
 % Why this is needed: an \annotations tikzpicture is `overlay`, so by design
 % it has zero size as far as TeX's page-breaking is concerned — its marks and
 % drawing only exist through absolute page coordinates recorded via
@@ -318,10 +330,12 @@
 % matters is that the box can no longer be split, so it's forced to land
 % wholly on one page, taking its annotations with it.
 \newbox\codeblock@box
-\NewDocumentEnvironment{codeblock}{}{%
+\NewDocumentEnvironment{codeblock}{o o}{%
     \par
     \setbox\codeblock@box=\vbox\bgroup
 }{%
     \egroup
     \noindent\box\codeblock@box
+    \IfValueT{#1}{\captionof{implementacion}{#1}}
+    \IfValueT{#2}{\label{#2}}
 }
