@@ -122,18 +122,23 @@ En ocasiones es posible eludir el sobrecosto espacial de la recursión utilizand
 Si la recursión siempre es la última operación, después del llamado recursivo ya no queda nada por hacer y por ende no es necesario mantener el marco de pila de la función que hizo el llamado. Así pues, en vez de apilar un nuevo marco de pila para el llamado recursivo, el entorno de ejecución puede reemplazar el marco actual por el nuevo, reutilizando su espacio. Esa es la \concept{optimización de recursión de cola} (\textit{tail call optimization}). Con eso, la profundidad de la pila se mantiene constante independientemente del número de llamados recursivos.
 
 Para que en efecto los llamados recursivos sean de cola (\text{tail call}), se debe retornar directamente el llamado recursivo, sin realizar ninguna operación sobre él (pues, en ese caso, la recursión no es la última operación). En el siguiente algoritmo, que calcula el factorial de \(n\):
+\begin{codeblock}[Factorial recursivo.]
 \begin{pseudocode}
 def factorial(n: int) -> int:
     if n <= 1: return 1
 
     return n * factorial(n-1)
 \end{pseudocode}
+\end{codeblock}
+
 El llamado a \inline{factorial(n-1)} no es una llamada de cola porque su resultado debe multiplicarse por \inline{n} antes de retornar. El algoritmo se puede reescribir para que sí lo sea, acumulando el resultado parcial en un parámetro adicional:
+\begin{codeblock}[Factorial con optimización de recursión de cola.]
 \begin{pseudocode}
 def factorial(n: int, acc: int = 1) -> int:
     if n <= 1: return acc
 
     return factorial(n-1, n * acc)
 \end{pseudocode}
+\end{codeblock}
 
 La optimización de recursión de cola solo funciona en ciertos lenguajes de programación. El lenguaje de programación tiene que reconocer que puede reemplazar el marco de pila en lugar de apilar el nuevo. La mayoría de lenguajes funcionales, como Scheme o Haskell, la implementan, pero muchos lenguajes procedimentales, notablemente Python y Java, deliberadamente \emph{no} soportan optimización de recursión de cola. En \textcite{guido_tail_recursion} se explica por qué no se incluyó en Python.

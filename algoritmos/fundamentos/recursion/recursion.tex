@@ -35,12 +35,14 @@ Allí, los casos base son las primeras dos expresiones y la relación de recurre
 Coloquialmente, a esa expresión que incluye tanto los casos base como la relación de recurrencia, se le denomina simplemente la recurrencia. 
 
 Se puede traducir esa definición recursiva directamente a una implementación recursiva:
+\begin{codeblock}[Fibonacci recursivo.]
 \begin{pseudocode}
 def fibonacci(n: int) -> int:
     if n <= 1: return n
 
     return fibonacci(n-1) + fibonacci(n-2)
 \end{pseudocode}
+\end{codeblock}
 
 \setinputbase{fundamentos/recursion}
 \inputlist{ejecucion, complejidad, recursion_iteracion, notes}

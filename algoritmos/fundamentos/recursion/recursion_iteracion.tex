@@ -8,11 +8,14 @@ A pesar de que algunos problemas se expresan más naturalmente mediante recursi�
 Recuérdese que todos los tipos de ciclos se pueden generalizar mediante la instrucción \inline{while}, como se muestra en el apéndice \ref{apx:iteracion}.
 
 A medida que el ciclo \inline{while} ejecuta, puede modificar el \concept{estado del programa}, denotado por \(\sigma\): el conjunto de valores de las variables cuyo contenido puede afectar la ejecución del algoritmo. El estado determina si la condición booleana del \inline{while} es verdadera, por lo que dicha condición se denota en función del estado como \(B(\sigma)\). Con eso en mente, la forma general de cualquier \inline{while} (y por ende de cualquier ciclo) se puede escribir como:
+\begin{codeblock}[Abstracción semántica de cualquier ciclo.]
 \begin{pseudocode}
 while |\(B(\sigma)\)|:
     |\(\sigma\)| = |\(T(\sigma)\)|
 \end{pseudocode}
+\end{codeblock}
 Donde el estado se transforma en cada iteración acorde a la transformación \(T\) mientras el booleano \(B(\sigma)\) evalúe a verdadero. A esa abstracción de los programas iterativos le corresponde el siguiente programa recursivo equivalente:
+\begin{codeblock}[Equivalente recursivo de cualquier ciclo.]
 \begin{pseudocode}
 loop(|\(\sigma\)|):
     if not |\(B(\sigma)\)|:
@@ -20,6 +23,7 @@ loop(|\(\sigma\)|):
 
     return loop(|\(T(\sigma)\)|)
 \end{pseudocode}
+\end{codeblock}
 En ambos programas el estado evoluciona sucesivamente según la transformación \(T\) mientras que \(B(\sigma)\) evalúa a verdadero; una vez \(B(\sigma)\) evalúa a falso, se conserva el estado \(\sigma\) como estaba antes de la ejecución.
 
 \subsubsection{De recursión a iteración}
