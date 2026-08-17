@@ -27,7 +27,7 @@ Los cambios son dos: primero, se utilizan índices basados en 0 para el arreglo 
 \label{sec:subarreglo_max_fuerza_bruta}
 
 La solución obvia a este problema se consigue simplemente comparando todas las posibles sumas de subarreglos y eligiendo la mejor:
-\begin{codeblock}
+\begin{codeblock}[Subarreglo máximo por fuerza bruta.][impl:subarreglo_max_fuerza_bruta]
 \begin{pseudocode}
 def max_subarray_brute_force(nums: arreglo[int]) -> tuple[int, int, int]:
     best_sum = |\(-\infty\)|
@@ -58,7 +58,7 @@ Ese fue el primer algoritmo que desarrolló Grenander%
 
 El algoritmo era demasiado lento para el caso de uso de Grenander, quien entonces se percató de que el tercer ciclo no es necesario:
 \label{sec:subarreglo_max_fuerza_bruta_2}
-\begin{codeblock}
+\begin{codeblock}[Subarreglo máximo por fuerza bruta optimizada.][impl:subarreglo_max_fuerza_bruta_2]
 \begin{pseudocode}
 def max_subarray_brute_force_2(nums: arreglo[int]) -> tuple[int, int, int]:
     best_sum = |\(-\infty\)|
@@ -100,7 +100,7 @@ Para diseñar un algoritmo usando dividir y conquistar, el primer paso convencio
 \end{enumerate}
 
 Igual que antes, nos preocupamos primero de dividir y conquistar y procrastinamos el paso de combinar encapsulándolo en una función \inline{max_crossing_subarray}:
-\begin{codeblock}
+\begin{codeblock}[Subarreglo máximo por dividir y conquistar.][impl:subarreglo_max_divide_conquer]
 \begin{pseudocode}
 def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[int, int, int]:
     if lo == hi: return lo, hi, nums[lo]
@@ -126,7 +126,7 @@ def max_subarray_divide_conquer(nums: arreglo[int], lo: int, hi: int) -> tuple[i
 \end{codeblock}
 
 Ahora sí, se contemplan todos los subarreglos que pasan por donde se dividió el arreglo. Todos esos subarreglos tienen un pedazo a la izquierda de esa mitad y un pedazo a la derecha. Para maximizar la suma, queremos maximizar la de la izquierda y también maximizar la de la derecha. En este caso, usar un algoritmo exhaustivo no es ingenuo: se toma el máximo segmento desde la mitad hacia la izquierda, el máximo desde la mitad hacia la derecha, y se juntan:
-\begin{codeblock}
+\begin{codeblock}[Subarreglo máximo que cruza la mitad.][impl:subarreglo_max_crossing]
 \begin{pseudocode}
 def max_crossing_subarray(nums: arreglo[int], lo: int, mid: int, hi: int) -> tuple[int, int, int]:
     |\br{lefti}|left_sum = 0

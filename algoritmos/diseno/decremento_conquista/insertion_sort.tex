@@ -7,7 +7,7 @@ Si el problema es ordenar el arreglo, un subproblema es ordenar un pedazo del ar
 
 Esa es la intuición detrás de \concept{insertion sort}: para cada elemento del arreglo, se revisa si está ubicado correctamente respecto a los anteriores: si no lo está, se mueve hacia atrás hasta que lo esté; una vez lo está, se continúa con el siguiente elemento.
 
-\begin{codeblock}
+\begin{codeblock}[Insertion sort.][impl:insertion_sort]
 \begin{pseudocode}
 def insertion_sort(nums: arreglo):
     |\bxl{s}|for i=1 to len(nums)-1:|\bxr{s}|

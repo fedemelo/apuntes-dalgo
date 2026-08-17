@@ -15,7 +15,7 @@ Para idear una solución, se emplea el paradigma. El primer paso es fácil: divi
 Sin embargo, se puede idear un paso de combinar eficiente con una modificación sorprendentemente pequeña de \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, para cada elemento de la mitad derecha, contar cuántos elementos de mitad izquierda son mayores que ese, caso en el cual están invertidos. Ese conteo es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si el elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que le siguen y cada uno es esos cuenta como un par invertido.
 
 Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios descritos arriba en negro:
-\begin{codeblock}
+\begin{codeblock}[Combinar y contar pares invertidos (en gris: \hyperref[impl:merge]{paso de combinar de merge sort}).][impl:merge_and_count_pares]
 \begin{pseudocode}[style=derived]
 def merge@_and_count@(nums: arreglo[int], lo: int, mid: int, hi: int)@-> int@:
     left = |\textrm{copia de}| nums |\textrm{desde}| lo |\textrm{hasta}| mid
@@ -52,7 +52,7 @@ def merge@_and_count@(nums: arreglo[int], lo: int, mid: int, hi: int)@-> int@:
 Podría existir preocupación de que al ordenar las mitades se está cambiando el orden original de los elementos y por ende el conteo de pares invertidos está errado. A pesar de que en efecto no se preserva el orden original dentro de cada mitad, sí se preserva que los elementos en la mitad izquierda originalmente estaban antes que los elementos en la mitad derecha. Como en cada paso de combinar solo se cuentan los pares invertidos que cruzan entre mitades, el conteo de pares invertidos sí es correcto, a pesar de que la posición de los índices de cada par posiblemente no sea la original.
 
 Con el paso de combinar implementado, la implementación de los pasos de dividir y conquistar reutiliza la merge sort, con la diferencia de que en cada llamado recursivo se debe recibir el conteo de esa mitad y que esos conteos se deben sumar al conteo del paso de combinar:
-\begin{codeblock}
+\begin{codeblock}[Conteo de pares invertidos.][impl:count_inverted_pairs]
 \begin{pseudocode}[style=derived]
 def @count_inverted_pairs@(nums: arreglo[int], lo: int, hi: int)@ -> int@:
     if lo >= hi: return @0@

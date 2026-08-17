@@ -11,7 +11,7 @@ Por ejemplo, en el arreglo \inline{[-3, -2, 4]} y el intervalo \([\ell, u] = [-2
 % Transformación
 
 La particularidad de este problema y el ingenio adicional que requiere consiste en transformar el arreglo de entrada a uno de mayor utilidad, donde el iésimo elemento contiene la suma acumulada de los primeros $i$ elementos. 
-\begin{codeblock}
+\begin{codeblock}[Cálculo del arreglo de sumas acumuladas.][impl:rangos_sumas_acumuladas]
 \begin{pseudocode}
 def count_sum_ranges(nums: arreglo[int], lower: int, upper: int) -> int:
     accum = |\textrm{arreglo de longitud }|len(nums)+1
@@ -60,6 +60,7 @@ Con eso, se diseña el algoritmo de dividir y conquistar, siguiendo una idea es 
 % TODO: Hasta aquí (#33)
 
 Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios, en negro:
+\begin{codeblock}[Combinar y contar sumas de rango (en gris: \hyperref[impl:merge]{paso de combinar de merge sort}).][impl:merge_and_count_rangos]
 \begin{pseudocode}[style=derived]
 def merge_and_count(prefijos: arreglo[int], lo: int, mid: int, hi: int, lower: int, upper: int)@ -> int@:
     left = |\textrm{copia de}| prefijos |\textrm{desde}| lo |\textrm{hasta}| mid
@@ -97,9 +98,10 @@ def merge_and_count(prefijos: arreglo[int], lo: int, mid: int, hi: int, lower: i
 
     @return rango_count@
 \end{pseudocode}
+\end{codeblock}
 
 Tras el paso de combinar, el resto del algoritmo es idéntico al de pares invertidos (en gris): cada llamado recursivo recibe el conteo de rangos de su mitad y se suman al del paso de combinar:
-\begin{codeblock}
+\begin{codeblock}[Conteo de sumas de rango (en gris: \hyperref[impl:count_inverted_pairs]{conteo de pares invertidos}).][impl:count_sum_ranges]
 \begin{pseudocode}[style=derived]
 def count@_sum_ranges_aux@(@accum@: arreglo[int], lo: int, hi: int@, lower: int, upper: int@) -> int:
     if lo >= hi: return 0

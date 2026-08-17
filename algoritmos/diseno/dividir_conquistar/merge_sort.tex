@@ -14,7 +14,7 @@ Hay dos formas de dividir el arreglo en mitades: una toma el arreglo y lo divide
 
 Para realizar la división conceptual, la función recursiva recibe, además del arreglo, índices inicial y final que indican el segmento del arreglo que se está procesando. La función calcula el índice de la mitad de ese rango, y usa los tres índices para definir dos segmentos: la mitad izquierda y la derecha. Con eso, realiza un llamado recursivo para cada mitad:
 
-\begin{codeblock}
+\begin{codeblock}[Dividir y conquistar de merge sort.][impl:merge_sort]
 \begin{pseudocode}
 def merge_sort(nums: arreglo[int], lo: int, hi: int):
     |\bxl{base}|if lo < hi:|\bxr{base}|
@@ -52,17 +52,19 @@ Cuando algún llamado alcanza el caso base, vuelve a la función que la invocó 
 Después de combinar, la función termina y retorna a quien la había invocado. Así, los llamados a \inline{merge_sort} que se habían acumulado empiezan a terminar, uno tras otro: la recursión comienza a \concept{desenrollarse}.
 
 Nótese que como \inline{merge_sort(nums, i, j)} ordena el segmento de \(i\) a \(j\) en \inline{nums}, entonces la invocación inicial, que resuelve el problema completo, debe usar los índices extremos del arreglo: 
+\begin{codeblock}[Invocación inicial de merge sort.][impl:merge_sort_invocacion]
 \begin{pseudocode}
 def sort(nums: arreglo[int]):
     merge_sort(nums, 0, len(nums)-1)
 \end{pseudocode}
+\end{codeblock}
 
 \subsubsection{Combinar las mitades}
 
 La idea para combinar las mitades es intuitiva: si cada mitad fuera una pila de cartas, el método natural sería comparar las cartas en el tope de cada pila y tomar la menor cada vez. Eso solo funciona porque cada mitad está ordenada, entonces las cartas que se van tomando van quedando ordenadas.
 
 El seudocódigo es el siguiente:
-\begin{codeblock}
+\begin{codeblock}[Paso de combinar de merge sort.][impl:merge]
 \begin{pseudocode}
 def merge(nums: arreglo[int], lo: int, mid: int, hi: int):
     |\br{cpi}|left = |\textrm{copia de}| nums |\textrm{desde}| lo |\textrm{hasta}| mid

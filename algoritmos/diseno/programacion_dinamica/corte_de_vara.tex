@@ -36,6 +36,7 @@ Para diseñar una solución recursiva, lo primero que hay que pensar es cómo di
   \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud \(2\) se vende a \(p[2]\), pero falta evaluar cómo cortar el pedazo de longitud \(n-2\) de forma óptima.
 \end{itemize}
 Con eso es fácil construir una implementación recursiva, \inline{rod_cut_rec} que evalúe el primer caso como \inline{p[1] + rod_cut_rec(n-1, p)}; el segundo, como \inline{p[2] + rod_cut_rec(n-2, p)} y así hasta \inline{p[n] + rod_cut_rec(0, p)}, donde ese último llamado recursivo evidentemente es un caso base.
+\begin{codeblock}[Corte de vara recursivo.][impl:rod_cut_recursivo]
 \begin{pseudocode}
 def rod_cut_rec(n: int, prices: arreglo[int]) -> int:
     if n == 0: return 0
@@ -48,6 +49,7 @@ def rod_cut_rec(n: int, prices: arreglo[int]) -> int:
     
     return optimal_rev
 \end{pseudocode}
+\end{codeblock}
 El raciocinio que usamos para esta implementación deja claro que el problema cuenta con subestructura óptima. Falta ver si también presenta subproblemas superpuestos, pues solo en ese caso un algoritmo de programación dinámica mejoraría la eficiencia.
 
 % TODO Por qué presenta problemas superpuestos? Árbol de recursión? O: explicar el ciclo, quizás eso es más fácil
@@ -56,7 +58,7 @@ El raciocinio que usamos para esta implementación deja claro que el problema cu
 \label{sec:corte_vara_top_down}
 
 Para eliminar la redundancia que introducen los problemas superpuestos, se implementa un algoritmo top-down. Se añade una función principal que crea un arreglo donde la función auxiliar recursiva memoiza el cálculo del mejor precio para cada longitud.
-\begin{codeblock}
+\begin{codeblock}[Corte de vara top-down.][impl:rod_cut_top_down]
 \begin{pseudocode}
 def rod_cut_top_down(n: int, prices: arreglo[int]) -> int:
     |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
@@ -95,7 +97,7 @@ En el algoritmo top-down, los llamados recursivos a la función auxiliar \inline
 
 Como en la solución bottom-up no se invocan funciones auxiliares, el valor de \inline{n} que entra como parámetro no cambia. Por tanto, el ciclo que hace falta introducir, que reemplaza la recursión, es uno que revisa todos los posibles valores de \inline{n}, es decir todos los subproblemas, y para cada uno de ellos sigue la misma lógica que la función auxiliar de la versión top-down. Con eso, la solución bottom-up acaba con dos ciclos: uno externo, que toma el lugar de la recursión, y uno interno, idéntico al ciclo único de los algoritmos previos.
 
-\begin{codeblock}
+\begin{codeblock}[Corte de vara bottom-up.][impl:rod_cut_bottom_up]
 \begin{pseudocode}
 def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
     |\br{arri}|optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|
@@ -133,7 +135,7 @@ Para esto, al implementar el algoritmo de programación dinámica se debe no sol
 
 En este caso, además de almacenar el precio óptimo para una longitud \(\ell\), se almacena el primer corte que corresponde a ese precio óptimo. Solo se almacena el primer corte \(c\) para cada longitud, porque para determinar posteriormente el resto de cortes (si se requieren más de un corte), basta con examinar el subproblema de la longitud restante, o sea, el subproblema de la vara de longitud \(\ell-c\) (para el cual también se guardó el primer corte).
 
-\begin{codeblock}
+\begin{codeblock}[Corte de vara con reconstrucción de cortes.][impl:rod_cut_reconstruccion]
 \begin{pseudocode}
 def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
     optimal_revs = |\textrm{arreglo de }|int|\textrm{ de longitud \(n+1\)}|

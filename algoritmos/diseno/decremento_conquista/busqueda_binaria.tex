@@ -17,7 +17,7 @@ Lo más sensato es iniciar comparando con el elemento de la mitad, para que los 
 
 La implementación más natural es recursiva, porque permite representar muy naturalmente esa idea de buscar en solo una mitad del segmento cada vez. No hace falta modificar el arreglo para segmentarlo, basta con tener los índices del extremo izquierdo y derecho del segmento que se está tomando:
 
-\begin{codeblock}
+\begin{codeblock}[Búsqueda binaria recursiva.][impl:busqueda_binaria_recursiva]
 \begin{pseudocode}
 def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
     |\br{mi}|if hi < lo:
@@ -43,10 +43,12 @@ def binary_search_rec(nums: arreglo[int], target: int, lo: int, hi: int) -> int:
 En los llamados recursivos se toma desde el índice de la mitad \emph{más uno} o \emph{menos uno}. Eso cumple dos funciones: primero, que no se vuelva a comparar con la mitad; pero sobre todo, permite que a media que el segmento del arreglo que se contempla es cada vez más pequeño, tal que el índice de la mitad se acerca más y más a algún extremo, eventualmente se crucen y la recursión llegue al caso base. Si solo se tomara el índice de la mitad, jamás se cruzaría con algún extremo y la recursión no terminaría cuando el objetivo no se encuentra.
 
 Por último, la función recibe, además del arreglo y el objetivo, los índices. Así que técnicamente no recibe las entradas del problema propuesto. Envolverla en una función que sí las reciba es trivial:
+\begin{codeblock}[Invocación inicial de búsqueda binaria recursiva.][impl:busqueda_binaria_invocacion]
 \begin{pseudocode}
 def binary_search(nums: arreglo[int], target: int) -> int:
     return binary_search_rec(nums, target, 0, len(nums) - 1)
 \end{pseudocode}
+\end{codeblock}
 
 \subsubsection{Complejidad}
 
@@ -75,7 +77,7 @@ Como \(T_\text{mejor} \in \Theta(1)\) y \(T_\text{promedio}, T_\text{peor} \in \
 \label{sec:busqueda_binaria_iterativa}
 
 También se puede realizar una implementación iterativa de búsqueda binaria, en donde la forma de segmentar el arreglo consiste en desplazar el índice de algún extremo hacia la mitad:
-\begin{codeblock}
+\begin{codeblock}[Búsqueda binaria iterativa.][impl:busqueda_binaria_iterativa]
 \begin{pseudocode}
 def binary_search_iter(nums: arreglo[int], target: int) -> int:
     lo = 0
