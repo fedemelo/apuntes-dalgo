@@ -9,37 +9,49 @@
 \newcommand{\algoritmoIndice}[2]{\l@subsection{\hyperref[#2]{#1}}{\getpagerefnumber{#2}}}
 
 \l@section{Búsqueda binaria (\textit{Binary search})}{}
-\algoritmoIndice{Recursiva}{sec:busqueda_binaria_recursiva}
-\algoritmoIndice{Iterativa}{sec:busqueda_binaria_iterativa}
+\algoritmoIndice{Recursiva}{impl:busqueda_binaria_recursiva}
+\algoritmoIndice{Invocación inicial}{impl:busqueda_binaria_invocacion}
+\algoritmoIndice{Iterativa}{impl:busqueda_binaria_iterativa}
 
 \l@section{Corte de vara (\textit{Rod cutting})}{}
-\algoritmoIndice{Recursiva}{sec:corte_vara_recursiva}
-\algoritmoIndice{Top-down}{sec:corte_vara_top_down}
-\algoritmoIndice{Bottom-up}{sec:corte_vara_bottom_up}
+\algoritmoIndice{Recursiva}{impl:rod_cut_recursivo}
+\algoritmoIndice{Top-down}{impl:rod_cut_top_down}
+\algoritmoIndice{Bottom-up}{impl:rod_cut_bottom_up}
+\algoritmoIndice{Con reconstrucción de cortes}{impl:rod_cut_reconstruccion}
+
+\l@section{Factorial}{}
+\algoritmoIndice{Recursivo}{impl:factorial_recursivo}
+\algoritmoIndice{Con optimización de recursión de cola}{impl:factorial_recursion_cola}
 
 \l@section{Fibonacci}{}
-\algoritmoIndice{Recursiva}{sec:fibonacci_recursiva}
-\algoritmoIndice{Top-down}{sec:fibonacci_top_down}
-\algoritmoIndice{Bottom-up}{sec:fibonacci_bottom_up}
-\algoritmoIndice{Bottom-up con optimización de espacio}{sec:fibonacci_bottom_up_optimizada}
+\algoritmoIndice{Recursiva}{impl:fibonacci_recursivo}
+\algoritmoIndice{Top-down}{impl:fibonacci_top_down}
+\algoritmoIndice{Bottom-up}{impl:fibonacci_bottom_up}
+\algoritmoIndice{Bottom-up con optimización de espacio}{impl:fibonacci_bottom_up_espacio}
 
 \l@section{Ordenamiento (\textit{Sorting})}{}
-\algoritmoIndice{Insertion sort}{sec:insertion_sort}
-\algoritmoIndice{Merge sort}{sec:merge_sort}
+\algoritmoIndice{Insertion sort}{impl:insertion_sort}
+\algoritmoIndice{Merge sort, dividir y conquistar}{impl:merge_sort}
+\algoritmoIndice{Merge sort, invocación inicial}{impl:merge_sort_invocacion}
+\algoritmoIndice{Merge sort, paso de combinar}{impl:merge}
 
 \l@section{Pares invertidos (\textit{Inverted/Reverse pairs})}{}
-\algoritmoIndice{Dividir y conquistar}{sec:pares_invertidos}
+\algoritmoIndice{Combinar y contar}{impl:merge_and_count_pares}
+\algoritmoIndice{Conteo}{impl:count_inverted_pairs}
 
 \l@section{Sumas de rangos (\textit{Range sum})}{}
-\algoritmoIndice{Dividir y conquistar}{sec:rangos_sumas}
+\algoritmoIndice{Cálculo de sumas acumuladas}{impl:rangos_sumas_acumuladas}
+\algoritmoIndice{Combinar y contar}{impl:merge_and_count_rangos}
+\algoritmoIndice{Conteo}{impl:count_sum_ranges}
 
 \l@section{Subarreglo máximo (\textit{Maximum subarray})}{}
-\algoritmoIndice{Fuerza bruta \(\Theta(n^3)\)}{sec:subarreglo_max_fuerza_bruta}
-\algoritmoIndice{Fuerza bruta \(\Theta(n^2)\)}{sec:subarreglo_max_fuerza_bruta_2}
-\algoritmoIndice{Dividir y conquistar}{sec:subarreglo_max_divide_conquer}
+\algoritmoIndice{Fuerza bruta \(\Theta(n^3)\)}{impl:subarreglo_max_fuerza_bruta}
+\algoritmoIndice{Fuerza bruta \(\Theta(n^2)\)}{impl:subarreglo_max_fuerza_bruta_2}
+\algoritmoIndice{Dividir y conquistar}{impl:subarreglo_max_divide_conquer}
+\algoritmoIndice{Subarreglo que cruza la mitad}{impl:subarreglo_max_crossing}
 % \algoritmoIndice{Algoritmo de Kadane (programación dinámica)}{sec:subarreglo_max_divide_conquer}
 
 \l@section{Vertex-cover (\textit{Vertex cover})}{}
-\algoritmoIndice{Algoritmo aproximado}{sec:vertex_cover_aproximado}
+\algoritmoIndice{Algoritmo aproximado}{impl:vertex_cover_aproximado}
 \makeatother
 \endgroup
