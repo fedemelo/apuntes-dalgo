@@ -8,6 +8,7 @@
 
 % Caption type for \codeblock listings, numbered independently of figures/tables.
 \DeclareCaptionType{implementacion}[Implementación]
+\captionsetup[implementacion]{font=small, skip=4pt}
 
 % Place a zero-size remembered node at the current position.
 \newcommand{\tikzmark}[1]{\tikz[remember picture,overlay] \node (#1) {};}
@@ -289,53 +290,42 @@
         (cn@#2.\codenotefrom) to[codenote@curve@style] (cnote@#2.\codenoteto);%
 }
 
+% \nointerlineskip: starting this environment right after a listing opens a
+% new paragraph, which would otherwise insert real interline glue before
+% content that's supposed to occupy zero space (it's `overlay`).
 \NewDocumentEnvironment{annotations}{}{%
+    \par\nointerlineskip
     \begin{tikzpicture}[remember picture, overlay]
 }{%
     \end{tikzpicture}
 }
 
-% Wrap a \pseudocode listing and its \annotations block together in this
-% environment to keep them on the same page:
+% Wrap a \pseudocode listing, its optional \annotations, and an optional
+% caption together, so they land on one page and one page only:
 %
-%   \begin{codeblock}
+%   \begin{codeblock}[Conteo de pares invertidos.][impl:pares-invertidos]
 %     \begin{pseudocode} ... \end{pseudocode}
 %     \begin{annotations} ... \end{annotations}
 %   \end{codeblock}
 %
-% An optional caption (numbered as "Implementación N") and label can be
-% added, rendered below the listing once the page-break-safety box closes:
+% \annotations is `overlay`, so it has zero size for page-breaking purposes:
+% without this wrapper, the page builder could break right after the
+% listing, stranding the (seemingly weightless) annotations — or the
+% caption — on the next page, disconnected from what they annotate.
+% Capturing everything in one \vbox makes it a single, unsplittable item.
 %
-%   \begin{codeblock}[Conteo de pares invertidos.][impl:pares-invertidos]
-%     ...
-%   \end{codeblock}
-%
-% Why this is needed: an \annotations tikzpicture is `overlay`, so by design
-% it has zero size as far as TeX's page-breaking is concerned — its marks and
-% drawing only exist through absolute page coordinates recorded via
-% `remember picture`. That means TeX's page builder treats the listing and
-% its annotations as two independent, unrelated-height items in the vertical
-% list, so a listing that lands exactly at the bottom of a page can be
-% followed by a page break that pushes the (seemingly weightless) annotations
-% block alone onto the next page. The marks it draws from were recorded on
-% the previous page, but the drawing itself happens on the new page, so it
-% silently renders in the wrong place. A `\nopagebreak` between the two
-% environments does NOT fix this: the page builder can already have committed
-% to breaking right after the listing by the time that penalty is seen.
-%
-% The fix is to make the pair atomic: capture both inside a single \vbox, so
-% they become one item in the vertical list with no legal breakpoint between
-% them. TeX still measures that combined box using only the listing's height
-% (the overlay content is still invisible to it), but that's fine — what
-% matters is that the box can no longer be split, so it's forced to land
-% wholly on one page, taking its annotations with it.
+% \parskip is forced to 0pt because the `parskip` package (loaded by the
+% class) would otherwise add visible space at each paragraph break inside
+% the box (before \annotations, and before the caption), even though
+% those breaks have no content of their own to justify it.
 \newbox\codeblock@box
 \NewDocumentEnvironment{codeblock}{o o}{%
     \par
     \setbox\codeblock@box=\vbox\bgroup
+    \parskip=0pt\relax
 }{%
+    \IfValueT{#1}{\par\nointerlineskip\captionof{implementacion}{#1}}%
+    \IfValueT{#2}{\label{#2}}%
     \egroup
     \noindent\box\codeblock@box
-    \IfValueT{#1}{\captionof{implementacion}{#1}}
-    \IfValueT{#2}{\label{#2}}
 }
