@@ -10,7 +10,9 @@ Por ejemplo, en el arreglo \([3, 1, 4, 5, 2]\) hay cuatro pares invertidos: \((0
 
 La cantidad de pares invertidos es una medida de qué tan desordenado está un arreglo: un arreglo ordenado no tiene pares invertidos, mientras que en un arreglo inversamente ordenado cada uno de los \(\binom{n}{2}\) pares posibles están invertidos.
 
-No es difícil idear una solución eficiente con base en \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, contar cuántos de la mitad derecha son menores que alguno de la mitad izquierda, caso en el cual están invertidos. Ese conteo es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si un elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que le siguen y cada uno es esos cuenta como un par invertido.
+Para idear una solución, se emplea el paradigma. El primer paso es fácil: dividir el arreglo en dos mitades y realizar el conteo para cada mitad recursivamente. La dificultad está en el paso de combinar y se asemeja a la del problema de máximo subarreglo: cómo efectuar el conteo para los pares invertidos que cruzan las mitades.
+
+Sin embargo, se puede idear un paso de combinar eficiente con una modificación sorprendentemente pequeña de \hyperref[sec:merge_sort]{merge sort}. La idea es: en el paso de combinar los elementos de la mitad izquierda con los de la derecha, para cada elemento de la mitad derecha, contar cuántos elementos de mitad izquierda son mayores que ese, caso en el cual están invertidos. Ese conteo es particularmente fácil recordando que las dos mitades están ordenadas, de forma que si el elemento de la derecha es menor que uno de la izquierda, entonces es menor que \emph{todos} los elementos de la izquierda que le siguen y cada uno es esos cuenta como un par invertido.
 
 Se reescribe el paso de combinar de merge sort, en gris, y se añaden los pocos cambios descritos arriba en negro:
 \begin{codeblock}
@@ -47,7 +49,9 @@ def merge@_and_count@(nums: arreglo[int], lo: int, mid: int, hi: int)@-> int@:
 \end{annotations}
 \end{codeblock}
 
-Con eso resuelto, el resto del algoritmo es muy similar a merge sort. La diferencia es que en cada llamado recursivo se debe recibir el conteo de pares invertidos de esa mitad y que esos conteos se deben sumar al conteo del paso de combinar:
+Podría existir preocupación de que al ordenar las mitades se está cambiando el orden original de los elementos y por ende el conteo de pares invertidos está errado. A pesar de que en efecto no se preserva el orden original dentro de cada mitad, sí se preserva que los elementos en la mitad izquierda originalmente estaban antes que los elementos en la mitad derecha. Como en cada paso de combinar solo se cuentan los pares invertidos que cruzan entre mitades, el conteo de pares invertidos sí es correcto, a pesar de que la posición de los índices de cada par posiblemente no sea la original.
+
+Con el paso de combinar implementado, la implementación de los pasos de dividir y conquistar reutiliza la merge sort, con la diferencia de que en cada llamado recursivo se debe recibir el conteo de esa mitad y que esos conteos se deben sumar al conteo del paso de combinar:
 \begin{codeblock}
 \begin{pseudocode}[style=derived]
 def @count_inverted_pairs@(nums: arreglo[int], lo: int, hi: int)@ -> int@:
@@ -61,11 +65,11 @@ def @count_inverted_pairs@(nums: arreglo[int], lo: int, hi: int)@ -> int@:
     return @left_count + right_count + merge_count@
 \end{pseudocode}
 \begin{annotations}
-    \codebrace[xshift=1cm,width=7cm]{calli}{callf}{Los pares invertidos de todo el segmento son los que se contaron formando la mitad izquierda, más los de la derecha, más los que se forman entre ambas mitades.}
+    \codebrace[xshift=1cm,width=7cm]{calli}{callf}{Los pares invertidos de todo el segmento son los que se contaron en la mitad izquierda, más los de la derecha, más los que cruzan ambas mitades.}
 \end{annotations}
 \end{codeblock}
 
-Observando las modificaciones, es evidente que todas las operaciones añadidas tienen un costo constante en tiempo y espacio. Por ende, la complejidad temporal es la misma (asintóticamente) que la de merge sort, \(\Theta(n\log n)\),  al igual que la complejidad espacial, \(\Theta(n)\).
+Observando las modificaciones sobre mergesort, es evidente que todas las operaciones añadidas tienen un costo constante en tiempo y espacio. Por ende, la complejidad temporal es la misma (asintóticamente) que la de merge sort, \(\Theta(n\log n)\),  al igual que la complejidad espacial, \(\Theta(n)\).
 
 Si se extiende la solución para no solo contar el número de pares invertidos sino además almacenar sus índices, el sobrecosto tampoco modifica asintóticamente las complejidades.
 
