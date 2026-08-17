@@ -68,6 +68,8 @@ En el árbol de ejecución de $F(6)$ resulta evidente la cantidad de funciones q
   \node[fit=(f4b-root)(f4b-left)(f4b-right), draw, dashed, red, rounded corners, inner sep=4pt] {};
 \end{forest}%
 }
+\captionof{figure}{Árbol de ejecución de \(F(6)\), con subárboles repetidos resaltados.}
+\label{fig:fibonacci_arbol_ejecucion}
 \end{center}
 
 Eso implica que usar programación dinámica si aportará eficiencia.
@@ -139,6 +141,8 @@ Con esa implementación, cada valor solo se calcula la primera vez que se necesi
     [{F(4)}]
   ]
 \end{forest}
+\captionof{figure}{Árbol de ejecución de \(F(6)\) con memoización top-down.}
+\label{fig:fibonacci_arbol_top_down}
 \end{center}
 
 \subsubsection{Solución bottom-up}

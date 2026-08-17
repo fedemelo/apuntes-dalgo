@@ -30,6 +30,8 @@ Cada vez que se invoca \inline{fibonacci}, durante su ejecución se invoca nueva
     ]
   ]
 \end{forest}
+\captionof{figure}{Árbol de ejecución de \texttt{fibonacci(4)}.}
+\label{fig:arbol_ejecucion_fibonacci}
 \end{center}
 Nótese que, para toda función recursiva, el árbol de ejecución tiene las siguientes propiedades:
 \begin{itemize}
@@ -85,6 +87,8 @@ El árbol de ejecución no hace explícito el orden en el que se realizan los ll
   \draw[ret] (f1a) to node[right, font=\scriptsize] {4}  (f2a);
   \draw[ret] (f0a) to node[right, font=\scriptsize] {6}  (f2a);
 \end{tikzpicture}
+\captionof{figure}{Orden de ejecución de \texttt{fibonacci(4)}.}
+\label{fig:orden_ejecucion_fibonacci}
 \end{center}
 
 Como al invocar una función esta empieza a ejecutar de forma inmediata, la ejecución recursiva siempre explora completamente una rama del árbol antes de pasar a la siguiente. Es por eso que el orden de ejecución de toda función recursiva es el de un recorrido en profundidad, DFS, %TODO: Hyperlink/ref!!
