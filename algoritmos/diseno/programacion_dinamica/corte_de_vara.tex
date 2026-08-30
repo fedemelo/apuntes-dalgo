@@ -1,13 +1,13 @@
 \subsection{Problema de corte de vara}
 
-El problema de corte de vara consiste en determinar cuál es la mejor forma de cortar una vara de longitud \(n\), si cada posible longitud entera se puede vender a un precio específico. El objetivo es maximizar los ingresos.
+El problema de corte de vara consiste en determinar cuál es la forma más rentable de cortar una vara de longitud \(n\), si cada posible longitud entera se vende a un precio específico (y cada corte es gratis).
 
-Las entradas del problema son entonces una longitud entera \(n\) y una función \(p\) que determina el precio que tendría cada pedazo. Para facilidad computacional, usualmente el problema se establece como:
+Las entradas del problema son entonces la longitud de la vara \(n\in \mathbb{N}\) y un arreglo \(p\) donde \(p[i]\) es el precio de una vara de longitud \(i\):
 \begin{especificacion}
-  \entrada[Entradas]{Un entero \(n\) que representa la longitud de la vara y un arreglo \(p\) de tamaño \(n+1\), donde \(p[i]\) es el precio de una vara de longitud \(i\).}
-  \salida{Los ingresos máximos que se pueden obtener al cortar la vara.}
+  \entrada{Longitud de la vara \(n\) y arreglo \(p\) de precios.}
+  \salida{Los ingresos máximos que se pueden obtener.}
 \end{especificacion}
-En ese modelo, \(p[0] = 0\) porque una longitud de \(0\) representa la ausencia de vara (y por ende de venta).
+En ese modelo, \(p[0] = 0\) porque no se puede vender una longitud de \(0\).
 
 Considérese la instancia del problema con \(n=4\) y \(p = [0, 1, 5, 8, 9]\). En ese caso:
 \begin{itemize}
@@ -17,24 +17,84 @@ Considérese la instancia del problema con \(n=4\) y \(p = [0, 1, 5, 8, 9]\). En
   \item Si se corta en pedazos de longitud \(2\), \(1\) y \(1\), se venden a \(\$7\).
   \item Si se corta en cuatro pedazos de longitud \(1\), se venden a \(\$4\).
 \end{itemize}
-Entonces, la mejor forma de cortar la vara es en dos pedazos de longitud \(2\), para obtener ingresos de \(\$10\). Como \(n\) es pequeño, esta instancia se resuelve por fuerza bruta, mirando todas las formas de cortar la vara y calculando los ingresos para cada una.
+Entonces, la mejor forma de cortar la vara es en dos pedazos de longitud \(2\), para obtener ingresos de \(\$10\).
 
-Para un valor arbitrario de \(n\), hay muchas formas de cortar la vara. En cada unidad de longitud, hay dos alternativas: se corta o no. Entonces hay \(2\) posibilidades para cada una de las \(n-1\) unidades de longitud (\(n-1\) porque en la longitud \(n\) ya no se puede cortar), lo que da \(\underbrace{2\cdot2\cdots2}_{n-1 \text{ veces}} = 2^{n-1}\) combinaciones totales.
+\subsubsection{Combinaciones a contemplar}
 
-El conteo anterior no contempla que algunas combinaciones están repetidas, porque el orden de los pedazos no importa: es lo mismo cortar en la primera unidad de longitud y obtener un pedazo de longitud \(1\) y otro de longitud \(n-1\), que en la penúltima unidad de longitud, obteniendo un pedazo de longitud \(n-1\) y otro de longitud \(1\). Esta observación tiene dos implicaciones:
+Para un valor arbitrario de \(n\), hay muchas formas de cortar la vara. En cada unidad de longitud, hay dos alternativas: se corta o no. Entonces hay \(2\) posibilidades para cada una de las \(n-1\) unidades de longitud (\(n-1\) porque en la longitud \(n\) ya no se puede cortar), lo que da \[\underbrace{2\cdot2\cdots2}_{n-1 \text{ veces}} = 2^{n-1}\] combinaciones totales.
+
+El conteo anterior no contempla que algunas combinaciones están repetidas, porque el orden de los pedazos no importa: es lo mismo cortar en la primera unidad de longitud y obtener un pedazo de longitud \(1\) y otro de longitud \(n-1\), que en la penúltima unidad de longitud. Esa observación implica que en lugar de pensar en cortar o no en cada unidad, se puede pensar en cortar de forma que los pedazos queden en tamaño no decreciente. Eso contempla todas las distintas combinaciones: aunque no contempla, por ejemplo, (\(n-2\), \(2\)), ni (\(n-2\), \(1\), \(1\)); sí contempla (\(2\), \(n-2\)) y (\(1\), \(1\), \(n-2\)), que son equivalentes. Eso reduce el número de combinaciones a la función de partición de enteros, \(\mathrm{e}^\mathrm{\pi}\sqrt{2n/3}/(4n\sqrt{3})\) (un resultado poco trivial de alcanzar), que igual sigue lejos de ser polinomial.
+
+\subsubsection{Propiedades}
+
+Para pensar en si el problema presenta subestructura óptima, considérese una vara de longitud \(n\). Supóngase que para venderla al mejor precio, en algún momento toca cortar en la longitud \(k\). Eso modela todos los posibles escenarios, incluso en el que lo óptimo es no cortar (\(k = n\)).
+
+Al realizar el corte se obtienen dos segmentos de tamaños \(k\) y \(n-k\). Como \(k\) es un corte necesario para la solución óptima, entonces los tamaños \(k\) y \(n-k\) tienen que poderse cortar de forma que se vendan al mejor precio. Si no, cortar en \(k\) no produciría el mejor precio.
+
+Ese raciocinio lleva a la subestructura óptima del problema: las soluciones óptimas a los subproblemas, en este caso la mejor forma de cortar varas de longitudes \(k\) y \(n-k\), ayuda obtener una solución óptima para el problema, que en este caso contiene un corte en \(k\).
+
+En cuanto a problemas superpuestos, es más fácil de ver. Para % TODO!
+
+\subsubsection{Modelo}
+
+El estado es lo que cambia el subproblema. En este caso, es claro que una longitud distinta de vara da un subproblema diferente. 
+Por qué no la tabla de precios.
+
+Para diseñar una relación de recurrencia:
 \begin{itemize}
-  \item Primero, reduce el número de combinaciones de \(2^{n-1}\) a un valor dado por la función de partición de enteros, \(\mathrm{e}^\mathrm{\pi}\sqrt{2n/3}/(4n\sqrt{3})\). Esta es una gran mejora, pero la cantidad de combinaciones sigue lejos de ser polinomial. (No se muestra la deducción de la función de partición porque es un problema de conteo mucho más difícil).
-  \item Segundo, implica que no se debe pensar en cortar o no en cada unidad, sino que se puede pensar en cortar de forma que los pedazos queden en tamaño no decreciente. Eso igual va a contemplar todas las combinaciones: no contempla (\(n-2\), \(2\)), ni (\(n-2\), \(1\), \(1\)); pero sí (\(2\), \(n-2\)), también (\(1\), \(1\), \(n-2\)), etc., y como dan los mismos ingresos, con eso basta.
+  \item El primer caso de cortar en la primera unidad de longitud. Eso arroja un pedazo de longitud \(1\) y otro de longitud \(n-1\). Ese último pedazo de longitud \(n-1\) se puede seguir cortando (si \(n\) es grande) y entonces se tiene el mismo problema: cuál es la forma de cortarlo para maximizar los ingresos.
+  \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud \(2\) se vende a \(p[2]\), pero falta evaluar cómo cortar el pedazo de longitud \(n-2\) de forma óptima.
 \end{itemize}
+
+Generalizando esos dos casos a un corte en la iésima unidad de longitud, se obtiene la relación de recurrencia para \(r(n)\), el mejor ingreso posible al cortar una vara de longitud \(n\):
+\[
+r(n) = \begin{cases}
+  0 & \text{si } n = 0. \\
+  \displaystyle\max_{1 \le i \le n} \big( p[i] + r(n-i) \big) & \text{si } n > 0.
+\end{cases}
+\]
+
+En cuanto al grafo de dependencias, dado que \(r(n)\) contempla cortar en cualquier unidad de longitud de \(1\) a \(n\), el estado \(n\) depende de las soluciones a \emph{todos} los subproblemas de longitud menor: \(r(0), r(1), \ldots, r(n-1)\). Eso aplica para cualquier estado \(m\), no solo para \(n\): depende de \(r(0), \ldots, r(m-1)\). El único caso base es \(r(0)\), que no tiene predecesores. Por ejemplo, para los estados hasta \(n=4\) se trazan los arcos \(0 \to 1\); \(0 \to 2\) y \(1 \to 2\); \(0 \to 3\), \(1 \to 3\) y \(2 \to 3\); y \(0 \to 4\), \(1 \to 4\), \(2 \to 4\) y \(3 \to 4\):
+
+\begin{center}
+\setbox0=\hbox{%
+\begin{tikzpicture}[
+  vertex/.style={circle, draw, minimum size=0.8cm, inner sep=0pt},
+  -latex,
+]
+  \foreach \i in {0,...,4} {
+    \node[vertex] (v\i) at (1.4*\i, 0) {\i};
+  }
+
+  \draw (v0) to[bend left=15] (v1);
+
+  \draw (v0) to[bend left=30] (v2);
+  \draw (v1) to[bend left=15] (v2);
+
+  \draw (v0) to[bend left=45] (v3);
+  \draw (v1) to[bend left=30] (v3);
+  \draw (v2) to[bend left=15] (v3);
+
+  \draw (v0) to[bend left=60] (v4);
+  \draw (v1) to[bend left=45] (v4);
+  \draw (v2) to[bend left=30] (v4);
+  \draw (v3) to[bend left=15] (v4);
+\end{tikzpicture}%
+}
+\ifdim\wd0>\textwidth
+  \resizebox{\textwidth}{!}{\copy0}
+\else
+  \makebox[\linewidth]{\copy0}
+\fi
+\captionof{figure}{Grafo de dependencias de \(r(n)\) para \(n=4\).}
+\label{fig:corte_vara_grafo_dependencias}
+\end{center}
 
 \subsubsection{Solución recursiva}
 \label{sec:corte_vara_recursiva}
 
 Para diseñar una solución recursiva, lo primero que hay que pensar es cómo dividir este problema en subproblemas. En este caso es relativamente fácil, porque dada una vara de longitud \(n\), se querría evaluar:
-\begin{itemize}
-  \item El primer caso de cortar en la primera unidad de longitud. Eso arroja un pedazo de longitud \(1\) y otro de longitud \(n-1\). Ese último pedazo de longitud \(n-1\) se puede seguir cortando (si \(n\) es grande) y entonces se tiene el mismo problema: cuál es la forma de cortarlo para maximizar los ingresos.
-  \item El segundo caso es cortar en la segunda unidad de longitud y es análogo: el pedazo de longitud \(2\) se vende a \(p[2]\), pero falta evaluar cómo cortar el pedazo de longitud \(n-2\) de forma óptima.
-\end{itemize}
+
 Con eso es fácil construir una implementación recursiva, \inline{rod_cut_rec} que evalúe el primer caso como \inline{p[1] + rod_cut_rec(n-1, p)}; el segundo, como \inline{p[2] + rod_cut_rec(n-2, p)} y así hasta \inline{p[n] + rod_cut_rec(0, p)}, donde ese último llamado recursivo evidentemente es un caso base.
 \begin{codeblock}[Corte de vara recursivo.][impl:rod_cut_recursivo]
 \begin{pseudocode}
@@ -43,16 +103,11 @@ def rod_cut_rec(n: int, prices: arreglo[int]) -> int:
 
     optimal_rev = |\(-\infty\)|
     for i=1 to n:
-        revenue = prices[i] + rod_cut_rec(n-i, prices)
-        if revenue > optimal_rev:
-            optimal_rev = revenue
-    
+        optimal_rev = max(optimal_rev, prices[i] + rod_cut_rec(n-i, prices))
+
     return optimal_rev
 \end{pseudocode}
 \end{codeblock}
-El raciocinio que usamos para esta implementación deja claro que el problema cuenta con subestructura óptima. Falta ver si también presenta subproblemas superpuestos, pues solo en ese caso un algoritmo de programación dinámica mejoraría la eficiencia.
-
-% TODO Por qué presenta problemas superpuestos? Árbol de recursión? O: explicar el ciclo, quizás eso es más fácil
 
 \subsubsection{Solución top-down}
 \label{sec:corte_vara_top_down}
@@ -74,9 +129,7 @@ def rod_cut_memo(n: int, prices: arreglo[int], optimal_revs: arreglo[int]) -> in
 
     optimal_rev = |\(-\infty\)|
     for i=1 to n:
-        revenue = prices[i] + rod_cut_memo(n - i, prices, optimal_revs)
-        if revenue > optimal_rev:
-            optimal_rev = revenue
+        optimal_rev = max(optimal_rev, prices[i] + rod_cut_memo(n - i, prices, optimal_revs))
 
     |\br{reti}|optimal_revs[n] = optimal_rev
     return optimal_rev|\br{retf}|
@@ -106,17 +159,15 @@ def rod_cut_bottom_up(n: int, prices: arreglo[int]) -> int:
     |\bxl{cic}|for subprob_len=1 to n:|\bxr{cic}|
         optimal_rev = |\(-\infty\)|
         |\br{inti}|for i=1 to subprob_len:
-            revenue = prices[i] + optimal_revs[subprob_len-i]
-            if revenue > optimal_rev:
-                optimal_rev = revenue|\br{intf}|
-            
+            optimal_rev = max(optimal_rev, prices[i] + optimal_revs[subprob_len-i])|\br{intf}|
+
         optimal_revs[subprob_len] = optimal_rev
     
     return optimal_revs[n]
 \end{pseudocode}
 \begin{annotations}
   \codebrace[xshift=5cm, width=7cm]{arri}{arrf}{Como el arreglo se llenará en orden, no hay que llenarlo de antemano como en top-down, con el primer elemento basta.}
-  \codebox[xshift=0.5cm, width=10.5cm]{cic}{En top-down, la longitud \inline{n} cambia en cada llamado recursivo para cada subproblema; acá, \inline{n} nunca cambia, entonces \inline{subprob_len} toma su rol como la longitud de cada subproblema.}
+  \codenote[xshift=0.5cm, width=10.5cm]{cic}{En top-down, la longitud \inline{n} cambia en cada llamado recursivo para cada subproblema; acá, \inline{n} nunca cambia, entonces \inline{subprob_len} toma su rol como la longitud de cada subproblema.}
   \codebrace[xshift=4.5cm, width=5cm, yshift=-0.2cm]{inti}{intf}{El ciclo interno es calcado de las versiones anteriores, pero la tabulación reemplaza la recursión.}
 \end{annotations}
 \end{codeblock}
@@ -162,8 +213,8 @@ def rod_cut(n: int, prices: arreglo[int]) -> pila[int]:
     return segments
 \end{pseudocode}
 \begin{annotations}
-    \codebox[notepos={(cn@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
-    \codebox[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud \(\ell\), el primer corte es \inline{cortes_optimos[\(\ell\)]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{\(\ell - \)cortes_optimos[\(\ell\)]}}
+    \codenote[notepos={(cn@mejor.east)+(5cm,0.6cm)}, curve={bend right=5}, width=4.7cm]{mejor}{Se almacena el primer corte que se hizo en la solución óptima de ese subproblema.}
+    \codenote[xshift=1.5cm, width=6.3cm]{optm}{Para una longitud \(\ell\), el primer corte es \inline{cortes_optimos[\(\ell\)]}; los cortes restantes (si hay) se deben averiguar mirando el subproblema de la longitud restante, que es \inline{\(\ell - \)cortes_optimos[\(\ell\)]}}
     \codebrace[xshift=2.5cm, width=8.5cm]{cortsi}{cortsf}{Se toma el primer corte óptimo para \inline{n}; se resta de \inline{n} para obtener una nueva longitud, luego se mira el primer corte para ella; y así hasta acabar la vara}
 \end{annotations}
 \end{codeblock}
