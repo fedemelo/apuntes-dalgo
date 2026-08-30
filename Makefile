@@ -6,7 +6,7 @@ export TEXINPUTS
 TEX=pdflatex -shell-escape
 LATEXMK=latexmk -pdf -pdflatex="pdflatex -shell-escape %O %S"
 ALGORITMOS_DIR=algoritmos
-GRAPHS_DIR=graphs
+GRAPHS_DIR=grafos
 
 .PHONY: clean clean-all sml-algoritmos algoritmos sml-grafos grafos
 
